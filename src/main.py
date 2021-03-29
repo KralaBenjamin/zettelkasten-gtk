@@ -49,7 +49,7 @@ def on_search_button(button):
 def on_create_button(button):
     create_window = ZettelWindow()
     create_window.show_all()
-    #create_window.connect("destroy", Gtk.close)
+    create_window.connect("destroy", Gtk.close)
     
 
 window.sc.search_button.connect("clicked", on_search_button)
