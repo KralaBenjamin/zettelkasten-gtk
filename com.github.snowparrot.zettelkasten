@@ -21,4 +21,4 @@ except ImportError:
     print("Installation was assumed to be at:", modules_path)
     sys.exit(1)
 
-main.start()
+#ain.start()
