@@ -47,7 +47,7 @@ def on_search_button(button):
 
 
 def on_create_button(button):
-    create_window = ZettelWindow()
+    create_window = ZettelWindow(zData)
     create_window.show_all()
     create_window.connect("destroy", Gtk.close)
     

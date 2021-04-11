@@ -36,6 +36,7 @@ class ZettelDataService:
         ]
 
     def add_zettel_on_uri(self, text):
+        ## TODO: falls erledigt, füge Datei der Datenbank hinzu
         now = datetime.now()
 
         dt_string = now.strftime("%Y%m%d%H%M")
