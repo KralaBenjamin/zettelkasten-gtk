@@ -42,8 +42,7 @@ class ZettelWindow(Gtk.Window):
 ## Text
                                             
 ## Quelle
-## Links  
-            """
+## Links"""
         )
 
         self.add(self.text_view)
@@ -53,6 +52,7 @@ class ZettelWindow(Gtk.Window):
 
         def on_save_button(button):
             self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
+            self.zdata.reload()
             self.close()
 
         return on_save_button

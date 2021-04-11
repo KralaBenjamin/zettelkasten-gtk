@@ -7,6 +7,11 @@ class MainWindow(Gtk.Window):
 
     def __init__(self) -> None:
         super().__init__()
+        self.create_layout()
+
+
+
+    def create_layout(self):
         self.header_bar = Gtk.HeaderBar()
         self.header_bar.set_show_close_button(True)
         self.header_bar.props.title = "Zettelkasten"

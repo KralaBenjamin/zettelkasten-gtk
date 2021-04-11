@@ -27,6 +27,9 @@ class ZettelDataService:
             for element in text_list
         ]
 
+    def reload(self):
+        self.__init__(self.uri_zettels)
+
 
 
     def search(self, search_term):
