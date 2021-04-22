@@ -35,7 +35,8 @@ class ZettelDataService:
     def search(self, search_term):
         return [zettel
             for zettel in self.list
-            if search_term.lower() in zettel.raw_text.lower()
+            if search_term.lower()
+            in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
         ]
 
     def add_zettel_on_uri(self, text):

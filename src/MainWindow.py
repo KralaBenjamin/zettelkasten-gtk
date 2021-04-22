@@ -24,7 +24,8 @@ class MainWindow(Gtk.Window):
         self.header_bar.set_show_close_button(True)
         self.header_bar.props.title = "Zettelkasten"
         self.create_new_zettel_button = \
-                Gtk.Button.new_from_icon_name('document-new', Gtk.IconSize.LARGE_TOOLBAR)
+                Gtk.Button.new_from_icon_name('document-new',
+                                              Gtk.IconSize.LARGE_TOOLBAR)
 
         self.set_titlebar(self.header_bar)
         self.header_bar.pack_start(self.create_new_zettel_button)
@@ -38,6 +39,9 @@ class MainWindow(Gtk.Window):
         def on_search_button(button):
             ## Todo: Suchtreffer markieren
             ## Todo: Ordnung der Ergebnisse verbessern
+            ## Todo: Nach Zahlen suchbar machen
+
+
 
             self.sc.clear_search_view()
 

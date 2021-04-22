@@ -33,3 +33,6 @@ venv.bak/
 
 settings.json
 testdata/
+.idea
+
+/.buildconfig
