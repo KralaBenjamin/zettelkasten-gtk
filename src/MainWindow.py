@@ -13,17 +13,6 @@ class MainWindow(Gtk.Window):
         super().__init__()
         self.zdata = zdata
 
-        screen = Gdk.Screen.get_default()
-        provider = Gtk.CssProvider()
-
-        self.style_context = Gtk.StyleContext()
-        self.style_context.add_provider_for_screen(
-            screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
-
-        css_file = get_css_file()
-        provider.load_from_file(css_file)
-
         self.create_layout()
 
         self.connect("destroy", Gtk.main_quit)

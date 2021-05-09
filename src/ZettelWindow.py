@@ -15,10 +15,6 @@ class ZettelWindow(Gtk.Window):
         self.create_layout()
         self.header_bar_button.connect("clicked", self.save_button_click_factory())
 
-
-
-
-
     def create_layout (self):
         self.text_view = Gtk.TextView()
 
