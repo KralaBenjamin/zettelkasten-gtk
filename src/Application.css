@@ -2,3 +2,9 @@ label.tag-text {
     color: #f37329;
     font-weight: bold;
 }
+
+textview.text-editor {
+	font-size: 30;
+	font-family: roboto;
+}
+
