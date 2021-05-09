@@ -1,6 +1,7 @@
 from gi.repository import Gtk
 from gi.repository import Granite
 from Zettel import Zettel
+from Theme import Theme
 
 
 class SearchResultView(Gtk.Grid):
@@ -12,6 +13,9 @@ class SearchResultView(Gtk.Grid):
         self.text_label.set_line_wrap(True)
         self.text_label.set_justify(Gtk.Justification.FILL) 
         self.text_label.set_max_width_chars(letters_per_line)
+
+
+        #self.tag_label.
 
         self.title_label = Granite.HeaderLabel()
         self.tag_label = Gtk.Label()
@@ -44,6 +48,7 @@ class SearchResultView(Gtk.Grid):
 
         self.title_label.set_text(zettel.title)
         self.name_label.set_text(zettel.file_name)
+
 
         tag_text = __style_tags__(" ".join(zettel.tags)) ##Unschön: Vermischung von Code und Stil
         self.tag_label.set_markup(tag_text)

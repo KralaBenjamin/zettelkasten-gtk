@@ -1,8 +1,9 @@
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk, Gio
 from gi.repository import Granite
 from SearchContainer import SearchContainer
 from SearchResultView import SearchResultView
 from ZettelWindow import ZettelWindow
+from Theme import get_css_file
 
 
 
@@ -11,6 +12,17 @@ class MainWindow(Gtk.Window):
     def __init__(self, zdata) -> None:
         super().__init__()
         self.zdata = zdata
+
+        screen = Gdk.Screen.get_default()
+        provider = Gtk.CssProvider()
+
+        self.style_context = Gtk.StyleContext()
+        self.style_context.add_provider_for_screen(
+            screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
+
+        css_file = get_css_file()
+        provider.load_from_file(css_file)
 
         self.create_layout()
 
