@@ -51,9 +51,6 @@ class MainWindow(Gtk.Window):
         def on_search_button(button):
             ## Todo: Suchtreffer markieren
             ## Todo: Ordnung der Ergebnisse verbessern
-            ## Todo: Nach Zahlen suchbar machen
-
-
 
             self.sc.clear_search_view()
 

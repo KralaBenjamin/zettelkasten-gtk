@@ -14,12 +14,11 @@ class SearchResultView(Gtk.Grid):
         self.text_label.set_justify(Gtk.Justification.FILL) 
         self.text_label.set_max_width_chars(letters_per_line)
 
-
-        #self.tag_label.
-
         self.title_label = Granite.HeaderLabel()
         self.tag_label = Gtk.Label()
         self.name_label = Gtk.Label()
+
+        self.tag_label.get_style_context().add_class("tag-text")
 
         self.text_label.set_selectable(True)
         self.title_label.set_selectable(True)
@@ -49,15 +48,10 @@ class SearchResultView(Gtk.Grid):
         self.title_label.set_text(zettel.title)
         self.name_label.set_text(zettel.file_name)
 
-
-        tag_text = __style_tags__(" ".join(zettel.tags)) ##Unschön: Vermischung von Code und Stil
+        tag_text = " ".join(zettel.tags)
         self.tag_label.set_markup(tag_text)
         
         self.text_label.set_text(zettel.text)
 
-
     def get_zettel(self):
         return self._zettel
-
-def __style_tags__(text):
-    return '<span fgcolor="#f37329" font_weight="bold">' + text + '</span>'
