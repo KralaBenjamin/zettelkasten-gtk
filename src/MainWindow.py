@@ -67,7 +67,6 @@ class MainWindow(Gtk.Window):
         def on_clicked_create_new_zettel_button(button):
             create_window = ZettelWindow(self.zdata)
             create_window.show_all()
-            create_window.connect("destroy", Gtk.close)
         return on_clicked_create_new_zettel_button
 
 
