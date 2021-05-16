@@ -48,5 +48,12 @@ def extract_section(text, section, return_list = True):
     else:
         return "\n".join(section_lines)
 
+class ZettelSortMethods:
+    @staticmethod
+    def zettel_date (zettel):
+        zettel_date = zettel.file_name[:-3]
+        return int(zettel_date)
+
+
 
 

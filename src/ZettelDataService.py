@@ -1,7 +1,7 @@
 
 import os
 import sys
-from Zettel import Zettel
+from Zettel import Zettel, ZettelSortMethods
 from datetime import datetime
 
 
@@ -30,14 +30,14 @@ class ZettelDataService:
     def reload(self):
         self.__init__(self.uri_zettels)
 
-
-
-    def search(self, search_term):
-        return [zettel
+    def search(self, search_term,
+               sort_key=ZettelSortMethods.zettel_date):
+        result_list = [zettel
             for zettel in self.list
             if search_term.lower()
             in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
         ]
+        return sorted(result_list, key=sort_key)
 
     def add_zettel_on_uri(self, text):
         ## TODO: falls erledigt, füge Datei der Datenbank hinzu
@@ -59,5 +59,8 @@ class ZettelDataService:
         with open(f"{self.uri_zettels}/{new_file_name}", "w+") as f:
             f.write(text)
 
-                    
-
+class sort_zettel:
+    @staticmethod
+    def zettel_date (zettel):
+        zettel_date = zettel.file_name[:-2]
+        return int(zettel_date)
