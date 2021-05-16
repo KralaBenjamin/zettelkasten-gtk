@@ -5,7 +5,6 @@ from gi.repository import Granite
 class SearchContainer(Gtk.Box):
     def __init__(self) -> None: 
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        #self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.sw = Gtk.ScrolledWindow()
 
         self.search_view = SearchListView()
