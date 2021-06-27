@@ -5,17 +5,28 @@ from gi.repository import Granite
 class SearchContainer(Gtk.Box):
     def __init__(self) -> None: 
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        self.create_layout()
+
+        self.search_button.set_label("Suchen")
+        self.search_entry.set_text("gesellschaft")
+
+
+    def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
 
         self.search_view = SearchListView()
 
         search_box = Gtk.Box(spacing=6)
+        glued_search_elements = Gtk.Box()
 
         self.search_button = Gtk.Button()
-        self.search_button.set_label("Suchen")
+        self.search_button.get_style_context().add_class("zk-search-bar")
+        self.search_entry = Gtk.SearchEntry()
+        self.search_entry.get_style_context().add_class("zk-search-bar")
 
-        self.search_entry = Gtk.Entry()
-        self.search_entry.set_text("gesellschaft")
+        search_box.pack_start(self.search_entry, True, True, 0)
+        search_box.pack_start(self.search_button, False, False, 0)
 
         search_box.pack_start(self.search_entry, True, True, 0)
         search_box.pack_start(self.search_button, False, False, 0)
