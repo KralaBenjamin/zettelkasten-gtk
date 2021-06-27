@@ -42,7 +42,6 @@ class ZettelWindow(Gtk.Window):
 
         self.set_default_size(500, 500)
 
-
     def save_button_click_factory(self):
         def on_save_button(button):
             self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)

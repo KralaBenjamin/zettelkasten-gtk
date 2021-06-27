@@ -33,7 +33,6 @@ class SearchResultView(Gtk.Grid):
         self.tag_label.set_selectable(True)
         self.name_label.set_selectable(True)
 
-
         self.attach(self.title_label, 0, 0, 1, 1)
         self.attach_next_to(self.name_label, self.title_label,
                              Gtk.PositionType.RIGHT, 1, 1)
@@ -41,7 +40,6 @@ class SearchResultView(Gtk.Grid):
                         Gtk.PositionType.BOTTOM, 1, 1)
         self.attach_next_to(self.text_label, self.tag_label,
                         Gtk.PositionType.BOTTOM, 1, 1)
-
 
     def set_zettel(self, zettel):
 

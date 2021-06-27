@@ -8,7 +8,6 @@ class SearchContainer(Gtk.Box):
         self.create_layout()
 
         self.search_button.set_label("Suchen")
-        self.search_entry.set_text("gesellschaft")
 
         self.search_order_combo_box.append("Test 1", "Test 1")
         self.search_order_combo_box.append("Test 2", "Test 2")
@@ -26,8 +25,11 @@ class SearchContainer(Gtk.Box):
 
         self.search_button = Gtk.Button()
         self.search_button.get_style_context().add_class("zk-search-bar")
+
+        ## TODO: search_changed Ereignis einprogrammieren
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
+        self.search_entry.set_placeholder_text("Suche Zettel")
 
         glued_search_elements.pack_start(self.search_entry, True, True, 0)
         glued_search_elements.pack_start(self.search_button, False, False, 0)
