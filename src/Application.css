@@ -15,5 +15,8 @@ textview.text-editor text {
 
 box.zk-search-bar {
 	margin: 3px;
+}
 
+combobox.zk-search-bar {
+	margin: 3px;
 }

@@ -11,11 +11,17 @@ class SearchContainer(Gtk.Box):
         self.search_button.set_label("Suchen")
         self.search_entry.set_text("gesellschaft")
 
+        self.search_order_combo_box.append("Test 1", "Test 1")
+        self.search_order_combo_box.append("Test 2", "Test 2")
+        self.search_order_combo_box.set_active(0)
+
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
         self.search_view = SearchListView()
 
         search_box = Gtk.Box(spacing=6)
+        search_box.get_style_context().add_class("zk-search-bar")
+
         glued_search_elements = Gtk.Box()
         glued_search_elements.get_style_context().add_class("zk-search-bar")
 
@@ -28,7 +34,11 @@ class SearchContainer(Gtk.Box):
         glued_search_elements.pack_start(self.search_button, False, False, 0)
         glued_search_elements.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
 
+        self.search_order_combo_box = Gtk.ComboBoxText()
+        self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
+
         search_box.pack_start(glued_search_elements, True, True, 0)
+        search_box.pack_start(self.search_order_combo_box, False, False, 0)
 
         self.pack_start(search_box, False, False, 0)
         self.pack_start(self.sw, True, True, 0)
