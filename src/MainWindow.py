@@ -3,7 +3,6 @@ from gi.repository import Granite
 from SearchContainer import SearchContainer
 from SearchResultView import SearchResultView
 from ZettelWindow import ZettelWindow
-from Theme import get_css_file
 
 
 

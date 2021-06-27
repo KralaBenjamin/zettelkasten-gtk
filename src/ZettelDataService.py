@@ -1,6 +1,5 @@
 
 import os
-import sys
 from Zettel import Zettel, ZettelSortMethods
 from datetime import datetime
 
@@ -40,7 +39,6 @@ class ZettelDataService:
         return sorted(result_list, key=sort_key)
 
     def add_zettel_on_uri(self, text):
-        ## TODO: falls erledigt, füge Datei der Datenbank hinzu
         now = datetime.now()
 
         dt_string = now.strftime("%Y%m%d%H%M")

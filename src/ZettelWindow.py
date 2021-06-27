@@ -1,9 +1,4 @@
 from gi.repository import Gtk
-from gi.repository import Gio
-
-
-from ZettelDataService import ZettelDataService
-
 
 
 class ZettelWindow(Gtk.Window):
@@ -13,6 +8,18 @@ class ZettelWindow(Gtk.Window):
         self.title = title
 
         self.create_layout()
+
+        self.text_view.get_buffer().set_text(
+            """
+# Titel
+
+#schlagwort
+
+## Text
+
+## Quelle
+## Links"""
+        )
         self.header_bar_button.connect("clicked", self.save_button_click_factory())
 
     def create_layout (self):
@@ -30,17 +37,6 @@ class ZettelWindow(Gtk.Window):
 
         self.header_bar.pack_start(self.header_bar_button)
 
-        self.text_view.get_buffer().set_text(
-            """
-# Titel
-
-#schlagwort
-
-## Text
-
-## Quelle
-## Links"""
-        )
         self.sw.add_with_viewport(self.text_view)
         self.add(self.sw)
 
@@ -48,7 +44,6 @@ class ZettelWindow(Gtk.Window):
 
 
     def save_button_click_factory(self):
-
         def on_save_button(button):
             self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
             self.zdata.reload()
@@ -56,19 +51,6 @@ class ZettelWindow(Gtk.Window):
 
         return on_save_button
 
-
-
-
-if __name__ == "__main__":
-
-    zuri = "/home/snowparrot/Dokumente/gtk-Zettelkasten/testdata/"
-    zlist = ZettelDataService(zuri)
-
-    win = ZettelWindow(zlist)
-    win.connect("destroy", Gtk.main_quit)
-    win.show_all()
-
-    Gtk.main()
 
 
 
