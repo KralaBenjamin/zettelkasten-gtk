@@ -13,7 +13,7 @@ textview.text-editor text {
 	color: #586e75;
 }
 
-.zk-search-bar {
-	margin: 3px
-}
+box.zk-search-bar {
+	margin: 3px;
 
+}

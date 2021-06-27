@@ -11,25 +11,24 @@ class SearchContainer(Gtk.Box):
         self.search_button.set_label("Suchen")
         self.search_entry.set_text("gesellschaft")
 
-
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
-
         self.search_view = SearchListView()
 
         search_box = Gtk.Box(spacing=6)
         glued_search_elements = Gtk.Box()
+        glued_search_elements.get_style_context().add_class("zk-search-bar")
 
         self.search_button = Gtk.Button()
         self.search_button.get_style_context().add_class("zk-search-bar")
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
 
-        search_box.pack_start(self.search_entry, True, True, 0)
-        search_box.pack_start(self.search_button, False, False, 0)
+        glued_search_elements.pack_start(self.search_entry, True, True, 0)
+        glued_search_elements.pack_start(self.search_button, False, False, 0)
+        glued_search_elements.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
 
-        search_box.pack_start(self.search_entry, True, True, 0)
-        search_box.pack_start(self.search_button, False, False, 0)
+        search_box.pack_start(glued_search_elements, True, True, 0)
 
         self.pack_start(search_box, False, False, 0)
         self.pack_start(self.sw, True, True, 0)
@@ -39,16 +38,11 @@ class SearchContainer(Gtk.Box):
     def add_view_into_search_view(self, view):
         self.search_view.add_view(view)
 
- 
-
     def clear_search_view(self):
         self.sw.remove(self.sw.get_child())
         self.search_view = SearchListView()
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
-
-
-        
 
 
 class SearchListView(Gtk.Box):

@@ -28,10 +28,7 @@ class ZettelWindow(Gtk.Window):
         self.header_bar.props.title = self.title
         self.set_titlebar(self.header_bar)
 
-
-
         self.header_bar.pack_start(self.header_bar_button)
-
 
         self.text_view.get_buffer().set_text(
             """
