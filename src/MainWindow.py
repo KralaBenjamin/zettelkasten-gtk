@@ -15,9 +15,9 @@ class MainWindow(Gtk.Window):
         self.create_layout()
 
         self.connect("destroy", Gtk.main_quit)
-        self.sc.search_button.connect("clicked", self.on_search_button_factory())
+        self.sc.search_button.connect("clicked", self.on_search_button)
         self.create_new_zettel_button.connect("clicked", 
-                self.on_clicked_create_new_zettel_button_factory())
+                self.on_clicked_create_new_zettel_button)
 
     def create_layout(self):
         self.header_bar = Gtk.HeaderBar()
@@ -35,38 +35,34 @@ class MainWindow(Gtk.Window):
         self.sc = SearchContainer()
         self.add(self.sc)
 
-    def on_search_button_factory(self):
-        def on_search_button(button):
-            ## Todo: Suchtreffer markieren
-            ## Todo: Ordnung der Ergebnisse verbessern
+    def on_search_button(self, button):
+        ## Todo: Suchtreffer markieren
+        ## Todo: Ordnung der Ergebnisse verbessern
 
-            self.sc.clear_search_view()
+        self.sc.clear_search_view()
 
-            search_term = self.sc.search_entry.get_text()
-            results = self.zdata.search(search_term)
-            
-            if len(results) == 0:
-                search_label = \
-                    Gtk.Label(label=f"{search_term} hat keine Suchtreffer ergeben")
-            else: 
-                search_label = \
-                    Gtk.Label(label=f"Suche: {search_term} ergab {len(results)} Suchergebnisse")
-            
-            self.sc.add_view_into_search_view(search_label)
-            search_label.show()
+        search_term = self.sc.search_entry.get_text()
+        results = self.zdata.search(search_term)
 
-            for result in results:
-                new_zettel_view = SearchResultView(result)
-                new_zettel_view.set_halign(Gtk.Align.CENTER)
-                self.sc.add_view_into_search_view(new_zettel_view)
-                new_zettel_view.show()
-        return on_search_button
+        if len(results) == 0:
+            search_label = \
+                Gtk.Label(label=f"{search_term} hat keine Suchtreffer ergeben")
+        else:
+            search_label = \
+                Gtk.Label(label=f"Suche: {search_term} ergab {len(results)} Suchergebnisse")
 
-    def on_clicked_create_new_zettel_button_factory(self):
-        def on_clicked_create_new_zettel_button(button):
-            create_window = ZettelWindow(self.zdata)
-            create_window.show_all()
-        return on_clicked_create_new_zettel_button
+        self.sc.add_view_into_search_view(search_label)
+        search_label.show()
+
+        for result in results:
+            new_zettel_view = SearchResultView(result)
+            new_zettel_view.set_halign(Gtk.Align.CENTER)
+            self.sc.add_view_into_search_view(new_zettel_view)
+            new_zettel_view.show()
+
+    def on_clicked_create_new_zettel_button(self, button):
+        create_window = ZettelWindow(self.zdata)
+        create_window.show_all()
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ class ZettelWindow(Gtk.Window):
 ## Quelle
 ## Links"""
         )
-        self.header_bar_button.connect("clicked", self.save_button_click_factory())
+        self.header_bar_button.connect("clicked", self.save_button_click)
 
     def create_layout (self):
         self.text_view = Gtk.TextView()
@@ -42,13 +42,11 @@ class ZettelWindow(Gtk.Window):
 
         self.set_default_size(500, 500)
 
-    def save_button_click_factory(self):
-        def on_save_button(button):
-            self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
-            self.zdata.reload()
-            self.close()
+    def on_save_button(self, button):
+        self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
+        self.zdata.reload()
+        self.close()
 
-        return on_save_button
 
 
 
