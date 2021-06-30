@@ -25,7 +25,8 @@ class SearchContainer(Gtk.Box):
         glued_search_elements.get_style_context().add_class("zk-search-bar")
 
         self.search_button = Gtk.Button()
-        #self.search_button.get_style_context().add_class("zk-search-bar")
+        self.hash_tag_button = Gtk.Button()
+
 
         ## TODO: search_changed Ereignis einprogrammieren
         self.search_entry = Gtk.SearchEntry()
@@ -34,17 +35,16 @@ class SearchContainer(Gtk.Box):
 
         glued_search_elements.pack_start(self.search_entry, True, True, 0)
         glued_search_elements.pack_start(self.search_button, False, False, 0)
+        glued_search_elements.pack_start(self.hash_tag_button, False, False, 0)
         glued_search_elements.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
 
         self.search_order_combo_box = Gtk.ComboBoxText()
         self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
 
-        self.hash_tag_button = Gtk.Button()
         self.hash_tag_button.get_style_context().add_class("zk-search-bar")
 
         search_box.pack_start(glued_search_elements, True, True, 0)
         search_box.pack_start(self.search_order_combo_box, False, False, 0)
-        search_box.pack_start(self.hash_tag_button, False, False, 0)
 
         self.pack_start(search_box, False, False, 0)
         self.pack_start(self.sw, True, True, 0)
