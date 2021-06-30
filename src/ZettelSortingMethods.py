@@ -41,3 +41,8 @@ list_all_sorting_methods = [
             "sorting-method": ZettelSortingMethods.sorted_zettel_name_z_to_a
         }
     ]
+
+dict_string_id_to_sorting_method = {
+    sorting_method['string-id']: sorting_method["sorting-method"]
+    for sorting_method in list_all_sorting_methods
+}

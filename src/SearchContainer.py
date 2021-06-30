@@ -1,4 +1,5 @@
 from gi.repository import Gtk
+from ZettelSortingMethods import list_all_sorting_methods
 
 
 class SearchContainer(Gtk.Box):
@@ -10,8 +11,10 @@ class SearchContainer(Gtk.Box):
         self.search_button.set_label("Volltext")
         self.hash_tag_button.set_label("Schlagwort")
 
-        self.search_order_combo_box.append("Test 1", "Test 1")
-        self.search_order_combo_box.append("Test 2", "Test 2")
+        for sorting_method_desc in list_all_sorting_methods:
+            self.search_order_combo_box.append(
+                sorting_method_desc["string-id"],
+                sorting_method_desc["display-string"])
         self.search_order_combo_box.set_active(0)
 
     def create_layout(self):
