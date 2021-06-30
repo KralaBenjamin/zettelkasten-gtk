@@ -1,8 +1,8 @@
 
 import os
-from Zettel import Zettel, ZettelSortMethods
+from Zettel import Zettel
 from datetime import datetime
-
+from ZettelSortingMethods import ZettelSortingMethods
 
 
 class ZettelDataService:
@@ -30,7 +30,7 @@ class ZettelDataService:
         self.__init__(self.uri_zettels)
 
     def search(self, search_term,
-               sort_key=ZettelSortingMethods.zettel_date):
+               sort_key=ZettelSortingMethods.sort_zettel_date_old_to_last):
         result_list = [zettel
             for zettel in self.list
             if search_term.lower()
@@ -57,21 +57,5 @@ class ZettelDataService:
         with open(f"{self.uri_zettels}/{new_file_name}", "w+") as f:
             f.write(text)
 
-class ZettelSortingMethods:
-
-
-    @staticmethod
-    def sort_zettel_date_old_to_last(zettel):
-        zettel_date = zettel.file_name[:-2]
-        return int(zettel_date)
-
-    @staticmethod
-    def sort_zettel_date_last_to_old (zettel):
-        zettel_date = zettel.file_name[:-2]
-        return -int(zettel_date)
-
-    @staticmethod
-    def sort_zettel_name_a_to_z (zettel):
-        return zettel.title
 
 
