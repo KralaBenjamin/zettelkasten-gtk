@@ -7,8 +7,8 @@ class SearchContainer(Gtk.Box):
 
         self.create_layout()
 
-        self.search_button.set_label("Suchen")
-        self.hash_tag_button.set_label("#")
+        self.search_button.set_label("Volltext")
+        self.hash_tag_button.set_label("Schlagwort")
 
         self.search_order_combo_box.append("Test 1", "Test 1")
         self.search_order_combo_box.append("Test 2", "Test 2")

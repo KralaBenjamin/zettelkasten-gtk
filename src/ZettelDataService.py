@@ -30,13 +30,13 @@ class ZettelDataService:
         self.__init__(self.uri_zettels)
 
     def search(self, search_term,
-               sort_key=ZettelSortingMethods.sort_zettel_date_old_to_last):
+               sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
         result_list = [zettel
             for zettel in self.list
             if search_term.lower()
             in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
         ]
-        return sorted(result_list, key=sort_key)
+        return sorting_method(result_list)
 
     def add_zettel_on_uri(self, text):
         now = datetime.now()

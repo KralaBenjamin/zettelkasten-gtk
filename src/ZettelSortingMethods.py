@@ -1,19 +1,27 @@
 class ZettelSortingMethods:
-    dict_string_id_to_method = list()
 
     @staticmethod
-    def sort_zettel_date_old_to_last(zettel):
-        zettel_date = zettel.file_name[:-3]
-        return int(zettel_date)
+    def sorted_zettel_date_old_to_last(zettel_list):
+        return sorted(zettel_list,
+                      key=lambda zettel: int(zettel.file_name[:-3]))
 
     @staticmethod
-    def sort_zettel_date_last_to_old (zettel):
-        zettel_date = zettel.file_name[:-3]
-        return -int(zettel_date)
+    def sorted_zettel_date_last_to_old(zettel_list):
+        return sorted(zettel_list,
+                      key=lambda zettel: int(zettel.file_name[:-3]),
+                      reverse=True)
 
     @staticmethod
-    def sort_zettel_name_a_to_z (zettel):
-        return zettel.title
+    def sorted_zettel_name_a_to_z (zettel_list):
+        return sorted(zettel_list,
+              key=lambda zettel: zettel.title)
+
+    @staticmethod
+    def sorted_zettel_name_z_to_a (zettel_list):
+        return sorted(zettel_list,
+              key=lambda zettel: zettel.title,
+                      reverse=True)
+
 
     list_all_sorting_methods = [
         {
