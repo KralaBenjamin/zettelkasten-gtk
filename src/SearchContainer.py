@@ -1,10 +1,12 @@
 from gi.repository import Gtk
 from ZettelSortingMethods import list_all_sorting_methods
+from SearchResultView import SearchResultView
 
 
 class SearchContainer(Gtk.Box):
-    def __init__(self) -> None: 
+    def __init__(self, zdata) -> None:
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.zdata = zdata
 
         self.create_layout()
 
@@ -17,6 +19,7 @@ class SearchContainer(Gtk.Box):
                 sorting_method_desc["display-string"])
         self.search_order_combo_box.set_active(0)
 
+        self.search_button.connect("clicked", self.on_search_button)
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
         self.search_view = SearchListView()
@@ -62,6 +65,32 @@ class SearchContainer(Gtk.Box):
         self.search_view = SearchListView()
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
+
+    def on_search_button(self, button):
+        ## Todo: Suchtreffer markieren
+        ## Todo: Ordnung der Ergebnisse verbessern
+        ## Todo: in SearchContainer fügen
+
+        self.clear_search_view()
+
+        search_term = self.search_entry.get_text()
+        results = self.zdata.search(search_term)
+
+        if len(results) == 0:
+            search_label = \
+                Gtk.Label(label=f"{search_term} hat keine Suchtreffer ergeben")
+        else:
+            search_label = \
+                Gtk.Label(label=f"Suche: {search_term} ergab {len(results)} Suchergebnisse")
+
+        self.add_view_into_search_view(search_label)
+        search_label.show()
+
+        for result in results:
+            new_zettel_view = SearchResultView(result)
+            new_zettel_view.set_halign(Gtk.Align.CENTER)
+            self.add_view_into_search_view(new_zettel_view)
+            new_zettel_view.show()
 
 
 class SearchListView(Gtk.Box):

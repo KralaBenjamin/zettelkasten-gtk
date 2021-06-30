@@ -15,8 +15,7 @@ class MainWindow(Gtk.Window):
         self.create_layout()
 
         self.connect("destroy", Gtk.main_quit)
-        self.sc.search_button.connect("clicked", self.on_search_button)
-        self.create_new_zettel_button.connect("clicked", 
+        self.create_new_zettel_button.connect("clicked",
                 self.on_clicked_create_new_zettel_button)
 
     def create_layout(self):
@@ -32,34 +31,9 @@ class MainWindow(Gtk.Window):
 
         self.set_default_size(500, 500)
 
-        self.sc = SearchContainer()
+        self.sc = SearchContainer(self.zdata)
         self.add(self.sc)
 
-    def on_search_button(self, button):
-        ## Todo: Suchtreffer markieren
-        ## Todo: Ordnung der Ergebnisse verbessern
-        ## Todo: in SearchContainer fügen
-
-        self.sc.clear_search_view()
-
-        search_term = self.sc.search_entry.get_text()
-        results = self.zdata.search(search_term)
-
-        if len(results) == 0:
-            search_label = \
-                Gtk.Label(label=f"{search_term} hat keine Suchtreffer ergeben")
-        else:
-            search_label = \
-                Gtk.Label(label=f"Suche: {search_term} ergab {len(results)} Suchergebnisse")
-
-        self.sc.add_view_into_search_view(search_label)
-        search_label.show()
-
-        for result in results:
-            new_zettel_view = SearchResultView(result)
-            new_zettel_view.set_halign(Gtk.Align.CENTER)
-            self.sc.add_view_into_search_view(new_zettel_view)
-            new_zettel_view.show()
 
     def on_clicked_create_new_zettel_button(self, button):
         create_window = ZettelWindow(self.zdata)
