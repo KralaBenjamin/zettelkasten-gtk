@@ -1,5 +1,6 @@
 from gi.repository import Gtk
-from ZettelSortingMethods import list_all_sorting_methods
+from ZettelSortingMethods import list_all_sorting_methods,\
+    dict_string_id_to_sorting_method
 from SearchResultView import SearchResultView
 
 
@@ -11,7 +12,7 @@ class SearchContainer(Gtk.Box):
         self.create_layout()
 
         self.search_button.set_label("Volltext")
-        self.hash_tag_button.set_label("Schlagwort")
+        self.split_word_search_button.set_label("Einzelwortsuche")
 
         for sorting_method_desc in list_all_sorting_methods:
             self.search_order_combo_box.append(
@@ -19,7 +20,10 @@ class SearchContainer(Gtk.Box):
                 sorting_method_desc["display-string"])
         self.search_order_combo_box.set_active(0)
 
-        self.search_button.connect("clicked", self.on_search_button)
+        self.search_button.connect("clicked",
+                                   self.on_search_button_fulltext)
+        self.split_word_search_button.connect("clicked",
+                                              self.on_search_button_split_words)
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
         self.search_view = SearchListView()
@@ -31,23 +35,21 @@ class SearchContainer(Gtk.Box):
         glued_search_elements.get_style_context().add_class("zk-search-bar")
 
         self.search_button = Gtk.Button()
-        self.hash_tag_button = Gtk.Button()
+        self.split_word_search_button = Gtk.Button()
 
-
-        ## TODO: search_changed Ereignis einprogrammieren
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
         self.search_entry.set_placeholder_text("Suche Zettel")
 
         glued_search_elements.pack_start(self.search_entry, True, True, 0)
+        glued_search_elements.pack_start(self.split_word_search_button, False, False, 0)
         glued_search_elements.pack_start(self.search_button, False, False, 0)
-        glued_search_elements.pack_start(self.hash_tag_button, False, False, 0)
         glued_search_elements.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
 
         self.search_order_combo_box = Gtk.ComboBoxText()
         self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
 
-        self.hash_tag_button.get_style_context().add_class("zk-search-bar")
+        self.split_word_search_button.get_style_context().add_class("zk-search-bar")
 
         search_box.pack_start(glued_search_elements, True, True, 0)
         search_box.pack_start(self.search_order_combo_box, False, False, 0)
@@ -66,16 +68,7 @@ class SearchContainer(Gtk.Box):
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
 
-    def on_search_button(self, button):
-        ## Todo: Suchtreffer markieren
-        ## Todo: Ordnung der Ergebnisse verbessern
-        ## Todo: in SearchContainer fügen
-
-        self.clear_search_view()
-
-        search_term = self.search_entry.get_text()
-        results = self.zdata.search(search_term)
-
+    def show_result(self, results, search_term):
         if len(results) == 0:
             search_label = \
                 Gtk.Label(label=f"{search_term} hat keine Suchtreffer ergeben")
@@ -91,6 +84,35 @@ class SearchContainer(Gtk.Box):
             new_zettel_view.set_halign(Gtk.Align.CENTER)
             self.add_view_into_search_view(new_zettel_view)
             new_zettel_view.show()
+
+
+    def on_search_button_split_words(self, button):
+
+        self.clear_search_view()
+
+        search_term = self.search_entry.get_text()
+        #sorting_method_id = self.search_order_combo_box.get_active_text()
+        #print(sorting_method_id)
+        #sorting_method = dict_string_id_to_sorting_method[sorting_method_id]
+
+        results = self.zdata.search_split_words(search_term)
+
+        self.show_result(results, search_term)
+
+    def on_search_button_fulltext(self, button):
+        ## Todo: Suchtreffer markieren
+        ## Todo: Ordnung der Ergebnisse verbessern
+
+        self.clear_search_view()
+
+        search_term = self.search_entry.get_text()
+        #sorting_method_id = self.search_order_combo_box.get_active_text()
+        #print(sorting_method_id)
+        #sorting_method = dict_string_id_to_sorting_method[sorting_method_id]
+
+        results = self.zdata.search_fulltext(search_term)
+
+        self.show_result(results, search_term)
 
 
 class SearchListView(Gtk.Box):

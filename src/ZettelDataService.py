@@ -29,8 +29,27 @@ class ZettelDataService:
     def reload(self):
         self.__init__(self.uri_zettels)
 
-    def search(self, search_term,
-               sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
+    def search_split_words(self, search_term,
+                        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
+
+        search_terms = search_term.split()
+
+        result_list = [zettel
+            for zettel in self.list
+            if search_terms[0].lower()
+            in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
+        ]
+
+        for term in search_terms[1:]:
+            result_list = [zettel
+                for zettel in result_list
+                if term.lower()
+                in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
+            ]
+        return sorting_method(result_list)
+
+    def search_fulltext(self, search_term,
+                        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
         result_list = [zettel
             for zettel in self.list
             if search_term.lower()
