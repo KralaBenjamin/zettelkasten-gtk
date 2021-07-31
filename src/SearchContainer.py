@@ -24,6 +24,8 @@ class SearchContainer(Gtk.Box):
                                    self.on_search_button_fulltext)
         self.split_word_search_button.connect("clicked",
                                               self.on_search_button_split_words)
+        self.search_order_combo_box.connect("changed",
+                                            self.on_combobox_changed)
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
         self.search_view = SearchListView()
@@ -88,6 +90,8 @@ class SearchContainer(Gtk.Box):
 
     def on_search_button_split_words(self, button):
 
+        self.last_search = "split_words"
+
         self.clear_search_view()
 
         search_term = self.search_entry.get_text()
@@ -102,6 +106,8 @@ class SearchContainer(Gtk.Box):
     def on_search_button_fulltext(self, button):
         ## Todo: Suchtreffer markieren
 
+        self.last_search = "fulltext"
+
         self.clear_search_view()
 
         search_term = self.search_entry.get_text()
@@ -114,6 +120,11 @@ class SearchContainer(Gtk.Box):
 
         self.show_result(results, search_term)
 
+    def on_combobox_changed(self, combobox):
+        if self.last_search == "fulltext":
+            self.on_search_button_fulltext(None)
+        if self.last_search == "split_words":
+            self.on_search_button_split_words(None)
 
 class SearchListView(Gtk.Box):
     def __init__(self) -> None:
