@@ -1,6 +1,6 @@
 from gi.repository import Gtk
 from ZettelSortingMethods import list_all_sorting_methods,\
-    dict_string_id_to_sorting_method
+    dict_id_to_sorting_method
 from SearchResultView import SearchResultView
 
 
@@ -15,8 +15,8 @@ class SearchContainer(Gtk.Box):
         self.split_word_search_button.set_label("Einzelwortsuche")
 
         for sorting_method_desc in list_all_sorting_methods:
-            self.search_order_combo_box.append(
-                sorting_method_desc["string-id"],
+            self.search_order_combo_box.insert_text(
+                sorting_method_desc["int-id"],
                 sorting_method_desc["display-string"])
         self.search_order_combo_box.set_active(0)
 
@@ -91,26 +91,26 @@ class SearchContainer(Gtk.Box):
         self.clear_search_view()
 
         search_term = self.search_entry.get_text()
-        #sorting_method_id = self.search_order_combo_box.get_active_text()
-        #print(sorting_method_id)
-        #sorting_method = dict_string_id_to_sorting_method[sorting_method_id]
+        sorting_method_id = self.search_order_combo_box.get_active()
+        sorting_method = dict_id_to_sorting_method[sorting_method_id]
 
-        results = self.zdata.search_split_words(search_term)
+        results = self.zdata.search_split_words(search_term,
+                                                sorting_method=sorting_method)
 
         self.show_result(results, search_term)
 
     def on_search_button_fulltext(self, button):
         ## Todo: Suchtreffer markieren
-        ## Todo: Ordnung der Ergebnisse verbessern
 
         self.clear_search_view()
 
         search_term = self.search_entry.get_text()
-        #sorting_method_id = self.search_order_combo_box.get_active_text()
-        #print(sorting_method_id)
-        #sorting_method = dict_string_id_to_sorting_method[sorting_method_id]
+        sorting_method_id = self.search_order_combo_box.get_active()
+        sorting_method = dict_id_to_sorting_method[sorting_method_id]
 
-        results = self.zdata.search_fulltext(search_term)
+
+        results = self.zdata.search_fulltext(search_term,
+                                             sorting_method=sorting_method)
 
         self.show_result(results, search_term)
 
