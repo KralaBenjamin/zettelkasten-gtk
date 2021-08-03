@@ -176,6 +176,9 @@ class testZettel(unittest.TestCase):
         with self.assertRaises(Exception):
             extracted_title = Zettel.extract_title(test_string)
 
+    """
+    Test for working case
+    """
     def test_extract_section_positive_case(self):
         test_string = """
         # Text
@@ -197,6 +200,9 @@ class testZettel(unittest.TestCase):
         self.assertIn("üüüääää", extracted_section)
         self.assertEqual(len(extracted_section), 4)
 
+    """
+    checks if parsing throws exception for double existing sections
+    """
     def test_extract_section_double_sections(self):
         test_string = """
         # Text
@@ -215,7 +221,9 @@ class testZettel(unittest.TestCase):
         with self.assertRaises(Exception):
             Zettel.extract_section(test_string, "Tütel2")
 
-
+    """
+    checks if parsing throws exception for not existing section
+    """
     def test_extract_section_no_sections(self):
         test_string = """
         # Text

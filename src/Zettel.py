@@ -37,15 +37,25 @@ def extract_title(text):
 def extract_section(text, section, return_list = True):
     lines = text.split("\n")
     section_started = False
+    section_completed = False
     section_lines = list()
-    for line in lines:
+    for i, line in enumerate(lines):
+        line = line.strip()
         if len(line) > 0:
-            if not section_started and line.startswith(f"## {section}"):
+            if not section_started \
+                    and line.startswith(f"## {section}")\
+                    and not section_completed:
                 section_started = True
             elif section_started and line.startswith(f"## "):
-                break
+                section_completed = True
+                section_started = False
             elif section_started:
                 section_lines.append(line)
+
+            if line.startswith(f"## {section}")\
+                    and section_completed:
+                ## here we have a double section
+                raise ParseErrorException(line = i, exceptionSource="doubleSection")
     if return_list:
         return section_lines
     else:
@@ -57,8 +67,4 @@ class ParseErrorException(Exception):
     def __init__(self, line = -1, exceptionSource = ""):
         self.line = line
         self.exceptionSource = exceptionSource
-        super.__init__()
-
-
-
-
+        super().__init__(f"line {line}: {exceptionSource}")
