@@ -1,6 +1,5 @@
 import src.Zettel as Zettel
 import unittest
-import os
 
 
 class testZettel(unittest.TestCase):

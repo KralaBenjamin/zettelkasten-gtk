@@ -3,16 +3,21 @@ import re
 
 
 class Zettel:
-    def __init__(self, text = "", file_name = "") -> None:
+    def __init__(self, text = "",
+                 file_name = "",
+                 text_section_name = "Text",
+                 link_section_name = "Links",
+                 source_section_name = "Quelle") -> None:
+
         self.raw_text = text
         self.file_name = file_name
         self.tags = extract_tags(text)
         self.title = extract_title(text)
-        self.links = extract_section(text, "Links")
-        zettel_text = extract_section(text, "Text", return_list=False)
+        self.links = extract_section(text, link_section_name)
+        zettel_text = extract_section(text, text_section_name, return_list=False)
         self.text = zettel_text.replace("\n", " ")
 
-        self.quelle = extract_section(text, "Quelle", return_list=False) ## Todo: Configuration erstellen...
+        self.quelle = extract_section(text, source_section_name, return_list=False)
 
     
 
