@@ -1,7 +1,6 @@
 import re
 
 
-
 class Zettel:
     def __init__(self, text = "",
                  file_name = "",
@@ -19,8 +18,6 @@ class Zettel:
 
         self.quelle = extract_section(text, source_section_name, return_list=False)
 
-    
-
 
 def extract_tags(text):
     pat = re.compile("#\w+[\s+\n]") # Checks for hashtags like #example
@@ -29,11 +26,13 @@ def extract_tags(text):
 
     return tags
 
+
 def extract_title(text):
     lines = text.split("\n")
     for line in lines:
         if line.startswith("# "):
             return line[2:]
+
 
 def extract_section(text, section, return_list = True):
     lines = text.split("\n")
@@ -52,6 +51,13 @@ def extract_section(text, section, return_list = True):
     else:
         return "\n".join(section_lines)
 
+
+class ParseErrorException(Exception):
+
+    def __init__(self, line = -1, exceptionSource = ""):
+        self.line = line
+        self.exceptionSource = exceptionSource
+        super.__init__()
 
 
 
