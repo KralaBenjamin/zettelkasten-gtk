@@ -2,6 +2,9 @@ from gi.repository import Gtk
 
 
 class ZettelWindow(Gtk.Window):
+    ## Todo: Prüfen, ob es md syntaktisch korrekt sind
+    ## Todo: Event erstellen, dass ein neuer Zettel erstellt worden ist
+
     def __init__(self, zdata, title="Füge Zettel hinzu") -> None:
         super().__init__(title=title)
         self.zdata = zdata

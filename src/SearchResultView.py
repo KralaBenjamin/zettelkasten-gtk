@@ -4,7 +4,8 @@ from Zettel import Zettel
 
 
 class SearchResultView(Gtk.Grid):
-    def __init__(self, zettel=Zettel(), letters_per_line = 80):
+    def __init__(self, zettel=None, letters_per_line = 80):
+        ## Todo: Zettel als notwendiges Element machen
         super().__init__()
         self.letters_per_line = letters_per_line
 
@@ -42,6 +43,9 @@ class SearchResultView(Gtk.Grid):
                         Gtk.PositionType.BOTTOM, 1, 1)
 
     def set_zettel(self, zettel):
+
+        if zettel is None:
+            return
 
         self._zettel = zettel
 

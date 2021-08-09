@@ -7,7 +7,6 @@ class Zettel:
                  text_section_name = "Text",
                  link_section_name = "Links",
                  source_section_name = "Quelle") -> None:
-
         self.raw_text = text
         self.file_name = file_name
         self.tags = extract_tags(text)
@@ -38,6 +37,7 @@ def extract_section(text, section, return_list = True):
     lines = text.split("\n")
     section_started = False
     section_completed = False
+    section_found = False
     section_lines = list()
     for i, line in enumerate(lines):
         line = line.strip()
@@ -46,16 +46,22 @@ def extract_section(text, section, return_list = True):
                     and line.startswith(f"## {section}")\
                     and not section_completed:
                 section_started = True
+                section_found = True
             elif section_started and line.startswith(f"## "):
                 section_completed = True
                 section_started = False
             elif section_started:
                 section_lines.append(line)
-
             if line.startswith(f"## {section}")\
                     and section_completed:
                 ## here we have a double section
                 raise ParseErrorException(line = i, exceptionSource="doubleSection")
+    if not section_found:
+        raise ParseErrorException(exceptionSource="noSectionFound",
+                                  text=f"""
+section:{section}
+{text}
+""")
     if return_list:
         return section_lines
     else:
@@ -64,7 +70,10 @@ def extract_section(text, section, return_list = True):
 
 class ParseErrorException(Exception):
 
-    def __init__(self, line = -1, exceptionSource = ""):
+    def __init__(self, line = -1,
+                 exceptionSource = "",
+                 text=""):
         self.line = line
         self.exceptionSource = exceptionSource
-        super().__init__(f"line {line}: {exceptionSource}")
+        self.text = text
+        super().__init__(f"line {line}: {exceptionSource} \n {text}")

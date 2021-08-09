@@ -11,7 +11,6 @@ class ZettelDataService:
 
         self.uri_zettels = uri_zettels
         file_list = [file for file in os.listdir(uri_zettels) if file.endswith(".md")]
-
         text_list = list()
 
         for file_name in file_list:
@@ -32,7 +31,11 @@ class ZettelDataService:
     def search_split_words(self, search_term,
                         sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
 
-        search_terms = search_term.split()
+        if len(search_term) > 0:
+            search_terms = search_term.split()
+        else:
+            search_terms = list()
+            search_terms.append("")
 
         result_list = [zettel
             for zettel in self.list
