@@ -19,9 +19,10 @@ class Zettel:
 
 
 def extract_tags(text):
-    #checks that no letter and no hashtag comes before
+    #checks that no letter and no hashtag comes before and after e.g #aue#uaioe
+    # so all hashtags are seperated by blank spaces
     # tags have the structure hashtag letter
-    pat = re.compile("(?<![\w#])#\w+")
+    pat = re.compile("(?<![\w#])#\w+(?![\w#])")
 
     tags = re.findall(pat, text)
 
