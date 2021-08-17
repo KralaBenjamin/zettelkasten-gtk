@@ -189,6 +189,8 @@ class testZettel(unittest.TestCase):
         2
         üüüääää
         
+        ## Tütel3
+        
         #### Linksuaeiu
         1324.md
         
@@ -198,7 +200,7 @@ class testZettel(unittest.TestCase):
         self.assertIn("1", extracted_section)
         self.assertIn("2", extracted_section)
         self.assertIn("üüüääää", extracted_section)
-        self.assertEqual(len(extracted_section), 4)
+        self.assertEqual(len(extracted_section), 3)
 
     """
     checks if parsing throws exception for double existing sections

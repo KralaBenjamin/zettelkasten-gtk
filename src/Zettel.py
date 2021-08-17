@@ -19,9 +19,11 @@ class Zettel:
 
 
 def extract_tags(text):
-    pat = re.compile("#\w+[\s+\n]") # Checks for hashtags like #example
+    #checks that no letter and no hashtag comes before
+    # tags have the structure hashtag letter
+    pat = re.compile("(?<![\w#])#\w+")
+
     tags = re.findall(pat, text)
-    tags = [tag[:-1] for tag in tags]
 
     return tags
 
@@ -34,7 +36,7 @@ def extract_title(text):
 
 
 def extract_section(text, section, return_list = True):
-    lines = text.split("\n")
+    lines = text.splitlines()
     section_started = False
     section_completed = False
     section_found = False
