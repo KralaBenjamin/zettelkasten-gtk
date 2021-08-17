@@ -31,9 +31,20 @@ def extract_tags(text):
 
 def extract_title(text):
     lines = text.split("\n")
-    for line in lines:
-        if line.startswith("# "):
-            return line[2:]
+    found_title = False
+    title = ""
+    for n_line, line in enumerate(lines):
+        if found_title and line.startswith("# "):
+             raise ParseErrorException(line=n_line,
+                                       exceptionSource="DoubleTitle",
+                                       text=text)
+        if not found_title and line.startswith("# "):
+            found_title = True
+            title = line[2:]
+    if found_title:
+        return title
+    else:
+        raise ParseErrorException(exceptionSource="NoTitleFound")
 
 
 def extract_section(text, section, return_list = True):

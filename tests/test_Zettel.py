@@ -27,8 +27,8 @@ class testZettel(unittest.TestCase):
         """
 
         extracted_tags = Zettel.extract_tags(test_string)
-        self.assertIn("test1", extracted_tags)
-        self.assertIn("üüüber", extracted_tags)
+        self.assertIn("#test1", extracted_tags)
+        self.assertIn("#üüüber", extracted_tags)
         self.assertEqual(len(extracted_tags), 2)
     """
     Test for invalid tags
