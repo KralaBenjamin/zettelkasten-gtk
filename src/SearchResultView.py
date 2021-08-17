@@ -1,6 +1,5 @@
 from gi.repository import Gtk
 from gi.repository import Granite
-from Zettel import Zettel
 
 
 class SearchResultView(Gtk.Grid):

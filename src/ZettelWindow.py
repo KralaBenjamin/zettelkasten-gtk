@@ -25,7 +25,7 @@ class ZettelWindow(Gtk.Window):
         )
         self.header_bar_button.connect("clicked", self.on_clicked_save_button)
 
-    def create_layout (self):
+    def create_layout(self):
         self.text_view = Gtk.TextView()
         self.text_view.get_style_context().add_class("text-editor")
 
@@ -45,7 +45,7 @@ class ZettelWindow(Gtk.Window):
 
         self.set_default_size(500, 500)
 
-    def on_clicked_save_button(self, button):
+    def on_clicked_save_button(self, _):
         self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
         self.zdata.reload()
         self.close()

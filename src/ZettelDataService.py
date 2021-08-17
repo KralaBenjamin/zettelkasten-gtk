@@ -21,8 +21,8 @@ class ZettelDataService:
                     "file_name": file_name
                 })
 
-        self.list = [ Zettel(**element)
-            for element in text_list
+        self.list = [Zettel(**element)
+                    for element in text_list
         ]
 
     def reload(self):
@@ -40,14 +40,14 @@ class ZettelDataService:
         result_list = [zettel
             for zettel in self.list
             if search_terms[0].lower()
-            in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
+            in (zettel.raw_text.lower() + f" {zettel.file_name}")
         ]
 
         for term in search_terms[1:]:
             result_list = [zettel
                 for zettel in result_list
                 if term.lower()
-                in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
+                in (zettel.raw_text.lower() + f" {zettel.file_name}")
             ]
         return sorting_method(result_list)
 
@@ -56,7 +56,7 @@ class ZettelDataService:
         result_list = [zettel
             for zettel in self.list
             if search_term.lower()
-            in ( zettel.raw_text.lower() + f" {zettel.file_name}" )
+            in (zettel.raw_text.lower() + f" {zettel.file_name}")
         ]
         return sorting_method(result_list)
 
@@ -69,7 +69,7 @@ class ZettelDataService:
             new_file_name = dt_string + ".md"
         else:
             new_file_counter = 0
-            while(True):
+            while True:
                 if not f'{dt_string}_{new_file_counter}.md' in file_list:
                     new_file_name = f'{dt_string}_{new_file_counter}.md'
                     break 
@@ -78,6 +78,3 @@ class ZettelDataService:
         
         with open(f"{self.uri_zettels}/{new_file_name}", "w+") as f:
             f.write(text)
-
-
-
