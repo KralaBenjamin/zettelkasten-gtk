@@ -62,19 +62,19 @@ class testZettel(unittest.TestCase):
     def test_extract_title_positive_case(self):
 
         test_string = """
-        # uaeuaejjjjjjjöööööyuae öäppeüäöp uaeuaeaueiuaei
-        #test1
-                
-        ## Text
+# uaeuaejjjjjjjöööööyuae öäppeüäöp uaeuaeaueiuaei
+#test1
         
-        uaeiu
-        
-        ### Quelle 
-        
-        ueai
-        
-        #### Links
-        1324.md
+## Text
+
+uaeiu
+
+### Quelle 
+
+ueai
+
+#### Links
+1324.md
         
         """
 
@@ -102,10 +102,8 @@ class testZettel(unittest.TestCase):
         1324.md
         
         """
-
-        extracted_title = Zettel.extract_title(test_string)
-
-        self.assertEqual(extracted_title, "")
+        with self.assertRaises(Exception):
+            extracted_title = Zettel.extract_title(test_string)
 
 
     """
