@@ -2,9 +2,7 @@ import src.Zettel as Zettel
 import unittest
 
 
-class testZettel(unittest.TestCase):
-
-
+class TestZettel(unittest.TestCase):
     """
     Test, if there are normal tags
     """
@@ -34,8 +32,6 @@ class testZettel(unittest.TestCase):
     Test for invalid tags
     """
     def test_extract_tags_negative_case(self):
-
-
         test_string = """
         # bulia
         #uae#auieaie ####uaeaiue # uaeuaieua
@@ -103,9 +99,7 @@ ueai
         
         """
         with self.assertRaises(Exception):
-            extracted_title = Zettel.extract_title(test_string)
-
-
+            _ = Zettel.extract_title(test_string)
     """
     Test for double title. must throw exception
     """
@@ -127,7 +121,7 @@ ueai
         
         """
         with self.assertRaises(Exception):
-            extracted_title = Zettel.extract_title(test_string)
+            _ = Zettel.extract_title(test_string)
 
     """
     Test if no title is given.
@@ -149,7 +143,7 @@ ueai
         
         """
         with self.assertRaises(Exception):
-            extracted_title = Zettel.extract_title(test_string)
+            _ = Zettel.extract_title(test_string)
 
     """
     Title must be in the beginning
@@ -172,7 +166,7 @@ ueai
         
         """
         with self.assertRaises(Exception):
-            extracted_title = Zettel.extract_title(test_string)
+            _ = Zettel.extract_title(test_string)
 
     """
     Test for working case
@@ -240,7 +234,6 @@ ueai
         with self.assertRaises(Exception):
             Zettel.extract_section(test_string, "Tütel2")
 
-
     def test_extract_section_no_content_section(self):
         test_string = """
         # Text
@@ -255,7 +248,6 @@ ueai
         extracted_section = Zettel.extract_section(test_string, "Tütel2")
         self.assertEqual(len(extracted_section), 0)
 
+
 if __name__ == '__main__':
     unittest.main()
-
-

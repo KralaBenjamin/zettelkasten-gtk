@@ -3,7 +3,7 @@ from gi.repository import Granite
 
 
 class SearchResultView(Gtk.Grid):
-    def __init__(self, zettel=None, letters_per_line = 80):
+    def __init__(self, zettel=None, letters_per_line=80):
         ## Todo: Zettel als notwendiges Element machen
         super().__init__()
         self.letters_per_line = letters_per_line

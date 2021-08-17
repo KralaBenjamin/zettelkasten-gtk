@@ -2,11 +2,11 @@ import re
 
 
 class Zettel:
-    def __init__(self, text = "",
-                 file_name = "",
-                 text_section_name = "Text",
-                 link_section_name = "Links",
-                 source_section_name = "Quelle") -> None:
+    def __init__(self, text="",
+                 file_name="",
+                 text_section_name="Text",
+                 link_section_name="Links",
+                 source_section_name="Quelle") -> None:
         self.raw_text = text
         self.file_name = file_name
         self.tags = extract_tags(text)
@@ -35,7 +35,7 @@ def extract_title(text):
     title = ""
     for n_line, line in enumerate(lines):
         if found_title and line.startswith("# "):
-             raise ParseErrorException(line=n_line,
+            raise ParseErrorException(line=n_line,
                                        exceptionSource="DoubleTitle",
                                        text=text)
         if not found_title and line.startswith("# "):
@@ -47,7 +47,7 @@ def extract_title(text):
         raise ParseErrorException(exceptionSource="NoTitleFound")
 
 
-def extract_section(text, section, return_list = True):
+def extract_section(text, section, return_list=True):
     lines = text.splitlines()
     section_started = False
     section_completed = False
@@ -69,7 +69,7 @@ def extract_section(text, section, return_list = True):
             if line.startswith(f"## {section}")\
                     and section_completed:
                 ## here we have a double section
-                raise ParseErrorException(line = i, exceptionSource="doubleSection")
+                raise ParseErrorException(line=i, exceptionSource="doubleSection")
     if not section_found:
         raise ParseErrorException(exceptionSource="noSectionFound",
                                   text=f"""
@@ -84,8 +84,8 @@ section:{section}
 
 class ParseErrorException(Exception):
 
-    def __init__(self, line = -1,
-                 exceptionSource = "",
+    def __init__(self, line=-1,
+                 exceptionSource="",
                  text=""):
         self.line = line
         self.exceptionSource = exceptionSource

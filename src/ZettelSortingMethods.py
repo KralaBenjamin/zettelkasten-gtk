@@ -3,17 +3,20 @@ class ZettelSortingMethods:
     def sorted_zettel_date_old_to_last(zettel_list):
         return sorted(zettel_list,
                       key=lambda zettel: int(zettel.file_name[:-3]))
+
     @staticmethod
     def sorted_zettel_date_last_to_old(zettel_list):
         return sorted(zettel_list,
                       key=lambda zettel: int(zettel.file_name[:-3]),
                       reverse=True)
+
     @staticmethod
-    def sorted_zettel_name_a_to_z (zettel_list):
+    def sorted_zettel_name_a_to_z(zettel_list):
         return sorted(zettel_list,
               key=lambda zettel: zettel.title)
+
     @staticmethod
-    def sorted_zettel_name_z_to_a (zettel_list):
+    def sorted_zettel_name_z_to_a(zettel_list):
         return sorted(zettel_list,
               key=lambda zettel: zettel.title,
                       reverse=True)

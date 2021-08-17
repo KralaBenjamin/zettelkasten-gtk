@@ -49,8 +49,3 @@ class ZettelWindow(Gtk.Window):
         self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
         self.zdata.reload()
         self.close()
-
-
-
-
-
