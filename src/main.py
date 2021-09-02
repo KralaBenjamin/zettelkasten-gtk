@@ -8,6 +8,8 @@ from MainWindow import MainWindow
 from Theme import get_css_file
 
 
+
+
 zuri = "/home/snowparrot/NextCloud/Zettelkasten"
 zData = ZettelDataService(zuri)
 
