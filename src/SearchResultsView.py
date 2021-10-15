@@ -18,6 +18,11 @@ class SearchResultsView(Gtk.Box):
         self.add_view(new_zettel_view)
         new_zettel_view.show()
 
+    def add_text(self, text):
+        new_label = Gtk.Label(label=text)
+        self.add_view(new_label)
+        new_label.show()
+
 
 class SearchResultView(Gtk.Grid):
     def __init__(self, zettel=None, letters_per_line=80):
