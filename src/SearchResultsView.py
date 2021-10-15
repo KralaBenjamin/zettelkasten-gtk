@@ -1,5 +1,4 @@
 from gi.repository import Gtk
-from gi.repository import Gtk
 from gi.repository import Granite
 from gi.repository import Gdk
 
@@ -14,7 +13,7 @@ class SearchResultsView(Gtk.Box):
 
     def add_zettel(self, zettel):
 
-        new_zettel_view = SearchResultView(zettel)
+        new_zettel_view = SearchResultView(zettel=zettel)
         new_zettel_view.set_halign(Gtk.Align.CENTER)
         self.add_view(new_zettel_view)
         new_zettel_view.show()

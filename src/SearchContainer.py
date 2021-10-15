@@ -1,7 +1,7 @@
 from gi.repository import Gtk
 from ZettelSortingMethods import list_all_sorting_methods,\
     dict_id_to_sorting_method
-from SearchResultView import SearchResultView
+from SearchResultsView import SearchResultsView
 
 
 class SearchContainer(Gtk.Box):
@@ -29,7 +29,7 @@ class SearchContainer(Gtk.Box):
 
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
-        self.search_view = SearchListView()
+        self.search_view = SearchResultsView()
 
         search_box = Gtk.Box(spacing=6)
         search_box.get_style_context().add_class("zk-search-bar")
@@ -67,7 +67,7 @@ class SearchContainer(Gtk.Box):
 
     def clear_search_view(self):
         self.sw.remove(self.sw.get_child())
-        self.search_view = SearchListView()
+        self.search_view = SearchResultsView()
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
 
@@ -83,10 +83,7 @@ class SearchContainer(Gtk.Box):
         search_label.show()
 
         for result in results:
-            new_zettel_view = SearchResultView(result)
-            new_zettel_view.set_halign(Gtk.Align.CENTER)
-            self.add_view_into_search_view(new_zettel_view)
-            new_zettel_view.show()
+            self.search_view.add_zettel(result)
 
     def on_search_button_split_words(self, _):
 
@@ -124,11 +121,3 @@ class SearchContainer(Gtk.Box):
             self.on_search_button_fulltext(None)
         if self.last_search == "split_words":
             self.on_search_button_split_words(None)
-
-
-class SearchListView(Gtk.Box):
-    def __init__(self) -> None:
-        super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
-    def add_view(self, view):
-        self.pack_start(view, True, True, 0)
