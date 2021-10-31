@@ -63,9 +63,9 @@ class SearchContainer(Gtk.Box):
         self.sw.add_with_viewport(self.search_view)
 
 
-    def clear_search_view(self):
+    def clear_search_view(self, zettels=None):
         self.sw.remove(self.sw.get_child())
-        self.search_view = SearchResultsView()
+        self.search_view = SearchResultsView(zettels=zettels)
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
 
@@ -77,10 +77,16 @@ class SearchContainer(Gtk.Box):
             search_label = \
                 f"Suche: {search_term} ergab {len(results)} Suchergebnisse"
 
-        self.search_view.add_text(search_label)
+        self.remove(self.search_view)
 
+
+        self.clear_search_view(zettels=results)
+        ##self.search_view = SearchResultsView(zettels=results)
+        self.search_view.add_text(search_label)
+        """
         for result in results:
             self.search_view.add_zettel(result)
+        """
 
     def on_search_button_split_words(self, _):
 
