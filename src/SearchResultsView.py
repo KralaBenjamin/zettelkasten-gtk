@@ -1,5 +1,4 @@
 from gi.repository import Gtk
-from gi.repository import Granite
 from gi.repository import Gdk
 
 
@@ -65,8 +64,9 @@ class ZettelContentView(Gtk.Box):
 
     def create_layout(self):
 
-        self.title_label = Granite.HeaderLabel()
+        self.title_label = Gtk.Label()
         self.title_label.set_halign(Gtk.Align.START)
+        self.title_label.get_style_context().add_class("zettel-heading")
 
         self.tag_label = Gtk.Label()
         self.tag_label.get_style_context().add_class("tag-text")
