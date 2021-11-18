@@ -1,5 +1,10 @@
+label.zettel-heading {
+    color: #5e5c64;
+    font-weight: bold;
+}
+
 label.tag-text {
-    color: #f37329;
+    color: #1c71d8;
     font-weight: bold;
 }
 

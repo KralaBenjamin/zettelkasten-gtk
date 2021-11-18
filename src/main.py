@@ -1,8 +1,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('Granite', '1.0')
-from gi.repository import Gtk, Gio, Gdk, Granite, GObject
+from gi.repository import Gtk, Gio, Gdk, GObject
 from ZettelDataService import ZettelDataService
 from MainWindow import MainWindow
 from Theme import get_css_file
