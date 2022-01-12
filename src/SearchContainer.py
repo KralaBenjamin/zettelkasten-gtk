@@ -11,9 +11,6 @@ class SearchContainer(Gtk.Box):
 
         self.create_layout()
 
-        self.search_button.set_label("Volltext")
-        self.split_word_search_button.set_label("Einzelwortsuche")
-
         for sorting_method_desc in list_all_sorting_methods:
             self.search_order_combo_box.insert_text(
                 sorting_method_desc["int-id"],
@@ -29,7 +26,7 @@ class SearchContainer(Gtk.Box):
 
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
-        self.search_view = SearchResultsView()
+        self.search_view = SearchResultsView(id2titel=self.zdata.id_to_name)
 
         search_box = Gtk.Box(spacing=6)
         search_box.get_style_context().add_class("zk-search-bar")
@@ -39,6 +36,8 @@ class SearchContainer(Gtk.Box):
 
         self.search_button = Gtk.Button()
         self.split_word_search_button = Gtk.Button()
+        self.search_button.set_label("Volltext")
+        self.split_word_search_button.set_label("Einzelwortsuche")
 
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
@@ -65,7 +64,8 @@ class SearchContainer(Gtk.Box):
 
     def clear_search_view(self, zettels=None):
         self.sw.remove(self.sw.get_child())
-        self.search_view = SearchResultsView(zettels=zettels)
+        self.search_view = SearchResultsView(zettels=zettels,
+                                             id2titel=self.zdata.id_to_name)
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
 
@@ -79,14 +79,8 @@ class SearchContainer(Gtk.Box):
 
         self.remove(self.search_view)
 
-
         self.clear_search_view(zettels=results)
-        ##self.search_view = SearchResultsView(zettels=results)
         self.search_view.add_text(search_label)
-        """
-        for result in results:
-            self.search_view.add_zettel(result)
-        """
 
     def on_search_button_split_words(self, _):
 
