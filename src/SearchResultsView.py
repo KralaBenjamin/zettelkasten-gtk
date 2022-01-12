@@ -25,6 +25,7 @@ class SearchResultsView(Gtk.Box):
                 ztcv = ZettelContentView(zettel, id2titel = self.id2titel)
 
                 fnv = FileNameView(zettel.file_name)
+                fnv.get_style_context().add_class("zettel-filenameview")
                 self.intern_grid.attach(ztcv, 0, current_row, 1, 1)
                 self.intern_grid.attach(fnv, 1, current_row, 1, 1)
                 ztcv.show_all()

@@ -19,11 +19,15 @@ textview.text-editor text {
 }
 
 box.zk-search-bar {
-	margin: 3px;
+	margin: 0.3em;
 }
 
 combobox.zk-search-bar {
-	margin: 3px;
+	margin: 0.3em;
+}
+
+box.zettel-filenameview {
+	margin: 1em;
 }
 
 
