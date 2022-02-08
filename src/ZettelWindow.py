@@ -12,18 +12,12 @@ class ZettelWindow(Gtk.Window):
 
         self.create_layout()
 
-        self.text_view.get_buffer().set_text(
-            """
-# Titel
+        with open('template.md') as f:
+            self.text_template = f.read()
 
-#schlagwort
-
-## Text
-
-## Quelle
-## Links"""
-        )
+        self.text_view.get_buffer().set_text(self.text_template)
         self.header_bar_button.connect("clicked", self.on_clicked_save_button)
+        self.connect('destroy', self.on_clicked_closed_button)
 
     def create_layout(self):
         self.text_view = Gtk.TextView()
@@ -49,3 +43,6 @@ class ZettelWindow(Gtk.Window):
         self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
         self.zdata.reload()
         self.close()
+
+    def on_clicked_closed_button(self, _):
+        print('yo')
