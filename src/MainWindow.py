@@ -1,7 +1,5 @@
 from gi.repository import Gtk, Gdk, Gio
-from gi.repository import Granite
 from SearchContainer import SearchContainer
-from SearchResultView import SearchResultView
 from ZettelWindow import ZettelWindow
 
 
