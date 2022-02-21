@@ -12,8 +12,7 @@ class ZettelWindow(Gtk.Window):
 
         self.create_layout()
 
-        with open('template.md') as f:
-            self.text_template = f.read()
+        self.text_template = get_template()
 
         self.text_view.get_buffer().set_text(self.text_template)
         self.header_bar_button.connect("clicked", self.on_clicked_save_button)
@@ -46,3 +45,12 @@ class ZettelWindow(Gtk.Window):
 
     def on_clicked_closed_button(self, _):
         print('yo')
+
+## in Klasse packen
+def get_template():
+    current_location = __file__
+    template_file_location = "/".join(current_location.split("/")[:-2]) + "/template.md"
+    with open(template_file_location) as f:
+        text_template = f.read()
+
+    return text_template
