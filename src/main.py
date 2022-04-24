@@ -9,7 +9,7 @@ from Theme import get_css_file
 
 
 
-zuri = "/home/snowparrot/NextCloud/Zettelkasten"
+zuri = "/home/fe/krala/Nextcloud/Zettelkasten"
 zData = ZettelDataService(zuri)
 
 screen = Gdk.Screen.get_default()

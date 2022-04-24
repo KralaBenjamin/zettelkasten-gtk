@@ -1,42 +1,39 @@
-# BEGIN LICENSE
-# Copyright (C) 2019, Wolf Vollprecht <w.vollprecht@gmail.com>
-# This program is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License version 3, as published
-# by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranties of
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
-# PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
-# END LICENSE
+import json
 
 
-# Todo: Gconf installieren
 
+class Settings:
+    LOCATION = "settings.json"
 
-from gi.repository import Gio
-
-
-class Settings(Gio.Settings):
-
-    """
-        Apostrophe Settings
-    """
 
     def __init__(self):
         """
             Init Settings
         """
-        Gio.Settings.__init__(self)
 
-    @classmethod
-    def new(cls):
-        """
-            Return a new Settings object
-        """
-        settings = Gio.Settings.new("com.github.kralabenjamin.zettelkasten")
-        settings.__class__ = Settings
-        return settings
+        self.settings_dict = json.load(open(LOCATION, "r+"))
+
+    def is_settings_zk_location_avalaible(self):
+        
+        return "zk_locations" in self.settings_dict and \
+            isinstance(self.settings_dict["zk_locations"], list) and \
+            len(self.settings_dict["zk_locations"]) > 0
+
+    def get_zk_locations(self):
+        return self.settings_dict["zk_locations"]
+
+
+if __name__ == "__main__":
+    LOCATION = "settings.json"
+
+    seti = Settings()
+    print(seti.is_settings_zk_location_avalaible())
+    json.dump({}, open(LOCATION, "w+"))
+    print(seti.is_settings_zk_location_avalaible())
+    json.dump({"zk_locations": "a"}, open(LOCATION, "w+"))
+    print(seti.is_settings_zk_location_avalaible())
+    json.dump({"zk_locations": []}, open(LOCATION, "w+"))
+    print(seti.is_settings_zk_location_avalaible())
+    json.dump({"zk_locations": ["a"]}, open(LOCATION, "w+"))
+    print(seti.is_settings_zk_location_avalaible())
+    print(seti.get_zk_locations())
