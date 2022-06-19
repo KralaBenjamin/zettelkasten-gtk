@@ -4,27 +4,35 @@ import os
 
 
 class Settings:
-    LOCATION = f"{os.environ['HOME']}/.config/zettelkasten-gtk/settings.json"
 
 
     def __init__(self):
         """
             Init Settings
         """
+        self.location = f"{os.environ['HOME']}/.config/zettelkasten-gtk/settings.json"
         try:
-            self.settings_dict = json.load(open(LOCATION))
+            self.settings_dict = json.load(open(self.location))
         except:
             self.settings_dict = None
 
-    def is_settings_zk_location_avalaible(self):
-        
-        return bool(self.settings_dict) and \
-            "zk_locations" in self.settings_dict and \
+    def is_settings_file_avalaible(self):
+        return bool(self.settings_dict) 
+
+    def save_settings(self):
+        json.dump(self.settings_dict, open(self.location, "w+"))
+
+    def is_settings_zk_location_in_settings_file(self):
+        return "zk_locations" in self.settings_dict and \
             isinstance(self.settings_dict["zk_locations"], list) and \
             len(self.settings_dict["zk_locations"]) > 0
 
     def get_zk_locations(self):
         return self.settings_dict["zk_locations"]
+
+    def set_zk_locations(self, zk_locations):
+        self.settings_dict["zk_locations"] = zk_locations
+        self.save_settings()
 
 
     def create_new_settings(self):
