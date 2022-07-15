@@ -10,8 +10,13 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
         self.add_buttons(
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
         )
+        self.format_secondary_markup("Um die Zettel durchsuchen zu können, braucht es ein Ordner.")
 
         self.set_default_size(200, 150)
+        cancel_button = self.get_widget_for_response(Gtk.ResponseType.CANCEL)
+        ok_button = self.get_widget_for_response(Gtk.ResponseType.OK)
+
+        cancel_button.connect("clicked", Gtk.main_quit)
 
         #label = Gtk.Label(label="Es wurde kein Ordner mit Zettel gefunden. Daher muss ein Ordner ausgewählt werden.")
 
