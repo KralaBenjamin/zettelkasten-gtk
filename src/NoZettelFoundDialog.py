@@ -18,21 +18,23 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
         GObject.signal_new(
             "test1",
             self,
-            GObject.SignalFlags.RUN_FIRST,
+            GObject.SignalFlags.RUN_LAST,
             GObject.TYPE_PYOBJECT, 
             (GObject.TYPE_PYOBJECT,)
         )
 
+        
 
         GObject.signal_new(
             "test2",
             self,
-            GObject.SignalFlags.RUN_FIRST,
+            GObject.SignalFlags.RUN_LAST,
             GObject.TYPE_PYOBJECT, 
             (GObject.TYPE_PYOBJECT,)
 
         )
 
+        """
         GObject.signal_new(
             "cancel_button_clicked",
             self,
@@ -48,7 +50,7 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
             GObject.TYPE_PYOBJECT, 
             (GObject.TYPE_PYOBJECT,)
         )
-
+        """
 
         self.emit("test1", "test")
         cancel_button = self.get_widget_for_response(Gtk.ResponseType.CANCEL)
@@ -61,7 +63,10 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
         ## https://python-gtk-3-tutorial.readthedocs.io/en/latest/objects.html?highlight=events#signals
         # https://blog.digitaloctave.com/posts/python/gtk3/16-gtk3-custom-signals-example.html
 
-        cancel_button.connect("clicked", Gtk.main_quit)
+        cancel_button.connect("clicked", lambda x: self.close)
+
+
+        self.successful = True
 
         #label = Gtk.Label(label="Es wurde kein Ordner mit Zettel gefunden. Daher muss ein Ordner ausgewählt werden.")
 
@@ -72,8 +77,10 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
 
 if __name__ == "__main__":
 
+    #todo: es sind vielleicht keine Signale nötig....
+
     win = NoZettelFoundDialog()
-    win.connect("destroy", Gtk.main_quit)
+    win.connect("destroy", Gtk.main_quit) #Problem, wie schließen..?
     print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
 
     win.connect("test1", lambda x, y: print("uuuu"))
@@ -81,3 +88,21 @@ if __name__ == "__main__":
     print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
     win.show_all()
     Gtk.main()
+    print("yo klappt", win.successful)
+
+    #https://developer.gnome.org/documentation/tutorials/beginners/getting_started/opening_files.html
+
+
+    file_chooser = Gtk.FileChooserNative(
+        title="Open File",
+        transient_for=None,
+        action=Gtk.FileChooserAction.SELECT_FOLDER,
+        accept_label="_Open",
+        cancel_label="_Cancel",
+    )
+
+    file_chooser.show()
+    Gtk.main()
+
+
+    #Skriptartig...
