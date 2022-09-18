@@ -5,11 +5,18 @@ from gi.repository import Gtk, Gio, Gdk, GObject
 from ZettelDataService import ZettelDataService
 from MainWindow import MainWindow
 from Theme import get_css_file
+from Settings import Settings, get_zettelkasten_location_dialog
+from NoZettelFoundDialog import NoZettelFoundDialog
+import os
 
 
+current_settings = Settings()
+if not current_settings.is_settings_zk_location_in_settings_file():
+    location_zettelkasten = get_zettelkasten_location_dialog()
+    current_settings.add_zk_location(location_zettelkasten)
+    current_settings.save_settings()
 
-
-zuri = "/home/snowparrot/NextCloud/Zettelkasten"
+zuri = current_settings.get_zk_locations()[0]
 zData = ZettelDataService(zuri)
 
 screen = Gdk.Screen.get_default()

@@ -44,7 +44,7 @@ class ZettelWindow(Gtk.Window):
         self.close()
 
     def on_clicked_closed_button(self, _):
-        print('yo')
+        pass
 
 ## in Klasse packen
 def get_template():
