@@ -20,8 +20,8 @@ class MainWindow(Gtk.Window):
         self.header_bar.set_show_close_button(True)
         self.header_bar.props.title = "Zettelkasten"
         self.create_new_zettel_button = \
-                Gtk.Button.new_from_icon_name('document-new',
-                                              Gtk.IconSize.LARGE_TOOLBAR)
+                Gtk.Button.new_with_label('Neuer Zettel')
+        #self.create_new_zettel_button.get_style_context().add_class("opaque")
 
         self.set_titlebar(self.header_bar)
         self.header_bar.pack_start(self.create_new_zettel_button)

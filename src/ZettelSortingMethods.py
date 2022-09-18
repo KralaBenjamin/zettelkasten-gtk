@@ -5,12 +5,12 @@ class ZettelSortingMethods:
     @staticmethod
     def sorted_zettel_date_old_to_last(zettel_list):
         return sorted(zettel_list,
-                    key=lambda zettel: int(zettel.file_name[:-3]))
+                    key=lambda zettel: int(zettel.file_name.split('.')[0].split('_')[0]))
 
     @staticmethod
     def sorted_zettel_date_last_to_old(zettel_list):
         return sorted(zettel_list,
-                    key=lambda zettel: int(zettel.file_name[:-3]),
+                    key=lambda zettel: int(zettel.file_name.split('.')[0].split('_')[0]),
                     reverse=True)
 
     @staticmethod
