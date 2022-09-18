@@ -16,7 +16,7 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
         self.set_default_size(200, 150)
 
         GObject.signal_new(
-            "test1",
+            "ok_button_clicked",
             self,
             GObject.SignalFlags.RUN_LAST,
             GObject.TYPE_PYOBJECT, 
@@ -26,7 +26,7 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
         
 
         GObject.signal_new(
-            "test2",
+            "cancel_button_clicked",
             self,
             GObject.SignalFlags.RUN_LAST,
             GObject.TYPE_PYOBJECT, 
@@ -34,36 +34,24 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
 
         )
 
-        """
-        GObject.signal_new(
-            "cancel_button_clicked",
-            self,
-            GObject.SignalFlags.RUN_FIRST,
-            GObject.TYPE_PYOBJECT, 
-            (GObject.TYPE_PYOBJECT,)
-        )
-
-        GObject.signal_new(
-            "zettelkasten_dir_chosen",
-            self,
-            GObject.SignalFlags.RUN_FIRST,
-            GObject.TYPE_PYOBJECT, 
-            (GObject.TYPE_PYOBJECT,)
-        )
-        """
-
-        self.emit("test1", "test")
         cancel_button = self.get_widget_for_response(Gtk.ResponseType.CANCEL)
         ok_button = self.get_widget_for_response(Gtk.ResponseType.OK)
 
-        ok_button.connect("clicked", lambda x: self.emit("test1", "test"))
-        ok_button.connect("clicked", lambda x: self.emit("test2", "test"))
+        def emit_ok_button_clicked(*args):
+            self.emit("ok_button_clicked", None)
+
+        ok_button.connect("clicked", emit_ok_button_clicked)
+
+        def emit_cancel_button_clicked(*args):
+            self.emit("cancel_button_clicked", None)
+    
+        cancel_button.connect("clicked", emit_cancel_button_clicked)
 
 
         ## https://python-gtk-3-tutorial.readthedocs.io/en/latest/objects.html?highlight=events#signals
         # https://blog.digitaloctave.com/posts/python/gtk3/16-gtk3-custom-signals-example.html
 
-        cancel_button.connect("clicked", lambda x: self.close)
+        #cancel_button.connect("clicked", lambda x: self.close)
 
 
         self.successful = True
@@ -75,21 +63,21 @@ class NoZettelFoundDialog(Gtk.MessageDialog):
         #self.show_all()
 
 
-if __name__ == "__main__":
-
-    #todo: es sind vielleicht keine Signale nötig....
-
+def get_zettelkasten_location():
+        
     win = NoZettelFoundDialog()
-    win.connect("destroy", Gtk.main_quit) #Problem, wie schließen..?
-    print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
+    win.connect("destroy", lambda x: exit())
+    #print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
 
-    win.connect("test1", lambda x, y: print("uuuu"))
+    win.connect("cancel_button_clicked", lambda x, y: exit())
+    win.connect("ok_button_clicked", Gtk.main_quit)
 
-    print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
+    win.run()
+    '''
+    #print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
     win.show_all()
     Gtk.main()
-    print("yo klappt", win.successful)
-
+    '''
     #https://developer.gnome.org/documentation/tutorials/beginners/getting_started/opening_files.html
 
 
@@ -97,12 +85,80 @@ if __name__ == "__main__":
         title="Open File",
         transient_for=None,
         action=Gtk.FileChooserAction.SELECT_FOLDER,
-        accept_label="_Open",
-        cancel_label="_Cancel",
+        accept_label="_Öffnen",
+        cancel_label="_Abbrechen",
     )
 
-    file_chooser.show()
-    Gtk.main()
+    response_file_chooser = file_chooser.run()
+    if response_file_chooser == -6: #cancel
+        exit()
+    uri = file_chooser.get_uri()
 
+
+    win = NoZettelFoundDialog()
+    win.connect("destroy", lambda x: exit())
+    #print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
+
+    win.connect("cancel_button_clicked", lambda x, y: exit())
+    win.connect("ok_button_clicked", Gtk.main_quit)
+
+    win.run()
+    '''
+    #print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
+    win.show_all()
+    Gtk.main()
+    '''
+    #https://developer.gnome.org/documentation/tutorials/beginners/getting_started/opening_files.html
+
+
+    file_chooser = Gtk.FileChooserNative(
+        title="Open File",
+        transient_for=None,
+        action=Gtk.FileChooserAction.SELECT_FOLDER,
+        accept_label="_Öffnen",
+        cancel_label="_Abbrechen",
+    )
+
+    response_file_chooser = file_chooser.run()
+    if response_file_chooser == -6: #cancel
+        exit()
+    uri = file_chooser.get_uri()
+
+    return uri.replace('file://', "")
+
+if __name__ == "__main__":
+
+    #todo: es sind vielleicht keine Signale nötig....
+
+    win = NoZettelFoundDialog()
+    win.connect("destroy", lambda x: exit())
+    #print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
+
+    win.connect("cancel_button_clicked", lambda x, y: exit())
+    win.connect("ok_button_clicked", Gtk.main_quit)
+
+    win.run()
+    '''
+    #print(GObject.signal_lookup("auaiuauaiue", win), GObject.signal_lookup("test1", win))
+    win.show_all()
+    Gtk.main()
+    '''
+    #https://developer.gnome.org/documentation/tutorials/beginners/getting_started/opening_files.html
+
+
+    file_chooser = Gtk.FileChooserNative(
+        title="Open File",
+        transient_for=None,
+        action=Gtk.FileChooserAction.SELECT_FOLDER,
+        accept_label="_Öffnen",
+        cancel_label="_Abbrechen",
+    )
+
+    response_file_chooser = file_chooser.run()
+    if response_file_chooser == -6: #cancel
+        exit()
+    uri = file_chooser.get_uri()
+    print(uri)
+    # http://lazka.github.io/pgi-docs/#Gtk-3.0/classes/FileChooser.html#Gtk.FileChooser.get_uri
 
     #Skriptartig...
