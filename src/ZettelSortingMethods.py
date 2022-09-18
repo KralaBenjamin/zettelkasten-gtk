@@ -5,25 +5,25 @@ class ZettelSortingMethods:
     @staticmethod
     def sorted_zettel_date_old_to_last(zettel_list):
         return sorted(zettel_list,
-                      key=lambda zettel: int(zettel.file_name[:-3]))
+                    key=lambda zettel: int(zettel.file_name.split('.')[0].split('_')[0]))
 
     @staticmethod
     def sorted_zettel_date_last_to_old(zettel_list):
         return sorted(zettel_list,
-                      key=lambda zettel: int(zettel.file_name[:-3]),
-                      reverse=True)
+                    key=lambda zettel: int(zettel.file_name.split('.')[0].split('_')[0]),
+                    reverse=True)
 
     @staticmethod
-    def sorted_zettel_name_a_to_z(zettel_list):
+    def sorted_zettel_less_links(zettel_list):
         return sorted(zettel_list,
-              key=lambda zettel: zettel.title)
+                    key=lambda zettel: len(zettel.links),
+                    )
 
     @staticmethod
-    def sorted_zettel_name_z_to_a(zettel_list):
+    def sorted_zettel_more_links(zettel_list):
         return sorted(zettel_list,
-              key=lambda zettel: zettel.title,
-                      reverse=True)
-
+                    key=lambda zettel: len(zettel.links),
+                    reverse=True)
     @staticmethod
     def sorted_random(zettel_list):
         return random.sample(zettel_list,
@@ -43,17 +43,18 @@ list_all_sorting_methods = [
             "display-string": "Datum: Neu nach Alt",
             "sorting-method": ZettelSortingMethods.sorted_zettel_date_last_to_old
         },
+        #Todo: Auch eingehende Verbindungen benutzen
         {
-            "string-id": "sort_zettel_name_a_to_z",
-            "display-string": "Titel: A nach Z",
+            "string-id": "sorted_zettel_less_links",
             "int-id": 3,
-            "sorting-method": ZettelSortingMethods.sorted_zettel_name_a_to_z
+            "display-string": "Verknüpfung: Aufsteigend",
+            "sorting-method": ZettelSortingMethods.sorted_zettel_less_links
         },
         {
-            "string-id": "sorted_zettel_name_z_to_a",
-            "display-string": "Titel: Z nach A",
+            "string-id": "sorted_zettel_more_links",
             "int-id": 4,
-            "sorting-method": ZettelSortingMethods.sorted_zettel_name_z_to_a
+            "display-string": "Verknüpfung: Absteigend",
+            "sorting-method": ZettelSortingMethods.sorted_zettel_more_links
         },
         {
             "string-id": "sorted_random",

@@ -6,7 +6,6 @@ from ZettelDataService import ZettelDataService
 from MainWindow import MainWindow
 from Theme import get_css_file
 from Settings import Settings, get_zettelkasten_location_dialog
-from NoZettelFoundDialog import NoZettelFoundDialog
 import os
 
 
@@ -31,6 +30,7 @@ css_file = get_css_file()
 provider.load_from_file(css_file)
 
 window = MainWindow(zData) 
+
 window.show_all()
 
 Gtk.main()

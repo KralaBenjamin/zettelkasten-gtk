@@ -122,6 +122,7 @@ class FileNameView(Gtk.Box):
 
         self.create_layout()
         self.name_label.set_text(filename)
+        self.name_label_button.set_tooltip_text("Kopiere aktuellen Dateinamen")
 
         self.name_label_button.connect("clicked",
                                        self.clicked_name_label_button)
@@ -134,7 +135,6 @@ class FileNameView(Gtk.Box):
 
         self.name_label_button = Gtk.Button.new_from_icon_name("edit-copy", Gtk.IconSize.BUTTON)
         self.name_label_button.set_valign(Gtk.Align.CENTER)
-        #self.name_label_button.get_style_context().add_class('flat') nicht für elementary
         self.name_label.set_selectable(True)
 
         self.pack_start(self.name_label, True, True, 0)

@@ -23,7 +23,8 @@ class ZettelWindow(Gtk.Window):
         self.text_view.get_style_context().add_class("text-editor")
 
         self.header_bar = Gtk.HeaderBar()
-        self.header_bar_button = Gtk.Button. new_from_icon_name('document-save', Gtk.IconSize.LARGE_TOOLBAR)
+        self.header_bar_button = Gtk.Button.new_with_label('Speichern')
+        self.header_bar_button.get_style_context().add_class("suggested-action")
 
         self.sw = Gtk.ScrolledWindow()
 
@@ -36,7 +37,7 @@ class ZettelWindow(Gtk.Window):
         self.sw.add_with_viewport(self.text_view)
         self.add(self.sw)
 
-        self.set_default_size(500, 500)
+        self.set_default_size(600, 600)
 
     def on_clicked_save_button(self, _):
         self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)

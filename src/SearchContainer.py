@@ -17,12 +17,20 @@ class SearchContainer(Gtk.Box):
                 sorting_method_desc["display-string"])
         self.search_order_combo_box.set_active(0)
 
+
+        self.search_entry.connect(
+            "activate",
+            self.on_search_button_split_words)
         self.search_button.connect("clicked",
                                    self.on_search_button_fulltext)
         self.split_word_search_button.connect("clicked",
                                               self.on_search_button_split_words)
         self.search_order_combo_box.connect("changed",
                                             self.on_combobox_changed)
+
+        self.had_one_search = False
+
+        
 
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
@@ -37,7 +45,9 @@ class SearchContainer(Gtk.Box):
         self.search_button = Gtk.Button()
         self.split_word_search_button = Gtk.Button()
         self.search_button.set_label("Volltext")
+        self.search_button.set_tooltip_text('Jeder Zettel wird mit den genauen Text durchsucht')
         self.split_word_search_button.set_label("Einzelwortsuche")
+        self.split_word_search_button.set_tooltip_text('Jeder Zettel, der eines der Wörter enthält, wird angezeigt')
 
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
@@ -50,6 +60,7 @@ class SearchContainer(Gtk.Box):
 
         self.search_order_combo_box = Gtk.ComboBoxText()
         self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
+        self.search_order_combo_box.set_tooltip_text('Die Reihenfolge der Suchergebnisse')
 
         self.split_word_search_button.get_style_context().add_class("zk-search-bar")
 
@@ -85,6 +96,7 @@ class SearchContainer(Gtk.Box):
     def on_search_button_split_words(self, _):
 
         self.last_search = "split_words"
+        self.had_one_search = True
 
         self.clear_search_view()
 
@@ -101,6 +113,7 @@ class SearchContainer(Gtk.Box):
         ## Todo: Suchtreffer markieren
 
         self.last_search = "fulltext"
+        self.had_one_search = True
 
         self.clear_search_view()
 
@@ -114,7 +127,7 @@ class SearchContainer(Gtk.Box):
         self.show_result(results, search_term)
 
     def on_combobox_changed(self, _):
-        if self.last_search == "fulltext":
+        if self.had_one_search and self.last_search == "fulltext":
             self.on_search_button_fulltext(None)
-        if self.last_search == "split_words":
+        if self.had_one_search and self.last_search == "split_words":
             self.on_search_button_split_words(None)
