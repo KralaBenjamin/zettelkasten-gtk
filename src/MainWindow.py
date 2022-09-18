@@ -3,7 +3,6 @@ from SearchContainer import SearchContainer
 from ZettelWindow import ZettelWindow
 
 
-
 class MainWindow(Gtk.Window):
 
     def __init__(self, zdata) -> None:
@@ -26,8 +25,7 @@ class MainWindow(Gtk.Window):
 
         self.set_titlebar(self.header_bar)
         self.header_bar.pack_start(self.create_new_zettel_button)
-
-        self.set_default_size(500, 500)
+        self.set_default_size(1000, 600)
 
         self.sc = SearchContainer(self.zdata)
         self.add(self.sc)

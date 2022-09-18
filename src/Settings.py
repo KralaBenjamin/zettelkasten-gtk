@@ -20,10 +20,11 @@ class Settings:
         try:
             self.settings_dict = json.load(open(self.location))
 
-            #prüfen?
         except:
             self.settings_dict = dict()
             self.settings_dict["zk_locations"] = list()
+            self.settings_dict["main_window"] = dict()
+            self.settings_dict["zettel_window"] = dict()
 
     def is_settings_file_avalaible(self):
         return bool(self.settings_dict) 
@@ -46,21 +47,8 @@ class Settings:
     def add_zk_location(self, new_zk_location):
         self.settings_dict["zk_locations"].append(new_zk_location)
 
-    def create_new_settings(self):
-        pass
 
-
-    def get_window_properties(self):
-        pass
-
-
-    def set_window_properties(self):
-        pass
-
-
-
-def get_zettelkasten_location_dialog():
-        
+def get_zettelkasten_location_dialog():        
 
     msg = Gtk.MessageDialog(
         title="Kein Ordner mit Zettel gefunden", 
@@ -74,7 +62,7 @@ def get_zettelkasten_location_dialog():
 
     msg_result = msg.run()
 
-    if msg_result == -6: #cancle
+    if msg_result == -6: #cancel
         exit()
 
     msg.destroy()
