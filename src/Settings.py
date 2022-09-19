@@ -6,7 +6,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from gi.repository import GObject
-
+from os import makedirs
 
 
 
@@ -17,6 +17,7 @@ class Settings:
             Init Settings
         """
         self.location = f"{os.environ['HOME']}/.config/zettelkasten-gtk/settings.json"
+        self.location_dir = f"{os.environ['HOME']}/.config/zettelkasten-gtk/"
         try:
             self.settings_dict = json.load(open(self.location))
 
@@ -30,6 +31,7 @@ class Settings:
         return bool(self.settings_dict) 
 
     def save_settings(self):
+        makedirs(self.location_dir)
         json.dump(self.settings_dict, open(self.location, "w+"))
 
     def is_settings_zk_location_in_settings_file(self):
