@@ -39,8 +39,11 @@ class ZettelDataService:
     def reload(self):
         self.__init__(self.uri_zettels)
 
-    def search_split_words(self, search_term,
-                        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
+    def search_split_words(
+        self, 
+        search_term,
+        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last
+        ):
 
         if len(search_term) > 0:
             search_terms = search_term.split()
@@ -62,8 +65,11 @@ class ZettelDataService:
             ]
         return sorting_method(result_list)
 
-    def search_fulltext(self, search_term,
-                        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
+    def search_fulltext(
+        self, 
+        search_term,
+        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last
+        ):
         result_list = [zettel
             for zettel in self.list
             if search_term.lower()

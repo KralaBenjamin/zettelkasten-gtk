@@ -14,15 +14,15 @@ class ZettelSortingMethods:
                     reverse=True)
 
     @staticmethod
-    def sorted_zettel_less_links(zettel_list):
+    def sorted_zettel_less_to_more_links(zettel_list):
         return sorted(zettel_list,
-                    key=lambda zettel: len(zettel.links),
+                    key=lambda zettel: len(zettel.links) + len(zettel.linked_from),
                     )
 
     @staticmethod
-    def sorted_zettel_more_links(zettel_list):
+    def sorted_zettel_more_to_less_links(zettel_list):
         return sorted(zettel_list,
-                    key=lambda zettel: len(zettel.links),
+                    key=lambda zettel: len(zettel.links) + len(zettel.linked_from),
                     reverse=True)
     @staticmethod
     def sorted_random(zettel_list):
@@ -45,16 +45,16 @@ list_all_sorting_methods = [
         },
         #Todo: Auch eingehende Verbindungen benutzen
         {
-            "string-id": "sorted_zettel_less_links",
+            "string-id": "sorted_zettel_less_to_more_links",
             "int-id": 3,
-            "display-string": "Verknüpfung: Aufsteigend",
-            "sorting-method": ZettelSortingMethods.sorted_zettel_less_links
+            "display-string": "Anzahl Verknüpfungen: Aufsteigend",
+            "sorting-method": ZettelSortingMethods.sorted_zettel_less_to_more_links
         },
         {
-            "string-id": "sorted_zettel_more_links",
+            "string-id": "sorted_zettel_more_to_less_links",
             "int-id": 4,
-            "display-string": "Verknüpfung: Absteigend",
-            "sorting-method": ZettelSortingMethods.sorted_zettel_more_links
+            "display-string": "Anzahl Verknüpfungen: Absteigend",
+            "sorting-method": ZettelSortingMethods.sorted_zettel_more_to_less_links
         },
         {
             "string-id": "sorted_random",
