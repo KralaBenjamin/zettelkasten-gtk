@@ -21,7 +21,6 @@ class MainWindow(Gtk.Window):
         self.header_bar = Gtk.HeaderBar()
         self.header_bar.set_show_close_button(True)
         self.stack_switcher = Gtk.StackSwitcher()
-        self.container_view_buttons = ContainerViewButtons()
         self.header_bar.props.title = "Zettelkasten"
         self.create_new_zettel_button = \
                 Gtk.Button.new_with_label('Neuer Zettel')
@@ -56,68 +55,5 @@ class MainWindow(Gtk.Window):
     def on_clicked_create_new_zettel_button(self, button):
         create_window = ZettelWindow(self.zdata)
         create_window.show_all()
-
-
-class ContainerViewButtons(Gtk.Box):
-    def __init__(self):
-        super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
-        self.create_layout()
-
-        self.set_state(ContainerViewButtonsStates.SEARCH)
-
-        self.search_zettel_button.connect(
-            'clicked',
-            self.on_search_zettel_button_clicked
-        )
-
-        self.statistic_button.connect(
-            'clicked',
-            self.on_statistic_button_clicked
-        )
-
-    def create_layout(self):
-        self.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
-
-        self.search_zettel_button = Gtk.ToggleButton(label='Suche')
-        self.statistic_button = Gtk.ToggleButton(label='Statistiken')
-
-        self.pack_start(self.search_zettel_button, True, True, 0)
-        self.pack_start(self.statistic_button, True, True, 0)
-
-
-    def set_state(self, state):
-        self.current_state = state
-
-        if state == ContainerViewButtonsStates.SEARCH:
-            self.search_zettel_button.set_active(True)
-            self.statistic_button.set_active(False)
-        elif state == ContainerViewButtonsStates.STATISTIC:
-            self.search_zettel_button.set_active(False)
-            self.statistic_button.set_active(True)
-
-    def on_search_zettel_button_clicked(self, button):
-        print("a")
-        self.statistic_button.set_active(False)
-
-        #self.set_state(ContainerViewButtonsStates.SEARCH) 
-
-    def on_statistic_button_clicked(self, button):
-        print("b")
-        self.search_zettel_button.set_active(False)
-
-        #self.set_state(ContainerViewButtonsStates.STATISTIC)
-
-
-class ContainerViewButtonsStates(Enum):
-    SEARCH = 0
-    STATISTIC = 1
-
-if __name__ == "__main__":
-    window = MainWindow()
-    window.show_all()
-    window.connect("destroy", Gtk.main_quit)
-
-    Gtk.main()
-
 
 

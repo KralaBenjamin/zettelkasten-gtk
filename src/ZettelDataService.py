@@ -3,7 +3,7 @@ import os
 from Zettel import Zettel
 from datetime import datetime
 from ZettelSortingMethods import ZettelSortingMethods
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 class ZettelDataService:
 
@@ -14,6 +14,9 @@ class ZettelDataService:
         text_list = list()
         self.__zettel_links_from__ = defaultdict(list) # collects all links, a zettel provides from
         self.id_to_name = defaultdict(lambda x: "Missing No")
+
+        self.hashtagCounter = Counter()
+        self.sourceCounter = Counter()
 
         for file_name in file_list:
             with open(uri_zettels + "/" + file_name, "r") as f:
@@ -31,6 +34,10 @@ class ZettelDataService:
             for linked_zettel_id in zettel.links:
                 self.__zettel_links_from__[linked_zettel_id].append(zettel.file_name)
             self.id_to_name[zettel.file_name] = zettel.title
+
+            for tag in zettel.tags:
+                self.hashtagCounter[tag] += 1
+            self.sourceCounter[zettel.quelle] += 1
 
         for zettel in self.list:
             zettel.linked_from = self.__zettel_links_from__[zettel.file_name]

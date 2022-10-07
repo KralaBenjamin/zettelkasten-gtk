@@ -8,6 +8,11 @@ label.tag-text {
     font-weight: bold;
 }
 
+label.stat-heading {
+    color: #5e5c64;
+    font-weight: bold;
+}
+
 textview.text-editor {
 	font-size: 30px;
 	font-family: roboto;
