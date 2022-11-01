@@ -3,7 +3,7 @@ import os
 from Zettel import Zettel
 from datetime import datetime
 from ZettelSortingMethods import ZettelSortingMethods
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 class ZettelDataService:
 
@@ -14,6 +14,9 @@ class ZettelDataService:
         text_list = list()
         self.__zettel_links_from__ = defaultdict(list) # collects all links, a zettel provides from
         self.id_to_name = defaultdict(lambda x: "Missing No")
+
+        self.hashtagCounter = Counter()
+        self.sourceCounter = Counter()
 
         for file_name in file_list:
             with open(uri_zettels + "/" + file_name, "r") as f:
@@ -32,6 +35,10 @@ class ZettelDataService:
                 self.__zettel_links_from__[linked_zettel_id].append(zettel.file_name)
             self.id_to_name[zettel.file_name] = zettel.title
 
+            for tag in zettel.tags:
+                self.hashtagCounter[tag] += 1
+            self.sourceCounter[zettel.quelle] += 1
+
         for zettel in self.list:
             zettel.linked_from = self.__zettel_links_from__[zettel.file_name]
 
@@ -39,8 +46,11 @@ class ZettelDataService:
     def reload(self):
         self.__init__(self.uri_zettels)
 
-    def search_split_words(self, search_term,
-                        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
+    def search_split_words(
+        self, 
+        search_term,
+        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last
+        ):
 
         if len(search_term) > 0:
             search_terms = search_term.split()
@@ -62,8 +72,11 @@ class ZettelDataService:
             ]
         return sorting_method(result_list)
 
-    def search_fulltext(self, search_term,
-                        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last):
+    def search_fulltext(
+        self, 
+        search_term,
+        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last
+        ):
         result_list = [zettel
             for zettel in self.list
             if search_term.lower()

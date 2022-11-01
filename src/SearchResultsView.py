@@ -95,8 +95,9 @@ class ZettelContentView(Gtk.Box):
         self.text_label.set_selectable(True)
 
         self.more_info_button = Gtk.Button()
-        self.more_info_button.set_label('Mehr Information')
+        self.more_info_button.set_label('Quellen und Verknüpfungen anzeigen')
         self.more_info_button.get_style_context().add_class('flat')
+        self.more_info_button.set_tooltip_text('Quellen und Verknüpfungen dieses Zettels anzeigen')
 
         self.pack_start(self.title_label, True, True, 0)
         self.pack_start(self.tag_label, True, True, 0)

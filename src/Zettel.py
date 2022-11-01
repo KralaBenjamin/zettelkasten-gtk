@@ -17,7 +17,6 @@ class Zettel:
 
         self.quelle = extract_section(text, source_section_name, return_list=False)
 
-
 def extract_tags(text):
     #checks that no letter and no hashtag comes before and after e.g #aue#uaioe
     # so all hashtags are seperated by blank spaces
