@@ -25,9 +25,26 @@ class ZettelSortingMethods:
                     key=lambda zettel: len(zettel.links) + len(zettel.linked_from),
                     reverse=True)
     @staticmethod
+    def sorted_zettel_less_to_more_len_text(zettel_list):
+        return sorted(
+            zettel_list,
+            key=lambda zettel: len(zettel.text)
+        )
+
+    @staticmethod
+    def sorted_zettel_more_to_less_len_text(zettel_list):
+        return sorted(
+            zettel_list,
+            key=lambda zettel: len(zettel.text),
+            reverse=True
+        )
+
+
+    @staticmethod
     def sorted_random(zettel_list):
         return random.sample(zettel_list,
                              len(zettel_list))
+
 
 
 list_all_sorting_methods = [
@@ -43,7 +60,6 @@ list_all_sorting_methods = [
             "display-string": "Datum: Neu nach Alt",
             "sorting-method": ZettelSortingMethods.sorted_zettel_date_last_to_old
         },
-        #Todo: Auch eingehende Verbindungen benutzen
         {
             "string-id": "sorted_zettel_less_to_more_links",
             "int-id": 3,
@@ -55,6 +71,18 @@ list_all_sorting_methods = [
             "int-id": 4,
             "display-string": "Anzahl Verknüpfungen: Absteigend",
             "sorting-method": ZettelSortingMethods.sorted_zettel_more_to_less_links
+        },
+        {
+            "string-id": "sorted_zettel_less_to_more_len_text",
+            "int-id": 5,
+            "display-string": "Länge Text: Aufsteigend",
+            "sorting-method": ZettelSortingMethods.sorted_zettel_less_to_more_len_text
+        },
+        {
+            "string-id": "sorted_zettel_more_to_less_len_text",
+            "int-id": 6,
+            "display-string": "Länge Text: Absteigend",
+            "sorting-method": ZettelSortingMethods.sorted_zettel_more_to_less_len_text
         },
         {
             "string-id": "sorted_random",
