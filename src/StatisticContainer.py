@@ -32,7 +32,7 @@ class StatisticContainer(Gtk.Box):
         self.header_source.get_style_context().add_class("stat-heading")
 
         sorted_tags = sorted(
-            self.zdata.hashtagCounter.items(),
+            self.zdata.hashtag_counter.items(),
             key=lambda items: items[1],
             reverse=True
         )
@@ -43,7 +43,7 @@ class StatisticContainer(Gtk.Box):
         self.textlabel_tags.set_selectable(True)
 
         sorted_sources = sorted(
-            self.zdata.sourceCounter.items(),
+            self.zdata.source_counter.items(),
             key=lambda items: items[1],
             reverse=True
         )

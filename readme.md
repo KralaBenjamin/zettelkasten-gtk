@@ -5,7 +5,7 @@ This is an app for the Zettelkasten principle. It is based on gtk. Its focus is 
 
 ## Technologies
 
-The app is based on Python and gtk. It has been tested on Ubuntu 18.04 and 20.04.
+The app is based on Python and gtk. It has been tested on Ubuntu 18.04, 20.04 and 22.04.
 
 
 * Python over 3.1

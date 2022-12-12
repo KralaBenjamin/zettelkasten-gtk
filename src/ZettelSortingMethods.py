@@ -39,12 +39,10 @@ class ZettelSortingMethods:
             reverse=True
         )
 
-
     @staticmethod
     def sorted_random(zettel_list):
         return random.sample(zettel_list,
                              len(zettel_list))
-
 
 
 list_all_sorting_methods = [
