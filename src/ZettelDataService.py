@@ -2,12 +2,15 @@
 Module handles the ZettelDataService.
 """
 import os
+from os.path import join
 from datetime import datetime
 from collections import defaultdict, Counter
+
 
 from Zettel import Zettel
 from ZettelSortingMethods import ZettelSortingMethods
 from ZettelkastenConfig import ZettelkastenConfig
+
 
 class ZettelDataService:
     """
@@ -22,29 +25,39 @@ class ZettelDataService:
         """
 
         self.uri_zettelkasten = uri_zettelkasten
-        self.zettelkasten_config = ZettelkastenConfig(self.uri_zettelkasten)
 
         file_list = [file for file in os.listdir(uri_zettelkasten) if file.endswith(".md")]
-        text_list = list()
-        self.__zettel_links_from__ = defaultdict(list) # collects all links, a zettel provides from
-        self.id_to_name = defaultdict(lambda x: "Missing No")
+        # collects all links, a zettel provides from
+        self.__zettel_links_from__ = defaultdict(list)
+        self.id_to_name = defaultdict(lambda x: "MissingNo")
 
         self.hashtag_counter = Counter()
         self.source_counter = Counter()
 
+        self.zettelkasten_config = ZettelkastenConfig(self.uri_zettelkasten)
+
+        if not self.zettelkasten_config.has_path_config_file():
+            self.zettelkasten_config.load_standard_configuration()
+    
+        self.zettel_list = list()
+
+        #loading files into zettel objects
         for file_name in file_list:
-            with open(uri_zettelkasten + "/" + file_name, "r", encoding="utf-8") as file:
+            path_file = join(uri_zettelkasten, file_name)
+            with open(path_file, "r", encoding="utf-8") as file:
                 text = file.read()
-                text_list.append({
-                    "text": text,
-                    "file_name": file_name
-                })
-
-        self.zettel_list = [Zettel(**element)
-                    for element in text_list
-        ]
-
+            self.zettel_list.append(
+                Zettel(
+                    text=text,
+                    file_name=file_name,
+                    text_section_name=self.zettelkasten_config.text_section_name,
+                    link_section_name=self.zettelkasten_config.link_section_name,
+                    source_section_name=self.zettelkasten_config.source_section_name
+                )
+            )
+        
         for zettel in self.zettel_list:
+            # collects all links who refer to zettel
             for linked_zettel_id in zettel.links:
                 self.__zettel_links_from__[linked_zettel_id].append(zettel.file_name)
             self.id_to_name[zettel.file_name] = zettel.title
@@ -53,9 +66,13 @@ class ZettelDataService:
                 self.hashtag_counter[tag] += 1
             self.source_counter[zettel.source] += 1
 
+        # now put into the zettel object
         for zettel in self.zettel_list:
             zettel.linked_from = self.__zettel_links_from__[zettel.file_name]
 
+        for tag in self.hashtag_counter.keys():
+            if not self.zettelkasten_config.is_tag_in_config(tag[1:]):
+                self.zettelkasten_config.set_tag_description(tag[1:], "")
 
     def reload(self):
         """
@@ -134,6 +151,6 @@ class ZettelDataService:
                     break
 
                 new_file_counter += 1
-        #todo: PATH hier verwenden
-        with open(f"{self.uri_zettelkasten}/{new_file_name}", "w+", encoding="utf-8") as file:
+        path_file = join(self.uri_zettelkasten, new_file_name)
+        with open(path_file, "w+", encoding="utf-8") as file:
             file.write(text)

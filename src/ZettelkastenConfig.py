@@ -58,6 +58,9 @@ class ZettelkastenConfig:
             open(path, "w+", encoding="utf-8")
         )
 
+    def is_tag_in_config(self, tag):
+        return tag in self.__tag_descriptions__
+
     def get_tag_description(self, tag):
         try:
             return self.__tag_descriptions__[tag]
