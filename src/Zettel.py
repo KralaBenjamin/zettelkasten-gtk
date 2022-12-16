@@ -29,7 +29,7 @@ class Zettel:
         zettel_text = extract_section(text, text_section_name, return_list=False)
         self.text = zettel_text.replace("\n", " ")
 
-        self.quelle = extract_section(text, source_section_name, return_list=False)
+        self.source = extract_section(text, source_section_name, return_list=False)
 
 def extract_tags(text:str):
     """

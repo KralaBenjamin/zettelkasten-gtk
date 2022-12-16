@@ -14,8 +14,9 @@ class Settings:
 
     def __init__(self):
         """
-            Init Settings
+        Init Settings
         """
+        #todo: Path Klasse verwenden
         self.location = f"{os.environ['HOME']}/.config/zettelkasten-gtk/settings.json"
         self.location_dir = f"{os.environ['HOME']}/.config/zettelkasten-gtk/"
         try:

@@ -206,7 +206,7 @@ class ZettelMoreInfomationView(Gtk.Box):
             self.header_ingoing_zettel.show()
             self.box_ingoing_zettel.show()
 
-        source_text = 'Quelle:' + zettel.quelle
+        source_text = 'Quelle:' + zettel.source
         self.source_label.set_text(source_text[:letters_per_line])
         self.pack_start(self.source_label, True, True, 0)
 
