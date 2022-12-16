@@ -7,6 +7,7 @@ from collections import defaultdict, Counter
 
 from Zettel import Zettel
 from ZettelSortingMethods import ZettelSortingMethods
+from ZettelkastenConfig import ZettelkastenConfig
 
 class ZettelDataService:
     """
@@ -21,6 +22,8 @@ class ZettelDataService:
         """
 
         self.uri_zettels = uri_zettels
+        self.zettelkasten_config = ZettelkastenConfig(self.uri_zettels)
+
         file_list = [file for file in os.listdir(uri_zettels) if file.endswith(".md")]
         text_list = list()
         self.__zettel_links_from__ = defaultdict(list) # collects all links, a zettel provides from
