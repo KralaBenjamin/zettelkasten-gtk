@@ -74,6 +74,7 @@ class ZettelDataService:
             if not self.zettelkasten_config.is_tag_in_config(tag[1:]):
                 self.zettelkasten_config.set_tag_description(tag[1:], "")
 
+        self.zettelkasten_config.save_current_config_into_file()
     def reload(self):
         """
         Reloads all data with given uri_zettelkasten.

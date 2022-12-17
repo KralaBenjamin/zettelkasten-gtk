@@ -70,3 +70,17 @@ class StatisticContainer(Gtk.Box):
 
         self.header_source.set_text('Quellen und ihre Häufigkeit')
         self.header_source.get_style_context().add_class("stat-heading")
+
+class Tag_Box(Gtk.Box):
+    def __init__(self, tag_name, tag_description):
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
+        
+        tag_name_label = Gtk.Label(tag_name)
+        self.pack_start(tag_name_label, True, True, 0)
+        tag_name_label.get_style_context().add_class(
+            "tag-text"
+            )
+        
+        tag_description_label = Gtk.Label(tag_description)
+        self.pack_start(tag_description_label, True, True, 0)
+

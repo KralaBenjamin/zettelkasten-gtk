@@ -20,7 +20,11 @@ class ZettelkastenConfig:
 
 
     def load_config_file(self):
-        json_file = json.load(self.zettelkasten_path)
+        path = join(self.zettelkasten_path, "config.json")
+
+        json_file = json.load(
+            open(path, "r", encoding="utf-8"),
+            )
         self.zettelkasten_description \
             = json_file["zettelkasten_description"]
         self.text_section_name \
@@ -55,7 +59,8 @@ class ZettelkastenConfig:
                 "source_section_name": self.source_section_name,
                 "tag_descriptions": self.__tag_descriptions__
             },
-            open(path, "w+", encoding="utf-8")
+            open(path, "w+", encoding="utf-8"),
+            ensure_ascii=False, indent=4
         )
 
     def is_tag_in_config(self, tag):
