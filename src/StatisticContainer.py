@@ -8,28 +8,9 @@ class StatisticContainer(Gtk.Box):
 
         self.create_layout()
 
-    def create_layout(self):
-        self.sw = Gtk.ScrolledWindow()
-        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
-        self.sw.add_with_viewport(self.content)
-        self.pack_start(self.sw, True, True, 0)
-
-        self.header_tags = Gtk.Label()
-        self.textlabel_tags = Gtk.Label()
-        self.header_source = Gtk.Label()
-        self.textlabel_source = Gtk.Label()
-
-        self.content.pack_start(self.header_tags, True, True, 0)
-        self.content.pack_start(self.textlabel_tags, True, True, 0)
-        self.content.pack_start(self.header_source, True, True, 0)
-        self.content.pack_start(self.textlabel_source, True, True, 0)
-
-        self.header_tags.set_text('Schlagwörter und ihre Häufigkeit')
-        self.header_tags.get_style_context().add_class("stat-heading")
-
-        self.header_source.set_text('Quellen und ihre Häufigkeit')
-        self.header_source.get_style_context().add_class("stat-heading")
+        self.textlabel_description.set_text(
+            self.zdata.zettelkasten_config.zettelkasten_description
+        )
 
         sorted_tags = sorted(
             self.zdata.hashtag_counter.items(),
@@ -52,3 +33,40 @@ class StatisticContainer(Gtk.Box):
             text_source += f"{source}: \t {n_source} \n"
         self.textlabel_source.set_text(text_source)
         self.textlabel_source.set_selectable(True)
+
+    def create_layout(self):
+        self.sw = Gtk.ScrolledWindow()
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        self.sw.add_with_viewport(self.content)
+        self.pack_start(self.sw, True, True, 0)
+
+        self.header_description = Gtk.Label()
+        self.textlabel_description = Gtk.Label()
+
+        self.header_tags = Gtk.Label()
+        self.textlabel_tags = Gtk.Label()
+        self.header_source = Gtk.Label()
+        self.textlabel_source = Gtk.Label()
+
+        self.content.pack_start(self.header_description, True, True, 0)
+        self.content.pack_start(self.textlabel_description, True, True, 0)
+        self.content.pack_start(self.header_tags, True, True, 0)
+        self.content.pack_start(self.textlabel_tags, True, True, 0)
+        self.content.pack_start(self.header_source, True, True, 0)
+        self.content.pack_start(self.textlabel_source, True, True, 0)
+
+        self.header_tags.set_text('Schlagwörter und ihre Häufigkeit')
+        self.header_tags.get_style_context().add_class(
+            "stat-heading"
+            )
+
+        self.header_description.set_text(
+            "Beschreibung des Zettelkasten"
+            )
+        self.header_description.get_style_context().add_class(
+            "stat-heading"
+            )
+
+        self.header_source.set_text('Quellen und ihre Häufigkeit')
+        self.header_source.get_style_context().add_class("stat-heading")
