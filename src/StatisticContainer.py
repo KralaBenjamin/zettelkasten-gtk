@@ -18,8 +18,9 @@ class StatisticContainer(Gtk.Box):
             reverse=True
         )
         for tag, n_tag in sorted_tags:
+            description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
             self.tag_flow_box.add(
-                Tag_Box(tag, n_tag)
+                Tag_Box(tag, n_tag, description)
             )
 
 
@@ -50,6 +51,9 @@ class StatisticContainer(Gtk.Box):
         self.tag_flow_box = Gtk.FlowBox()
         self.textlabel_source = Gtk.Label()
 
+        self.tag_flow_box.set_homogeneous(True)
+        self.tag_flow_box.set_selection_mode(Gtk.SelectionMode.NONE)
+
         self.content.pack_start(self.header_description, True, True, 0)
         self.content.pack_start(self.textlabel_description, True, True, 0)
         self.content.pack_start(self.header_tags, True, True, 0)
@@ -74,15 +78,23 @@ class StatisticContainer(Gtk.Box):
         self.header_source.get_style_context().add_class("stat-heading")
 
 class Tag_Box(Gtk.Box):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name, n_tag, tag_description):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         
+
+        first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         tag_name_label = Gtk.Label(tag_name)
-        self.pack_start(tag_name_label, True, True, 0)
+        n_tag_label = Gtk.Label(n_tag)
+        tag_description_label = Gtk.Label(tag_description)
+        tag_description_label.set_line_wrap(True)
+        tag_description_label.set_max_width_chars(20)
         tag_name_label.get_style_context().add_class(
             "tag-text"
             )
-        
-        tag_description_label = Gtk.Label(tag_description)
-        self.pack_start(tag_description_label, True, True, 0)
+
+        self.pack_start(first_row, True, True, 0)
+        first_row.pack_start(tag_name_label, True, True, 0)
+        first_row.pack_end(n_tag_label, True, True, 0)
+
+        self.pack_start(tag_description_label, False, False, 0)
 

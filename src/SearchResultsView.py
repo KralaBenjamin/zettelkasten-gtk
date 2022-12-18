@@ -115,6 +115,7 @@ class ZettelContentView(Gtk.Box):
                 id2titel=self.id2titel)
         self.pack_start(self.more_info_viewer, True, True, 0)
         self.more_info_viewer.show()
+        self.more_info_button.set_sensitive(False)
 
 class FileNameView(Gtk.Box):
     def __init__(self, filename):
