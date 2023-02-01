@@ -35,7 +35,7 @@ class Settings:
         try:
             with open(self.location, "r", encoding="utf-8") as file:
                 self.settings_dict = json.load(file)
-        except Exception():
+        except FileNotFoundError:
             self.settings_dict = dict()
             self.settings_dict["zk_locations"] = list()
             self.settings_dict["main_window"] = dict()
