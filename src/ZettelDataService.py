@@ -12,7 +12,6 @@ from ZettelSortingMethods import ZettelSortingMethods
 from ZettelkastenConfig import ZettelkastenConfig
 
 from git import Repo, InvalidGitRepositoryError
-from git.cmd import Git
 
 
 class ZettelDataService:

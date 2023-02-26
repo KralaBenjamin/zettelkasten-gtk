@@ -1,5 +1,4 @@
-from gi.repository import Gtk, Gdk, Gio
-from enum import Enum
+from gi.repository import Gtk
 
 from SearchContainer import SearchContainer
 from ZettelWindow import ZettelWindow
