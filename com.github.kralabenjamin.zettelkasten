@@ -1,5 +1,5 @@
-#!/usr/bin/python3
-
+#!./local_python_enviroment/bin/python
+ 
 import os
 import sys
 
