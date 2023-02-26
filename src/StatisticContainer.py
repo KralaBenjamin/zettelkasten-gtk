@@ -71,15 +71,27 @@ class Tag_Box(Gtk.Box):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.edit_button = Gtk.Button.new_from_icon_name(
+            "document-edit", Gtk.IconSize.BUTTON
+        )
+        self.edit_button.set_tooltip_text(
+            "Ändere Beschreibung des Schlagwortes"
+        )
         tag_name_label = Gtk.Label(tag_name)
         n_tag_label = Gtk.Label(n_tag)
+
         tag_description_label = Gtk.Label(tag_description)
         tag_description_label.set_line_wrap(True)
         tag_description_label.set_max_width_chars(20)
-        tag_name_label.get_style_context().add_class("tag-text")
+        tag_description_label.set_selectable(True)
 
-        self.pack_start(first_row, True, True, 0)
+        tag_name_label.get_style_context().add_class("tag-text")
+        tag_name_label.set_selectable(True)
+
+        self.pack_start(first_row, False, False, 0)
         first_row.pack_start(tag_name_label, True, True, 0)
+        first_row.pack_end(self.edit_button, False, False, 0)
         first_row.pack_end(n_tag_label, True, True, 0)
 
-        self.pack_start(tag_description_label, False, False, 0)
+
+        self.pack_start(tag_description_label, True, True, 0)
