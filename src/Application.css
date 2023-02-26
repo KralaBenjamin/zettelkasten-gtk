@@ -1,6 +1,7 @@
 label.zettel-heading {
     color: #5e5c64;
     font-weight: bold;
+	padding-bottom: 5px;
 }
 
 label.tag-text {
@@ -11,6 +12,7 @@ label.tag-text {
 label.stat-heading {
     color: #5e5c64;
     font-weight: bold;
+	padding: 5px;
 }
 
 textview.text-editor {
@@ -35,4 +37,11 @@ box.zettel-filenameview {
 	margin: 1em;
 }
 
+/*
+
+flowbox.statistic-container {
+	column_spacing: 20;
+	row_spacing: 20;
+}
+*/
 

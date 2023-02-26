@@ -47,6 +47,10 @@ class StatisticContainer(Gtk.Box):
 
         self.tag_flow_box.set_homogeneous(True)
         self.tag_flow_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.tag_flow_box.get_style_context().add_class("statistic-container")
+        self.tag_flow_box.props.column_spacing = 20
+        self.tag_flow_box.props.row_spacing = 20
+
 
         self.content.pack_start(self.header_description, True, True, 0)
         self.content.pack_start(self.textlabel_description, True, True, 0)
@@ -94,4 +98,4 @@ class Tag_Box(Gtk.Box):
         first_row.pack_end(n_tag_label, True, True, 0)
 
 
-        self.pack_start(tag_description_label, True, True, 0)
+        self.pack_start(tag_description_label, True, True, 5)
