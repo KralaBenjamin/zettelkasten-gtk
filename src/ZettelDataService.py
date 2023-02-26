@@ -81,6 +81,26 @@ class ZettelDataService:
 
         self.zettelkasten_config.save_current_config_into_file()
 
+        # checks if there is a git
+        try:
+            self.repo = Repo(uri_zettelkasten)
+        except InvalidGitRepositoryError:
+            Repo.init(uri_zettelkasten)
+            self.repo = Repo(uri_zettelkasten)
+
+        list_all_added_files = [
+            file for file in os.listdir(uri_zettelkasten) 
+            if file.endswith(".md") or file == 'config.json'
+        ]
+
+        now = datetime.now()
+
+        dt_string = now.strftime("%Y.%m.%d.%H:%M")
+
+        self.repo.index.add(list_all_added_files)
+        self.repo.index.commit(f'current status on {dt_string}')
+
+        
     def reload(self):
         """
         Reloads all data with given uri_zettelkasten.
@@ -149,6 +169,8 @@ class ZettelDataService:
 
         dt_string = now.strftime("%Y%m%d%H%M")
         file_list = os.listdir(self.uri_zettelkasten)
+
+        # checks if there is file conflict and solves it
         if not dt_string + ".md" in file_list:
             new_file_name = dt_string + ".md"
         else:
@@ -162,3 +184,7 @@ class ZettelDataService:
         path_file = join(self.uri_zettelkasten, new_file_name)
         with open(path_file, "w+", encoding="utf-8") as file:
             file.write(text)
+
+        self.repo.index.add([new_file_name])
+        self.repo.index.commit(f'new added file {new_file_name}')
+
