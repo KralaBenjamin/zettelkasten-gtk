@@ -7,6 +7,9 @@ from StatisticContainer import StatisticContainer
 
 
 class MainWindow(Gtk.Window):
+    """
+    MainWindow is the main window.
+    """
     def __init__(self, zdata) -> None:
         super().__init__()
         self.zdata = zdata
@@ -19,6 +22,9 @@ class MainWindow(Gtk.Window):
         )
 
     def create_layout(self):
+        """
+        creates the layout.
+        """
         self.header_bar = Gtk.HeaderBar()
         self.header_bar.set_show_close_button(True)
         self.stack_switcher = Gtk.StackSwitcher()
@@ -42,5 +48,8 @@ class MainWindow(Gtk.Window):
         self.stack_switcher.set_stack(self.main_stack)
 
     def on_clicked_create_new_zettel_button(self, button):
+        """
+        what happens if the new window button is clicked.^
+        """
         create_window = ZettelWindow(self.zdata)
         create_window.show_all()
