@@ -4,7 +4,14 @@ from SearchResultsView import SearchResultsView
 
 
 class SearchContainer(Gtk.Box):
+    """
+    contains all widget for searching..
+    """
     def __init__(self, zdata) -> None:
+        """
+        initilisiation function.
+        zdata is the current ZettelDataService - instance used.
+        """
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.zdata = zdata
 
@@ -26,6 +33,9 @@ class SearchContainer(Gtk.Box):
         self.had_one_search = False
 
     def create_layout(self):
+        """
+        creates the layout.
+        """
         self.sw = Gtk.ScrolledWindow()
         self.search_view = SearchResultsView(id2titel=self.zdata.id_to_name)
 
@@ -71,7 +81,11 @@ class SearchContainer(Gtk.Box):
 
         self.sw.add_with_viewport(self.search_view)
 
-    def clear_search_view(self, zettels=None):
+    def create_new_search_view(self, zettels=None):
+        """
+        creates new search view.
+        zettels is a list shown by the new search view.
+        """
         self.sw.remove(self.sw.get_child())
         self.search_view = SearchResultsView(
             zettels=zettels, id2titel=self.zdata.id_to_name
@@ -80,22 +94,32 @@ class SearchContainer(Gtk.Box):
         self.show_all()
 
     def show_result(self, results, search_term):
+        """
+        show the results of the search.
+        results is a list of zettels fitting to the search action.
+        search_term is a string showing the used search term.
+        """
         if len(results) == 0:
             search_label = f"{search_term} hat keine Suchtreffer ergeben"
         else:
-            search_label = f"Suche: {search_term} ergab {len(results)} Suchergebnisse"
+            search_label = \
+                f"Suche: '{search_term}' ergab {len(results)} Suchergebnisse"
 
         self.remove(self.search_view)
 
-        self.clear_search_view(zettels=results)
+        self.create_new_search_view(zettels=results)
         self.search_view.add_text(search_label)
 
     def on_search_button_split_words(self, _):
+        '''
+        function what happens if split words search button is clicked
+        or search entry is used by enter.
+        '''
 
         self.last_search = "split_words"
         self.had_one_search = True
 
-        self.clear_search_view()
+        self.create_new_search_view()
 
         search_term = self.search_entry.get_text()
         sorting_method_id = self.search_order_combo_box.get_active()
@@ -108,12 +132,15 @@ class SearchContainer(Gtk.Box):
         self.show_result(results, search_term)
 
     def on_search_button_fulltext(self, _):
+        """
+        function what happens if full text search button is clicked.
+        """
         ## Todo: Suchtreffer markieren
 
         self.last_search = "fulltext"
         self.had_one_search = True
 
-        self.clear_search_view()
+        self.create_new_search_view()
 
         search_term = self.search_entry.get_text()
         sorting_method_id = self.search_order_combo_box.get_active()
@@ -124,6 +151,9 @@ class SearchContainer(Gtk.Box):
         self.show_result(results, search_term)
 
     def on_combobox_changed(self, _):
+        """
+        what happens if search property combobox is changed.
+        """
         if self.had_one_search and self.last_search == "fulltext":
             self.on_search_button_fulltext(None)
         if self.had_one_search and self.last_search == "split_words":
