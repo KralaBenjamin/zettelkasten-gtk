@@ -16,16 +16,16 @@ class ZettelWindow(Gtk.Window):
 
         self.text_view.get_buffer().set_text(self.text_template)
         self.save_button.connect("clicked", self.on_clicked_save_button)
-        self.connect('destroy', self.on_clicked_closed_button)
+        self.connect("destroy", self.on_clicked_closed_button)
 
     def create_layout(self):
         self.text_view = Gtk.TextView()
         self.text_view.get_style_context().add_class("text-editor")
 
         self.header_bar = Gtk.HeaderBar()
-        self.save_button = Gtk.Button.new_with_label('Speichern')
+        self.save_button = Gtk.Button.new_with_label("Speichern")
         self.save_button.get_style_context().add_class("suggested-action")
-        self.save_button.set_tooltip_text('Speichert den aktuellen Text als Zettel.')
+        self.save_button.set_tooltip_text("Speichert den aktuellen Text als Zettel.")
 
         self.sw = Gtk.ScrolledWindow()
 
@@ -47,6 +47,7 @@ class ZettelWindow(Gtk.Window):
 
     def on_clicked_closed_button(self, _):
         pass
+
 
 ## in Klasse packen
 def get_template():

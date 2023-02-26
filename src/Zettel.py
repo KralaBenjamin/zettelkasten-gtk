@@ -4,16 +4,20 @@ This module handels all stuff related to the Zettel Class
 
 import re
 
+
 class Zettel:
     """
     This class abstracts a Zettel of a Zettelkasten.
     """
-    def __init__(self,
-                text:str = "",
-                file_name:str = "",
-                text_section_name:str = "Text",
-                link_section_name:str = "Links",
-                source_section_name:str = "Quelle") -> None:
+
+    def __init__(
+        self,
+        text: str = "",
+        file_name: str = "",
+        text_section_name: str = "Text",
+        link_section_name: str = "Links",
+        source_section_name: str = "Quelle",
+    ) -> None:
         """
         Initiliase one Zettel. text is the text of Zettel,
         file_name the file name of Zettel.
@@ -31,7 +35,8 @@ class Zettel:
 
         self.source = extract_section(text, source_section_name, return_list=False)
 
-def extract_tags(text:str):
+
+def extract_tags(text: str):
     """
     checks that no letter and no hashtag comes before and after e.g #aue#uaioe
     so all hashtags are seperated by blank spaces
@@ -44,7 +49,7 @@ def extract_tags(text:str):
     return tags
 
 
-def extract_title(text:str):
+def extract_title(text: str):
     """
     Function extracts the title from the text.
     """
@@ -54,9 +59,9 @@ def extract_title(text:str):
     for n_line, line in enumerate(lines):
         # case where we have two or more titles
         if found_title and line.startswith("# "):
-            raise ParseErrorException(line=n_line,
-                                       exceptionSource="DoubleTitle",
-                                       text=text)
+            raise ParseErrorException(
+                line=n_line, exceptionSource="DoubleTitle", text=text
+            )
         # normal case where we find the title
         if not found_title and line.startswith("# "):
             found_title = True
@@ -67,7 +72,7 @@ def extract_title(text:str):
         raise ParseErrorException(exceptionSource="NoTitleFound")
 
 
-def extract_section(text:str, section_name:str, return_list:bool=True):
+def extract_section(text: str, section_name: str, return_list: bool = True):
     """
     Extracts the section with section_name from text.
     returns list of liste if return of list is true
@@ -82,9 +87,11 @@ def extract_section(text:str, section_name:str, return_list:bool=True):
         line = line.strip()
         if len(line) > 0:
             # we found the head of the section
-            if not section_started \
-                    and line.startswith(f"## {section_name}")\
-                    and not section_completed:
+            if (
+                not section_started
+                and line.startswith(f"## {section_name}")
+                and not section_completed
+            ):
                 section_started = True
                 section_found = True
             # we found the end of the section
@@ -95,12 +102,12 @@ def extract_section(text:str, section_name:str, return_list:bool=True):
             elif section_started:
                 section_lines.append(line)
             # here we have a double section
-            if line.startswith(f"## {section_name}")\
-                    and section_completed:
+            if line.startswith(f"## {section_name}") and section_completed:
                 raise ParseErrorException(line=i, exceptionSource="doubleSection")
     if not section_found:
-        raise ParseErrorException(exceptionSource="noSectionFound",
-                                  text=f"""section:{section_name}\n{text}""")
+        raise ParseErrorException(
+            exceptionSource="noSectionFound", text=f"""section:{section_name}\n{text}"""
+        )
     if return_list:
         return section_lines
     else:
@@ -111,10 +118,8 @@ class ParseErrorException(Exception):
     """
     Exception class for the case, where Zettel class can't parse a text.
     """
-    def __init__(self,
-                line:int = -1,
-                exceptionSource:str = "",
-                text:str = ""):
+
+    def __init__(self, line: int = -1, exceptionSource: str = "", text: str = ""):
         """
         Initialise.
         line is the line in the text,

@@ -1,6 +1,6 @@
-
 import gi
-gi.require_version('Gtk', '3.0')
+
+gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gio, Gdk, GObject
 from ZettelDataService import ZettelDataService
 from MainWindow import MainWindow
@@ -29,7 +29,7 @@ style_context.add_provider_for_screen(
 css_file = get_css_file()
 provider.load_from_file(css_file)
 
-window = MainWindow(zData) 
+window = MainWindow(zData)
 
 window.show_all()
 

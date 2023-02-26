@@ -11,6 +11,9 @@ from Zettel import Zettel
 from ZettelSortingMethods import ZettelSortingMethods
 from ZettelkastenConfig import ZettelkastenConfig
 
+from git import Repo, InvalidGitRepositoryError
+from git.cmd import Git
+
 
 class ZettelDataService:
     """
@@ -26,7 +29,9 @@ class ZettelDataService:
 
         self.uri_zettelkasten = uri_zettelkasten
 
-        file_list = [file for file in os.listdir(uri_zettelkasten) if file.endswith(".md")]
+        file_list = [
+            file for file in os.listdir(uri_zettelkasten) if file.endswith(".md")
+        ]
         # collects all links, a zettel provides from
         self.__zettel_links_from__ = defaultdict(list)
         self.id_to_name = defaultdict(lambda x: "MissingNo")
@@ -38,10 +43,10 @@ class ZettelDataService:
 
         if not self.zettelkasten_config.has_path_config_file():
             self.zettelkasten_config.load_standard_configuration()
-    
+
         self.zettel_list = list()
 
-        #loading files into zettel objects
+        # loading files into zettel objects
         for file_name in file_list:
             path_file = join(uri_zettelkasten, file_name)
             with open(path_file, "r", encoding="utf-8") as file:
@@ -52,10 +57,10 @@ class ZettelDataService:
                     file_name=file_name,
                     text_section_name=self.zettelkasten_config.text_section_name,
                     link_section_name=self.zettelkasten_config.link_section_name,
-                    source_section_name=self.zettelkasten_config.source_section_name
+                    source_section_name=self.zettelkasten_config.source_section_name,
                 )
             )
-        
+
         for zettel in self.zettel_list:
             # collects all links who refer to zettel
             for linked_zettel_id in zettel.links:
@@ -75,6 +80,7 @@ class ZettelDataService:
                 self.zettelkasten_config.set_tag_description(tag[1:], "")
 
         self.zettelkasten_config.save_current_config_into_file()
+
     def reload(self):
         """
         Reloads all data with given uri_zettelkasten.
@@ -84,8 +90,8 @@ class ZettelDataService:
     def search_split_words(
         self,
         search_term: str,
-        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last
-        ):
+        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last,
+    ):
         """
         Search the zettels with split_words method.
         split_words method means, we all check if the words in zettel text
@@ -100,25 +106,26 @@ class ZettelDataService:
             search_terms = list()
             search_terms.append("")
 
-        result_list = [zettel
+        result_list = [
+            zettel
             for zettel in self.zettel_list
             if search_terms[0].lower()
             in (zettel.raw_text.lower() + f" {zettel.file_name}")
         ]
 
         for term in search_terms[1:]:
-            result_list = [zettel
+            result_list = [
+                zettel
                 for zettel in result_list
-                if term.lower()
-                in (zettel.raw_text.lower() + f" {zettel.file_name}")
+                if term.lower() in (zettel.raw_text.lower() + f" {zettel.file_name}")
             ]
         return sorting_method(result_list)
 
     def search_fulltext(
         self,
         search_term: str,
-        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last
-        ):
+        sorting_method=ZettelSortingMethods.sorted_zettel_date_old_to_last,
+    ):
         """
         Search the zettels with fulltext method.
         fulltext method means, we all check if the words in zettel text
@@ -127,10 +134,10 @@ class ZettelDataService:
 
         You can find some examples in ZettelSortingMethods.
         """
-        result_list = [zettel
+        result_list = [
+            zettel
             for zettel in self.zettel_list
-            if search_term.lower()
-            in (zettel.raw_text.lower() + f" {zettel.file_name}")
+            if search_term.lower() in (zettel.raw_text.lower() + f" {zettel.file_name}")
         ]
         return sorting_method(result_list)
 
@@ -147,8 +154,8 @@ class ZettelDataService:
         else:
             new_file_counter = 0
             while True:
-                if not f'{dt_string}_{new_file_counter}.md' in file_list:
-                    new_file_name = f'{dt_string}_{new_file_counter}.md'
+                if not f"{dt_string}_{new_file_counter}.md" in file_list:
+                    new_file_name = f"{dt_string}_{new_file_counter}.md"
                     break
 
                 new_file_counter += 1

@@ -9,9 +9,9 @@ from os import makedirs
 import sys
 
 import gi
+
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-
 
 
 class Settings:
@@ -24,13 +24,9 @@ class Settings:
         Init Settings
         """
         self.location = join(
-            os.environ['HOME'],
-            ".config/zettelkasten-gtk/settings.json"
+            os.environ["HOME"], ".config/zettelkasten-gtk/settings.json"
         )
-        self.location_dir = join(
-            os.environ['HOME'],
-            ".config/zettelkasten-gtk/"
-        )
+        self.location_dir = join(os.environ["HOME"], ".config/zettelkasten-gtk/")
 
         try:
             with open(self.location, "r", encoding="utf-8") as file:
@@ -59,9 +55,11 @@ class Settings:
         """
         checks, if there is any zettelkasten in Settings.
         """
-        return "zk_locations" in self.settings_dict and \
-            isinstance(self.settings_dict["zk_locations"], list) and \
-            len(self.settings_dict["zk_locations"]) > 0
+        return (
+            "zk_locations" in self.settings_dict
+            and isinstance(self.settings_dict["zk_locations"], list)
+            and len(self.settings_dict["zk_locations"]) > 0
+        )
 
     def get_zk_locations(self):
         """
@@ -88,19 +86,18 @@ def get_zettelkasten_location_dialog():
     Function opens a new Dialog so User can add first Zettelkasten Location.
     """
 
-    msg = Gtk.MessageDialog(
-        title="Kein Ordner mit Zettel gefunden",
-        flags=0
-    )
+    msg = Gtk.MessageDialog(title="Kein Ordner mit Zettel gefunden", flags=0)
     msg.add_buttons(
         Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
     )
-    msg.format_secondary_markup("Um die Zettel durchsuchen zu können, braucht es ein Ordner.")
+    msg.format_secondary_markup(
+        "Um die Zettel durchsuchen zu können, braucht es ein Ordner."
+    )
     msg.set_default_size(200, 150)
 
     msg_result = msg.run()
 
-    if msg_result == -6: #cancel
+    if msg_result == -6:  # cancel
         sys.exit(0)
 
     msg.destroy()
@@ -114,8 +111,8 @@ def get_zettelkasten_location_dialog():
     )
 
     response_file_chooser = file_chooser.run()
-    if response_file_chooser == -6: #cancel
+    if response_file_chooser == -6:  # cancel
         sys.exit(0)
     uri = file_chooser.get_uri()
 
-    return uri.replace('file://', "")
+    return uri.replace("file://", "")

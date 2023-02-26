@@ -1,6 +1,5 @@
 from gi.repository import Gtk
-from ZettelSortingMethods import list_all_sorting_methods,\
-    dict_id_to_sorting_method
+from ZettelSortingMethods import list_all_sorting_methods, dict_id_to_sorting_method
 from SearchResultsView import SearchResultsView
 
 
@@ -13,24 +12,18 @@ class SearchContainer(Gtk.Box):
 
         for sorting_method_desc in list_all_sorting_methods:
             self.search_order_combo_box.insert_text(
-                sorting_method_desc["int-id"],
-                sorting_method_desc["display-string"])
+                sorting_method_desc["int-id"], sorting_method_desc["display-string"]
+            )
         self.search_order_combo_box.set_active(0)
 
-
-        self.search_entry.connect(
-            "activate",
-            self.on_search_button_split_words)
-        self.search_button.connect("clicked",
-                                   self.on_search_button_fulltext)
-        self.split_word_search_button.connect("clicked",
-                                              self.on_search_button_split_words)
-        self.search_order_combo_box.connect("changed",
-                                            self.on_combobox_changed)
+        self.search_entry.connect("activate", self.on_search_button_split_words)
+        self.search_button.connect("clicked", self.on_search_button_fulltext)
+        self.split_word_search_button.connect(
+            "clicked", self.on_search_button_split_words
+        )
+        self.search_order_combo_box.connect("changed", self.on_combobox_changed)
 
         self.had_one_search = False
-
-        
 
     def create_layout(self):
         self.sw = Gtk.ScrolledWindow()
@@ -45,9 +38,13 @@ class SearchContainer(Gtk.Box):
         self.search_button = Gtk.Button()
         self.split_word_search_button = Gtk.Button()
         self.search_button.set_label("Volltext")
-        self.search_button.set_tooltip_text('Jeder Zettel wird mit den genauen Text durchsucht')
+        self.search_button.set_tooltip_text(
+            "Jeder Zettel wird mit den genauen Text durchsucht"
+        )
         self.split_word_search_button.set_label("Einzelwortsuche")
-        self.split_word_search_button.set_tooltip_text('Jeder Zettel, der eines der Wörter enthält, wird angezeigt')
+        self.split_word_search_button.set_tooltip_text(
+            "Jeder Zettel, der eines der Wörter enthält, wird angezeigt"
+        )
 
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
@@ -60,7 +57,9 @@ class SearchContainer(Gtk.Box):
 
         self.search_order_combo_box = Gtk.ComboBoxText()
         self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
-        self.search_order_combo_box.set_tooltip_text('Die Reihenfolge der Suchergebnisse')
+        self.search_order_combo_box.set_tooltip_text(
+            "Die Reihenfolge der Suchergebnisse"
+        )
 
         self.split_word_search_button.get_style_context().add_class("zk-search-bar")
 
@@ -72,21 +71,19 @@ class SearchContainer(Gtk.Box):
 
         self.sw.add_with_viewport(self.search_view)
 
-
     def clear_search_view(self, zettels=None):
         self.sw.remove(self.sw.get_child())
-        self.search_view = SearchResultsView(zettels=zettels,
-                                             id2titel=self.zdata.id_to_name)
+        self.search_view = SearchResultsView(
+            zettels=zettels, id2titel=self.zdata.id_to_name
+        )
         self.sw.add_with_viewport(self.search_view)
         self.show_all()
 
     def show_result(self, results, search_term):
         if len(results) == 0:
-            search_label = \
-                f"{search_term} hat keine Suchtreffer ergeben"
+            search_label = f"{search_term} hat keine Suchtreffer ergeben"
         else:
-            search_label = \
-                f"Suche: {search_term} ergab {len(results)} Suchergebnisse"
+            search_label = f"Suche: {search_term} ergab {len(results)} Suchergebnisse"
 
         self.remove(self.search_view)
 
@@ -104,8 +101,9 @@ class SearchContainer(Gtk.Box):
         sorting_method_id = self.search_order_combo_box.get_active()
         sorting_method = dict_id_to_sorting_method[sorting_method_id]
 
-        results = self.zdata.search_split_words(search_term,
-                                                sorting_method=sorting_method)
+        results = self.zdata.search_split_words(
+            search_term, sorting_method=sorting_method
+        )
 
         self.show_result(results, search_term)
 
@@ -121,8 +119,7 @@ class SearchContainer(Gtk.Box):
         sorting_method_id = self.search_order_combo_box.get_active()
         sorting_method = dict_id_to_sorting_method[sorting_method_id]
 
-        results = self.zdata.search_fulltext(search_term,
-                                             sorting_method=sorting_method)
+        results = self.zdata.search_fulltext(search_term, sorting_method=sorting_method)
 
         self.show_result(results, search_term)
 

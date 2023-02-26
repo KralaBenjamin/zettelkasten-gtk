@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 
+
 class StatisticContainer(Gtk.Box):
     def __init__(self, zdata) -> None:
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -13,21 +14,14 @@ class StatisticContainer(Gtk.Box):
         )
 
         sorted_tags = sorted(
-            self.zdata.hashtag_counter.items(),
-            key=lambda items: items[1],
-            reverse=True
+            self.zdata.hashtag_counter.items(), key=lambda items: items[1], reverse=True
         )
         for tag, n_tag in sorted_tags:
             description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
-            self.tag_flow_box.add(
-                Tag_Box(tag, n_tag, description)
-            )
-
+            self.tag_flow_box.add(Tag_Box(tag, n_tag, description))
 
         sorted_sources = sorted(
-            self.zdata.source_counter.items(),
-            key=lambda items: items[1],
-            reverse=True
+            self.zdata.source_counter.items(), key=lambda items: items[1], reverse=True
         )
         text_source = ""
         ## todo: Widget bauen
@@ -57,30 +51,24 @@ class StatisticContainer(Gtk.Box):
         self.content.pack_start(self.header_description, True, True, 0)
         self.content.pack_start(self.textlabel_description, True, True, 0)
         self.content.pack_start(self.header_tags, True, True, 0)
-        self.content.pack_start(self.tag_flow_box,  True, True, 0)
+        self.content.pack_start(self.tag_flow_box, True, True, 0)
 
         self.content.pack_start(self.header_source, True, True, 0)
         self.content.pack_start(self.textlabel_source, False, False, 0)
 
-        self.header_tags.set_text('Schlagwörter und ihre Häufigkeit')
-        self.header_tags.get_style_context().add_class(
-            "stat-heading"
-            )
+        self.header_tags.set_text("Schlagwörter und ihre Häufigkeit")
+        self.header_tags.get_style_context().add_class("stat-heading")
 
-        self.header_description.set_text(
-            "Beschreibung des Zettelkasten"
-            )
-        self.header_description.get_style_context().add_class(
-            "stat-heading"
-            )
+        self.header_description.set_text("Beschreibung des Zettelkasten")
+        self.header_description.get_style_context().add_class("stat-heading")
 
-        self.header_source.set_text('Quellen und ihre Häufigkeit')
+        self.header_source.set_text("Quellen und ihre Häufigkeit")
         self.header_source.get_style_context().add_class("stat-heading")
+
 
 class Tag_Box(Gtk.Box):
     def __init__(self, tag_name, n_tag, tag_description):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
-        
 
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         tag_name_label = Gtk.Label(tag_name)
@@ -88,13 +76,10 @@ class Tag_Box(Gtk.Box):
         tag_description_label = Gtk.Label(tag_description)
         tag_description_label.set_line_wrap(True)
         tag_description_label.set_max_width_chars(20)
-        tag_name_label.get_style_context().add_class(
-            "tag-text"
-            )
+        tag_name_label.get_style_context().add_class("tag-text")
 
         self.pack_start(first_row, True, True, 0)
         first_row.pack_start(tag_name_label, True, True, 0)
         first_row.pack_end(n_tag_label, True, True, 0)
 
         self.pack_start(tag_description_label, False, False, 0)
-
