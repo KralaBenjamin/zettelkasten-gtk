@@ -5,21 +5,31 @@ from os.path import join, exists
 
 
 class ZettelkastenConfig:
-
+    """
+    Class for config.json in Zettelkasten dir.
+    """
 
     def __init__(self, zettelkasten_path:str):
+        """
+        init for loading the config file.
+        """
         self.zettelkasten_path = zettelkasten_path
         if self.has_path_config_file():
             self.load_config_file()
 
 
-
     def has_path_config_file(self):
+        """
+        returns true, if path has config_file
+        """
         path = join(self.zettelkasten_path, "config.json")
         return exists(path)
 
 
     def load_config_file(self):
+        """
+        loads the information from the config file in path.
+        """
         path = join(self.zettelkasten_path, "config.json")
 
         json_file = json.load(
@@ -37,6 +47,10 @@ class ZettelkastenConfig:
             = json_file["tag_descriptions"]
 
     def load_standard_configuration(self):
+        """
+        loads the standard configuration.
+        Usually used if there was no config file before.
+        """
         self.zettelkasten_description \
             = ""
         self.text_section_name \
@@ -50,6 +64,9 @@ class ZettelkastenConfig:
 
 
     def save_current_config_into_file(self):
+        """
+        saves current state into the config file.
+        """
         path = join(self.zettelkasten_path, "config.json")
         json.dump(
             {
@@ -64,15 +81,24 @@ class ZettelkastenConfig:
         )
 
     def is_tag_in_config(self, tag):
+        """
+        checks if config file has the tag.
+        """
         return tag in self.__tag_descriptions__
 
     def get_tag_description(self, tag):
+        """
+        returns the tag description.
+        """
         try:
             return self.__tag_descriptions__[tag]
         except KeyError:
             return ""
 
     def set_tag_description(self, tag, description):
+        """
+        
+        """
         self.__tag_descriptions__[tag] = description
 
 
