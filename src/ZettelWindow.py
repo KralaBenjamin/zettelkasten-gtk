@@ -8,7 +8,7 @@ class ZettelWindow(Gtk.Window):
     ## Todo: Prüfen, ob es md syntaktisch korrekt sind
     ## Todo: Event erstellen, dass ein neuer Zettel erstellt worden ist
 
-    def __init__(self, zdata, title="Füge Zettel hinzu") -> None:
+    def __init__(self, zdata, title:str="Füge Zettel hinzu") -> None:
         super().__init__(title=title)
         self.zdata = zdata
         self.title = title
@@ -45,15 +45,16 @@ class ZettelWindow(Gtk.Window):
 
     # String als Object
     @GObject.Signal
-    def new_zettel_created(self):
+    def new_zettel_created(self, new_zettel_text: str):
         pass
 
     def on_clicked_save_button(self, _):
+        zettel_text = self.text_view.get_buffer().props.text
         if self.zdata:
-            self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
+            self.zdata.add_zettel_on_uri(zettel_text)
             self.zdata.reload()
 
-        self.emit("new_zettel_created")
+        self.emit("new_zettel_created", zettel_text)
         self.close()
 
     def on_clicked_closed_button(self, _):
@@ -62,9 +63,7 @@ class ZettelWindow(Gtk.Window):
 
 ## in Klasse packen
 def get_template():
-    # o boy.... hier muss Path rein
     path_location = Path(__file__)
-    print(path_location.parent.parent.joinpath("template.md"))
     template_file_location = path_location.parent.parent.joinpath("template.md")
     with open(template_file_location) as f:
         text_template = f.read()
@@ -74,9 +73,9 @@ def get_template():
 if __name__ == "__main__":
     print(get_template())
     zettel_window = ZettelWindow(None)
-    def print_test(obj):
+    def print_test(obj, text):
         print(type(obj))
-        print("Signal funktioniert!")
+        print("Signal funktioniert!", len(text))
     zettel_window.connect("new_zettel_created", print_test)
     zettel_window.show_all()
     Gtk.main()

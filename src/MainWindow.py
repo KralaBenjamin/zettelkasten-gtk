@@ -46,12 +46,18 @@ class MainWindow(Gtk.Window):
         self.add(self.main_stack)
         self.stack_switcher.set_stack(self.main_stack)
 
-    def on_clicked_create_new_zettel_button(self, button):
+    def on_clicked_create_new_zettel_button(self, _):
         """
         what happens if the new window button is clicked.
         """
-        zettel_window = ZettelWindow(self.zdata)
-        def print_test(_):
+        zettel_window = ZettelWindow(None)
+        def print_test(_, text):
             print("Signal funktioniert!")
+        def save_new_zettel(_, zettel_text):
+            self.zdata.add_zettel_on_uri(zettel_text)
+            self.zdata.reload()
+            print("Signal funktioniert!")
+
         zettel_window.connect("new_zettel_created", print_test)
+        zettel_window.connect("new_zettel_created", save_new_zettel)
         zettel_window.show_all()
