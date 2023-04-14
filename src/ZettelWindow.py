@@ -1,6 +1,8 @@
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GObject
+from pathlib import Path
+
 
 class ZettelWindow(Gtk.Window):
     ## Todo: Prüfen, ob es md syntaktisch korrekt sind
@@ -61,14 +63,16 @@ class ZettelWindow(Gtk.Window):
 ## in Klasse packen
 def get_template():
     # o boy.... hier muss Path rein
-    current_location = __file__
-    template_file_location = "/".join(current_location.split("/")[:-2]) + "/template.md"
+    path_location = Path(__file__)
+    print(path_location.parent.parent.joinpath("template.md"))
+    template_file_location = path_location.parent.parent.joinpath("template.md")
     with open(template_file_location) as f:
         text_template = f.read()
 
     return text_template
 
 if __name__ == "__main__":
+    print(get_template())
     zettel_window = ZettelWindow(None)
     def print_test(obj):
         print(type(obj))
