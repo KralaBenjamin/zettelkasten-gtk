@@ -48,7 +48,10 @@ class MainWindow(Gtk.Window):
 
     def on_clicked_create_new_zettel_button(self, button):
         """
-        what happens if the new window button is clicked.^
+        what happens if the new window button is clicked.
         """
-        create_window = ZettelWindow(self.zdata)
-        create_window.show_all()
+        zettel_window = ZettelWindow(self.zdata)
+        def print_test(_):
+            print("Signal funktioniert!")
+        zettel_window.connect("new_zettel_created", print_test)
+        zettel_window.show_all()

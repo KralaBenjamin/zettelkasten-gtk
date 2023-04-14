@@ -1,5 +1,6 @@
-from gi.repository import Gtk
-
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, GObject
 
 class ZettelWindow(Gtk.Window):
     ## Todo: Prüfen, ob es md syntaktisch korrekt sind
@@ -35,14 +36,22 @@ class ZettelWindow(Gtk.Window):
 
         self.header_bar.pack_start(self.save_button)
 
-        self.sw.add_with_viewport(self.text_view)
+        self.sw.add(self.text_view)
         self.add(self.sw)
 
         self.set_default_size(600, 600)
 
+    # String als Object
+    @GObject.Signal
+    def new_zettel_created(self):
+        pass
+
     def on_clicked_save_button(self, _):
-        self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
-        self.zdata.reload()
+        if self.zdata:
+            self.zdata.add_zettel_on_uri(self.text_view.get_buffer().props.text)
+            self.zdata.reload()
+
+        self.emit("new_zettel_created")
         self.close()
 
     def on_clicked_closed_button(self, _):
@@ -51,9 +60,19 @@ class ZettelWindow(Gtk.Window):
 
 ## in Klasse packen
 def get_template():
+    # o boy.... hier muss Path rein
     current_location = __file__
     template_file_location = "/".join(current_location.split("/")[:-2]) + "/template.md"
     with open(template_file_location) as f:
         text_template = f.read()
 
     return text_template
+
+if __name__ == "__main__":
+    zettel_window = ZettelWindow(None)
+    def print_test(obj):
+        print(type(obj))
+        print("Signal funktioniert!")
+    zettel_window.connect("new_zettel_created", print_test)
+    zettel_window.show_all()
+    Gtk.main()
