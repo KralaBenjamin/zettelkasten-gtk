@@ -4,14 +4,15 @@ from gi.repository import Gtk, GObject
 from pathlib import Path
 
 
-class ZettelWindow(Gtk.Window):
+class EditWindow(Gtk.Window):
     ## Todo: Event erstellen, dass ein neuer Zettel erstellt worden ist
 
     def __init__(
         self, 
         title:str = "Füge Zettel hinzu",
         button_text: str = "Speichern",
-        button_tooltip_text: str = "Speichert den aktuellen Text als Zettel."
+        button_tooltip_text: str = "Speichert den aktuellen Text als Zettel.",
+        text_template: str = ""
         ) -> None:
         super().__init__(title=title)
         self.title = title
@@ -20,7 +21,7 @@ class ZettelWindow(Gtk.Window):
 
         self.create_layout()
 
-        self.text_template = get_template()
+        self.text_template = text_template
 
         self.text_view.get_buffer().set_text(self.text_template)
         self.save_button.connect("clicked", self.on_clicked_save_button)
@@ -61,6 +62,16 @@ class ZettelWindow(Gtk.Window):
 
     def on_clicked_closed_button(self, _):
         pass
+
+class ZettelWindow(EditWindow):
+
+    def __init__(self):
+        super().__init__(
+            title="Füge Zettel hinzu",
+            button_text="Speichern",
+            button_tooltip_text="Speichert den aktuellen Text als Zettel.",
+            text_template=get_template()
+        )
 
 
 ## in Klasse packen
