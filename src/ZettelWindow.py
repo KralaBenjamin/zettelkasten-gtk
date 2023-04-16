@@ -8,9 +8,8 @@ class ZettelWindow(Gtk.Window):
     ## Todo: Prüfen, ob es md syntaktisch korrekt sind
     ## Todo: Event erstellen, dass ein neuer Zettel erstellt worden ist
 
-    def __init__(self, zdata, title:str="Füge Zettel hinzu") -> None:
+    def __init__(self, title:str="Füge Zettel hinzu") -> None:
         super().__init__(title=title)
-        self.zdata = zdata
         self.title = title
 
         self.create_layout()
@@ -50,9 +49,6 @@ class ZettelWindow(Gtk.Window):
 
     def on_clicked_save_button(self, _):
         zettel_text = self.text_view.get_buffer().props.text
-        if self.zdata:
-            self.zdata.add_zettel_on_uri(zettel_text)
-            self.zdata.reload()
 
         self.emit("new_zettel_created", zettel_text)
         self.close()
