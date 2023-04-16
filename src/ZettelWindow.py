@@ -5,12 +5,18 @@ from pathlib import Path
 
 
 class ZettelWindow(Gtk.Window):
-    ## Todo: Prüfen, ob es md syntaktisch korrekt sind
     ## Todo: Event erstellen, dass ein neuer Zettel erstellt worden ist
 
-    def __init__(self, title:str="Füge Zettel hinzu") -> None:
+    def __init__(
+        self, 
+        title:str = "Füge Zettel hinzu",
+        button_text: str = "Speichern",
+        button_tooltip_text: str = "Speichert den aktuellen Text als Zettel."
+        ) -> None:
         super().__init__(title=title)
         self.title = title
+        self.button_text = button_text
+        self.button_tooltip_text = button_tooltip_text
 
         self.create_layout()
 
@@ -25,9 +31,9 @@ class ZettelWindow(Gtk.Window):
         self.text_view.get_style_context().add_class("text-editor")
 
         self.header_bar = Gtk.HeaderBar()
-        self.save_button = Gtk.Button.new_with_label("Speichern")
+        self.save_button = Gtk.Button.new_with_label(self.button_text)
         self.save_button.get_style_context().add_class("suggested-action")
-        self.save_button.set_tooltip_text("Speichert den aktuellen Text als Zettel.")
+        self.save_button.set_tooltip_text(self.button_tooltip_text)
 
         self.sw = Gtk.ScrolledWindow()
 
@@ -68,7 +74,7 @@ def get_template():
 
 if __name__ == "__main__":
     print(get_template())
-    zettel_window = ZettelWindow(None)
+    zettel_window = ZettelWindow()
     def print_test(obj, text):
         print(type(obj))
         print("Signal funktioniert!", len(text))

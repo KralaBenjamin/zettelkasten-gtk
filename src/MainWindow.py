@@ -50,6 +50,8 @@ class MainWindow(Gtk.Window):
         """
         what happens if the new window button is clicked.
         """
+        ## Todo: Prüfen, ob es md syntaktisch korrekt sind
+
         zettel_window = ZettelWindow()
         def save_new_zettel(_, zettel_text):
             self.zdata.add_zettel_on_uri(zettel_text)
