@@ -51,13 +51,13 @@ class EditWindow(Gtk.Window):
 
     # String als Object
     @GObject.Signal
-    def new_zettel_created(self, new_zettel_text: str):
+    def save_button_clicked(self, textbox_text: str):
         pass
 
     def on_clicked_save_button(self, _):
-        zettel_text = self.text_view.get_buffer().props.text
+        textbox_text = self.text_view.get_buffer().props.text
 
-        self.emit("new_zettel_created", zettel_text)
+        self.emit("save_button_clicked", textbox_text)
         self.close()
 
     def on_clicked_closed_button(self, _):
@@ -73,6 +73,15 @@ class ZettelWindow(EditWindow):
             text_template=get_template()
         )
 
+class TagWindow(EditWindow):
+    def __init__(self, tag):
+        super().__init__(
+            title=f"Ändere {tag}-Beschreibung",
+            button_text="Speichern",
+            button_tooltip_text=f"Speichert den aktuellen Text als Beschreibung für den Tag {tag}.",
+            text_template=""
+        )
+
 
 ## in Klasse packen
 def get_template():
@@ -84,11 +93,10 @@ def get_template():
     return text_template
 
 if __name__ == "__main__":
-    print(get_template())
     zettel_window = ZettelWindow()
     def print_test(obj, text):
         print(type(obj))
         print("Signal funktioniert!", len(text))
-    zettel_window.connect("new_zettel_created", print_test)
+    zettel_window.connect("save_button_clicked", print_test)
     zettel_window.show_all()
     Gtk.main()

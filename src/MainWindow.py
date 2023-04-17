@@ -1,7 +1,7 @@
 from gi.repository import Gtk
 
 from SearchContainer import SearchContainer
-from ZettelWindow import ZettelWindow
+from EditWindow import ZettelWindow
 from StatisticContainer import StatisticContainer
 
 
@@ -57,5 +57,5 @@ class MainWindow(Gtk.Window):
             self.zdata.add_zettel_on_uri(zettel_text)
             self.zdata.reload()
 
-        zettel_window.connect("new_zettel_created", save_new_zettel)
+        zettel_window.connect("save_button_clicked", save_new_zettel)
         zettel_window.show_all()
