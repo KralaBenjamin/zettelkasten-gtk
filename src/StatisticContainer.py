@@ -1,4 +1,5 @@
 from gi.repository import Gtk
+from EditWindow import TagWindow
 
 
 class StatisticContainer(Gtk.Box):
@@ -74,6 +75,8 @@ class Tag_Box(Gtk.Box):
     def __init__(self, tag_name, n_tag, tag_description):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
+        self.tag_name = tag_name
+
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.edit_button = Gtk.Button.new_from_icon_name(
             "document-edit", Gtk.IconSize.BUTTON
@@ -81,6 +84,7 @@ class Tag_Box(Gtk.Box):
         self.edit_button.set_tooltip_text(
             "Ändere Beschreibung des Schlagwortes"
         )
+        self.edit_button.connect("clicked", self.on_edit_button_clicked)
         tag_name_label = Gtk.Label(tag_name)
         n_tag_label = Gtk.Label(n_tag)
 
@@ -99,3 +103,15 @@ class Tag_Box(Gtk.Box):
 
 
         self.pack_start(tag_description_label, True, True, 5)
+
+    def on_edit_button_clicked(self, _):
+        tag_description_window = TagWindow(self.tag_name[1:])
+
+        def save_tag_description(_, tag_description):
+            print(tag_description)
+
+        tag_description_window.connect(
+            "save_button_clicked", save_tag_description
+        )
+
+        tag_description_window.show_all()

@@ -76,9 +76,9 @@ class ZettelWindow(EditWindow):
 class TagWindow(EditWindow):
     def __init__(self, tag):
         super().__init__(
-            title=f"Ändere {tag}-Beschreibung",
+            title=f"Ändere Beschreibung des Schlagwortes {tag}",
             button_text="Speichern",
-            button_tooltip_text=f"Speichert den aktuellen Text als Beschreibung für den Tag {tag}.",
+            button_tooltip_text=f"Speichert den aktuellen Text als Beschreibung für das Schlagwort {tag}.",
             text_template=""
         )
 
