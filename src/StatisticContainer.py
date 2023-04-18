@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
 from EditWindow import TagWindow
 
 
@@ -17,10 +17,34 @@ class StatisticContainer(Gtk.Box):
         sorted_tags = sorted(
             self.zdata.hashtag_counter.items(), key=lambda items: items[1], reverse=True
         )
-        for tag, n_tag in sorted_tags:
-            description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
-            self.tag_flow_box.add(Tag_Box(tag, n_tag, description))
 
+        self.tag_box_dict = dict() # dict for direct access to the tag boxes
+        for tag, n_tag in sorted_tags:
+            def tag_edited(_, tag, new_tag_description):
+                self.zdata.zettelkasten_config.set_tag_description(
+                    tag, new_tag_description)
+                self.zdata.zettelkasten_config.save_current_config_into_file()
+                # commit to git
+                zettelkasten_config_path = self.zdata.zettelkasten_config.get_config_file_path()
+                self.zdata.commit_git(
+                    [zettelkasten_config_path],
+                    f"Changed tag description for {tag}"
+                )
+                # change tag box,
+                # todo: funktioniert nich, neue Funktion in TagBox einbauen.
+                print(self.tag_box_dict.keys())
+                description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
+                tag_box_n_tag = self.tag_box_dict[tag].n_tag
+                self.tag_box_dict[tag] = Tag_Box(
+                    tag, tag_box_n_tag, description)
+
+
+            description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
+
+            tag_tag_box = Tag_Box(tag, n_tag, description)
+            tag_tag_box.connect("tag_edited", tag_edited)
+            self.tag_flow_box.add(tag_tag_box)
+            self.tag_box_dict[tag[1:]] = tag_tag_box
         sorted_sources = sorted(
             self.zdata.source_counter.items(), key=lambda items: items[1], reverse=True
         )
@@ -76,6 +100,8 @@ class Tag_Box(Gtk.Box):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
         self.tag_name = tag_name
+        self.n_tag = n_tag
+        self.tag_description = tag_description
 
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.edit_button = Gtk.Button.new_from_icon_name(
@@ -104,11 +130,17 @@ class Tag_Box(Gtk.Box):
 
         self.pack_start(tag_description_label, True, True, 5)
 
+    @GObject.Signal
+    def tag_edited(self, tag: str, new_tag_description: str):
+        pass
+
     def on_edit_button_clicked(self, _):
-        tag_description_window = TagWindow(self.tag_name[1:])
+        tag_description_window = TagWindow(
+            self.tag_name[1:], self.tag_description)
+
 
         def save_tag_description(_, tag_description):
-            print(tag_description)
+            self.emit("tag_edited", self.tag_name[1:], tag_description)
 
         tag_description_window.connect(
             "save_button_clicked", save_tag_description
