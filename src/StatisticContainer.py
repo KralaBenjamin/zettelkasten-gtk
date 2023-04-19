@@ -3,7 +3,9 @@ from EditWindow import TagWindow
 
 
 class StatisticContainer(Gtk.Box):
+    # showing the statistics of the zettelkasten
     def __init__(self, zdata) -> None:
+        # initializing the container based on zdata
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.zdata = zdata
@@ -19,8 +21,11 @@ class StatisticContainer(Gtk.Box):
         )
 
         self.tag_box_dict = dict() # dict for direct access to the tag boxes
+        # here we create the tag boxes based on the tags of zdata
         for tag, n_tag in sorted_tags:
+            # reaction when tag was edited
             def tag_edited(_, tag, new_tag_description):
+                # change tag description to new description in zettelkasten config
                 self.zdata.zettelkasten_config.set_tag_description(
                     tag, new_tag_description)
                 self.zdata.zettelkasten_config.save_current_config_into_file()
@@ -30,21 +35,20 @@ class StatisticContainer(Gtk.Box):
                     [zettelkasten_config_path],
                     f"Changed tag description for {tag}"
                 )
-                # change tag box,
-                # todo: funktioniert nich, neue Funktion in TagBox einbauen.
-                print(self.tag_box_dict.keys())
-                description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
-                tag_box_n_tag = self.tag_box_dict[tag].n_tag
-                self.tag_box_dict[tag] = Tag_Box(
-                    tag, tag_box_n_tag, description)
+                # change tag box description to new description in tag box
+                description = self.zdata.zettelkasten_config.get_tag_description(tag)
+                self.tag_box_dict[tag].set_tag_description(description)
 
 
             description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
 
             tag_tag_box = Tag_Box(tag, n_tag, description)
             tag_tag_box.connect("tag_edited", tag_edited)
+
             self.tag_flow_box.add(tag_tag_box)
             self.tag_box_dict[tag[1:]] = tag_tag_box
+
+        #creates the layout for the sources
         sorted_sources = sorted(
             self.zdata.source_counter.items(), key=lambda items: items[1], reverse=True
         )
@@ -56,6 +60,7 @@ class StatisticContainer(Gtk.Box):
         self.textlabel_source.set_selectable(True)
 
     def create_layout(self):
+        # creates the general layout
         self.sw = Gtk.ScrolledWindow()
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
@@ -96,13 +101,18 @@ class StatisticContainer(Gtk.Box):
 
 
 class Tag_Box(Gtk.Box):
+    # widget for showing the tag properties
     def __init__(self, tag_name, n_tag, tag_description):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
         self.tag_name = tag_name
         self.n_tag = n_tag
         self.tag_description = tag_description
+        self.create_layout()
 
+    
+    def create_layout(self):
+        # Creates the layout
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.edit_button = Gtk.Button.new_from_icon_name(
             "document-edit", Gtk.IconSize.BUTTON
@@ -111,13 +121,13 @@ class Tag_Box(Gtk.Box):
             "Ändere Beschreibung des Schlagwortes"
         )
         self.edit_button.connect("clicked", self.on_edit_button_clicked)
-        tag_name_label = Gtk.Label(tag_name)
-        n_tag_label = Gtk.Label(n_tag)
+        tag_name_label = Gtk.Label(self.tag_name)
+        n_tag_label = Gtk.Label(self.n_tag)
 
-        tag_description_label = Gtk.Label(tag_description)
-        tag_description_label.set_line_wrap(True)
-        tag_description_label.set_max_width_chars(20)
-        tag_description_label.set_selectable(True)
+        self.tag_description_label = Gtk.Label(self.tag_description)
+        self.tag_description_label.set_line_wrap(True)
+        self.tag_description_label.set_max_width_chars(20)
+        self.tag_description_label.set_selectable(True)
 
         tag_name_label.get_style_context().add_class("tag-text")
         tag_name_label.set_selectable(True)
@@ -128,13 +138,21 @@ class Tag_Box(Gtk.Box):
         first_row.pack_end(n_tag_label, True, True, 0)
 
 
-        self.pack_start(tag_description_label, True, True, 5)
+        self.pack_start(self.tag_description_label, True, True, 5)
+
+    def set_tag_description(self, new_tag_description):
+        # set the tag description
+        self.tag_description = new_tag_description
+        self.tag_description_label.set_text(self.tag_description)
 
     @GObject.Signal
     def tag_edited(self, tag: str, new_tag_description: str):
+        # signal for widget when tag was edited
         pass
 
     def on_edit_button_clicked(self, _):
+        # reaction for edit button clicked
+        # opens tag window
         tag_description_window = TagWindow(
             self.tag_name[1:], self.tag_description)
 
