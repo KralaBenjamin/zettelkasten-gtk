@@ -96,8 +96,10 @@ class ZettelDataService:
 
         dt_string = now.strftime("%Y.%m.%d.%H:%M")
 
-        self.repo.index.add(list_all_added_files)
-        self.repo.index.commit(f'current status on {dt_string}')
+        self.commit_git(
+            list_all_added_files,
+            f'current status on {dt_string}'
+        )
 
         
     def reload(self):
@@ -160,6 +162,12 @@ class ZettelDataService:
         ]
         return sorting_method(result_list)
 
+    def commit_git(self, list_files: list, commit_message: str):
+        self.repo.index.add(list_files)
+        self.repo.index.commit(commit_message)
+
+
+
     def add_zettel_on_uri(self, text: str):
         """
         adds a zettel with the given text.
@@ -184,6 +192,8 @@ class ZettelDataService:
         with open(path_file, "w+", encoding="utf-8") as file:
             file.write(text)
 
-        self.repo.index.add([new_file_name])
-        self.repo.index.commit(f'new added file {new_file_name}')
+        self.commit_git(
+            [new_file_name],
+            f'added zettel {new_file_name} on {dt_string}',
+        )
 

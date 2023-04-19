@@ -15,18 +15,25 @@ class ZettelkastenConfig:
         if self.has_path_config_file():
             self.load_config_file()
 
+    def get_config_file_path(self) -> str:
+        """
+        returns the path to the config file.
+        """
+        path = join(self.zettelkasten_path, "config.json")
+
+        return path
+
     def has_path_config_file(self):
         """
         returns true, if path has config_file
         """
-        path = join(self.zettelkasten_path, "config.json")
-        return exists(path)
+        return exists(self.get_config_file_path())
 
     def load_config_file(self):
         """
         loads the information from the config file in path.
         """
-        path = join(self.zettelkasten_path, "config.json")
+        path = self.get_config_file_path()
 
         json_file = json.load(
             open(path, "r", encoding="utf-8"),
@@ -52,7 +59,7 @@ class ZettelkastenConfig:
         """
         saves current state into the config file.
         """
-        path = join(self.zettelkasten_path, "config.json")
+        path = self.get_config_file_path()
         json.dump(
             {
                 "zettelkasten_description": self.zettelkasten_description,
@@ -65,6 +72,7 @@ class ZettelkastenConfig:
             ensure_ascii=False,
             indent=4,
         )
+        #git Integration
 
     def is_tag_in_config(self, tag):
         """
