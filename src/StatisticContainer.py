@@ -12,13 +12,13 @@ class StatisticContainer(Gtk.Box):
 
         self.create_layout()
 
-        self.description_box.set_description(
-            self.zdata.zettelkasten_config.zettelkasten_description
-        )
-
-
         sorted_tags = sorted(
             self.zdata.hashtag_counter.items(), key=lambda items: items[1], reverse=True
+        )
+
+        self.description_box.connect(
+            "description_edited",
+            self.on_zk_description_edited
         )
 
         self.tag_box_dict = dict() # dict for direct access to the tag boxes
@@ -70,8 +70,9 @@ class StatisticContainer(Gtk.Box):
         self.pack_start(self.sw, True, True, 0)
 
         self.description_box = ZettelKastenDescription()
-        header_description = Gtk.Label()
-        self.textlabel_description = Gtk.Label()
+        self.description_box.set_description(
+            self.zdata.zettelkasten_config.zettelkasten_description
+        )
 
         header_tags = Gtk.Label()
         header_source = Gtk.Label()
@@ -96,11 +97,19 @@ class StatisticContainer(Gtk.Box):
         header_tags.set_text("Schlagwörter und ihre Häufigkeit")
         header_tags.get_style_context().add_class("stat-heading")
 
-        header_description.set_text("Beschreibung des Zettelkasten")
-        header_description.get_style_context().add_class("stat-heading")
-
         header_source.set_text("Quellen und ihre Häufigkeit")
         header_source.get_style_context().add_class("stat-heading")
+
+    def on_zk_description_edited(self, _, new_description):
+        self.zdata.zettelkasten_config.zettelkasten_description = new_description
+        self.zdata.zettelkasten_config.save_current_config_into_file()
+        # commit to git
+        zettelkasten_config_path = self.zdata.zettelkasten_config.get_config_file_path()
+        self.zdata.commit_git(
+            [zettelkasten_config_path],
+            f"Changed zettelkasten description"
+        )
+        self.description_box.set_description(new_description)
 
 
 class Tag_Box(Gtk.Box):
@@ -117,8 +126,6 @@ class Tag_Box(Gtk.Box):
             "clicked", 
             self.__on_edit_button_clicked__
         )
-
-
     
     def create_layout(self):
         # Creates the layout
@@ -246,7 +253,7 @@ class ZettelKastenDescription(Gtk.Box):
 
     def __on_edit_button_clicked__(self, button):
         # reaction for edit button clicked
-        # opens tag window
+        # opens description window
         zk_description_window = DescriptionWindow(
             self.description)
 
