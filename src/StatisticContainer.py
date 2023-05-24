@@ -12,9 +12,10 @@ class StatisticContainer(Gtk.Box):
 
         self.create_layout()
 
-        self.textlabel_description.set_text(
+        self.description_box.set_description(
             self.zdata.zettelkasten_config.zettelkasten_description
         )
+
 
         sorted_tags = sorted(
             self.zdata.hashtag_counter.items(), key=lambda items: items[1], reverse=True
@@ -57,7 +58,6 @@ class StatisticContainer(Gtk.Box):
         for source, n_source in sorted_sources:
             text_source += f"{source[:100]}: \t {n_source} \n"
         self.textlabel_source.set_text(text_source)
-        self.textlabel_source.set_selectable(True)
 
     def create_layout(self):
         # creates the general layout
@@ -67,11 +67,12 @@ class StatisticContainer(Gtk.Box):
         self.sw.add_with_viewport(self.content)
         self.pack_start(self.sw, True, True, 0)
 
-        self.header_description = Gtk.Label()
+        self.description_box = ZettelKastenDescription()
+        header_description = Gtk.Label()
         self.textlabel_description = Gtk.Label()
 
-        self.header_tags = Gtk.Label()
-        self.header_source = Gtk.Label()
+        header_tags = Gtk.Label()
+        header_source = Gtk.Label()
         self.tag_flow_box = Gtk.FlowBox()
         self.textlabel_source = Gtk.Label()
 
@@ -81,23 +82,23 @@ class StatisticContainer(Gtk.Box):
         self.tag_flow_box.props.column_spacing = 20
         self.tag_flow_box.props.row_spacing = 20
 
+        self.textlabel_source.set_selectable(True)
 
-        self.content.pack_start(self.header_description, True, True, 0)
-        self.content.pack_start(self.textlabel_description, True, True, 0)
-        self.content.pack_start(self.header_tags, True, True, 0)
+        self.content.pack_start(self.description_box, True, True, 0)
+        self.content.pack_start(header_tags, True, True, 0)
         self.content.pack_start(self.tag_flow_box, True, True, 0)
 
-        self.content.pack_start(self.header_source, True, True, 0)
+        self.content.pack_start(header_source, True, True, 0)
         self.content.pack_start(self.textlabel_source, False, False, 0)
 
-        self.header_tags.set_text("Schlagwörter und ihre Häufigkeit")
-        self.header_tags.get_style_context().add_class("stat-heading")
+        header_tags.set_text("Schlagwörter und ihre Häufigkeit")
+        header_tags.get_style_context().add_class("stat-heading")
 
-        self.header_description.set_text("Beschreibung des Zettelkasten")
-        self.header_description.get_style_context().add_class("stat-heading")
+        header_description.set_text("Beschreibung des Zettelkasten")
+        header_description.get_style_context().add_class("stat-heading")
 
-        self.header_source.set_text("Quellen und ihre Häufigkeit")
-        self.header_source.get_style_context().add_class("stat-heading")
+        header_source.set_text("Quellen und ihre Häufigkeit")
+        header_source.get_style_context().add_class("stat-heading")
 
 
 class Tag_Box(Gtk.Box):
@@ -137,7 +138,6 @@ class Tag_Box(Gtk.Box):
         first_row.pack_end(self.edit_button, False, False, 0)
         first_row.pack_end(n_tag_label, True, True, 0)
 
-
         self.pack_start(self.tag_description_label, True, True, 5)
 
     def set_tag_description(self, new_tag_description):
@@ -165,3 +165,45 @@ class Tag_Box(Gtk.Box):
         )
 
         tag_description_window.show_all()
+
+class ZettelKastenDescription(Gtk.Box):
+    """
+    Widget for showing zettel kasten description
+    """
+
+    def __init__(self):
+        """
+        init function
+        """
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
+        self.create_layout()
+
+
+    def create_layout(self):
+        """
+        Creates the layout
+        """
+        header_description = Gtk.Label()
+        self.textlabel_description = Gtk.Label()
+
+        self.pack_start(header_description, True, True, 0)
+        self.pack_start(self.textlabel_description, True, True, 0)
+
+        header_description.set_text("Beschreibung des Zettelkasten")
+        header_description.get_style_context().add_class("stat-heading")
+        self.textlabel_description.set_text("text")
+
+    def set_description(self, new_description: str):
+        """
+        Sets the description
+        new_description: The new description
+        """
+        print(new_description)
+        self.textlabel_description.set_text(new_description)
+
+    def get_description(self):
+        """
+        returns the description
+        return: str
+        """
+        return self.textlabel_description.get_text()
