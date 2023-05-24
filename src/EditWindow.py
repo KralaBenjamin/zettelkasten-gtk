@@ -82,6 +82,14 @@ class TagWindow(EditWindow):
             text_template=old_description
         )
 
+class DescriptionWindow(EditWindow):
+    def __init__(self, old_description):
+        super().__init__(
+            title=f"Ändere Beschreibung der Beschreibung des Zettelkastens",
+            button_text="Speichern",
+            button_tooltip_text=f"Speichert den aktuellen Text als Beschreibung für den Zettelkasten.",
+            text_template=old_description
+        )
 
 ## in Klasse packen
 def get_template():

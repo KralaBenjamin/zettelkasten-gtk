@@ -1,5 +1,5 @@
 from gi.repository import Gtk, GObject
-from EditWindow import TagWindow
+from EditWindow import TagWindow, DescriptionWindow
 
 
 class StatisticContainer(Gtk.Box):
@@ -113,6 +113,12 @@ class Tag_Box(Gtk.Box):
         self.tag_description = tag_description
         self.create_layout()
 
+        self.edit_button.connect(
+            "clicked", 
+            self.__on_edit_button_clicked__
+        )
+
+
     
     def create_layout(self):
         # Creates the layout
@@ -123,7 +129,6 @@ class Tag_Box(Gtk.Box):
         self.edit_button.set_tooltip_text(
             "Ändere Beschreibung des Schlagwortes"
         )
-        self.edit_button.connect("clicked", self.on_edit_button_clicked)
         tag_name_label = Gtk.Label(self.tag_name)
         n_tag_label = Gtk.Label(self.n_tag)
 
@@ -152,7 +157,7 @@ class Tag_Box(Gtk.Box):
         # signal for widget when tag was edited
         pass
 
-    def on_edit_button_clicked(self, _):
+    def __on_edit_button_clicked__(self, _):
         # reaction for edit button clicked
         # opens tag window
         tag_description_window = TagWindow(
@@ -173,22 +178,31 @@ class ZettelKastenDescription(Gtk.Box):
     Widget for showing zettel kasten description
     """
 
-    def __init__(self):
+    def __init__(self, description=""):
         """
         init function
         """
         Gtk.Box.__init__(self, 
             orientation=Gtk.Orientation.VERTICAL,
-            spacing=6,)
-        self.set_margin_top(10)
-        self.set_halign(Gtk.Align.CENTER)
+            spacing=6)
+        self.description = description
+
         self.create_layout()
+
+        self.edit_button.connect(
+            "clicked", 
+            self.__on_edit_button_clicked__
+        )
 
 
     def create_layout(self):
         """
         Creates the layout
         """
+
+        self.set_margin_top(10)
+        self.set_halign(Gtk.Align.CENTER)
+
         header_box = Gtk.Box(
             orientation=Gtk.Orientation.HORIZONTAL
         )
@@ -206,7 +220,7 @@ class ZettelKastenDescription(Gtk.Box):
 
         header_description.set_text("Beschreibung des Zettelkasten")
         header_description.get_style_context().add_class("stat-heading")
-        self.textlabel_description.set_text("text")
+        self.textlabel_description.set_text(self.description)
         self.edit_button.set_tooltip_text(
             "Ändere Beschreibung des Zettelkastens"
         )
@@ -216,6 +230,7 @@ class ZettelKastenDescription(Gtk.Box):
         Sets the description
         new_description: The new description
         """
+        self.description = new_description
         self.textlabel_description.set_text(new_description)
 
     def get_description(self):
@@ -223,4 +238,24 @@ class ZettelKastenDescription(Gtk.Box):
         returns the description
         return: str
         """
-        return self.textlabel_description.get_text()
+        return self.description
+    
+    @GObject.Signal
+    def description_edited(self, new_description: str):
+        pass
+
+    def __on_edit_button_clicked__(self, button):
+        # reaction for edit button clicked
+        # opens tag window
+        zk_description_window = DescriptionWindow(
+            self.description)
+
+
+        def on_window_saved(_, new_description):
+            self.emit("description_edited", new_description)
+
+        zk_description_window.connect(
+            "save_button_clicked", on_window_saved
+        )
+
+        zk_description_window.show_all()
