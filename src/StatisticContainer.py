@@ -62,7 +62,9 @@ class StatisticContainer(Gtk.Box):
     def create_layout(self):
         # creates the general layout
         self.sw = Gtk.ScrolledWindow()
-        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.content = Gtk.Box(
+            orientation=Gtk.Orientation.VERTICAL, 
+            spacing=6)
 
         self.sw.add_with_viewport(self.content)
         self.pack_start(self.sw, True, True, 0)
@@ -175,7 +177,11 @@ class ZettelKastenDescription(Gtk.Box):
         """
         init function
         """
-        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
+        Gtk.Box.__init__(self, 
+            orientation=Gtk.Orientation.VERTICAL,
+            spacing=6,)
+        self.set_margin_top(10)
+        self.set_halign(Gtk.Align.CENTER)
         self.create_layout()
 
 
@@ -183,22 +189,33 @@ class ZettelKastenDescription(Gtk.Box):
         """
         Creates the layout
         """
+        header_box = Gtk.Box(
+            orientation=Gtk.Orientation.HORIZONTAL
+        )
+        self.edit_button = Gtk.Button.new_from_icon_name(
+            "document-edit", Gtk.IconSize.BUTTON
+        )
         header_description = Gtk.Label()
         self.textlabel_description = Gtk.Label()
 
-        self.pack_start(header_description, True, True, 0)
+        header_box.pack_start(header_description, False, False, 0)
+        header_box.pack_start(self.edit_button, False, False, 0)
+
+        self.pack_start(header_box, False, False, 0)
         self.pack_start(self.textlabel_description, True, True, 0)
 
         header_description.set_text("Beschreibung des Zettelkasten")
         header_description.get_style_context().add_class("stat-heading")
         self.textlabel_description.set_text("text")
+        self.edit_button.set_tooltip_text(
+            "Ändere Beschreibung des Zettelkastens"
+        )
 
     def set_description(self, new_description: str):
         """
         Sets the description
         new_description: The new description
         """
-        print(new_description)
         self.textlabel_description.set_text(new_description)
 
     def get_description(self):
