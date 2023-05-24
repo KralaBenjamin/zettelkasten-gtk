@@ -101,6 +101,11 @@ class StatisticContainer(Gtk.Box):
         header_source.get_style_context().add_class("stat-heading")
 
     def on_zk_description_edited(self, _, new_description):
+        """
+        handels the signal, when description was edited
+        new_description: str
+            the new description
+        """
         self.zdata.zettelkasten_config.zettelkasten_description = new_description
         self.zdata.zettelkasten_config.save_current_config_into_file()
         # commit to git
