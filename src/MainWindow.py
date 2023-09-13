@@ -9,6 +9,7 @@ class MainWindow(Gtk.Window):
     """
     MainWindow is the main window.
     """
+
     def __init__(self, zdata) -> None:
         super().__init__()
         self.zdata = zdata
@@ -53,6 +54,7 @@ class MainWindow(Gtk.Window):
         ## Todo: Prüfen, ob es md syntaktisch korrekt sind
 
         zettel_window = ZettelWindow()
+
         def save_new_zettel(_, zettel_text):
             self.zdata.add_zettel_on_uri(zettel_text)
             self.zdata.reload()

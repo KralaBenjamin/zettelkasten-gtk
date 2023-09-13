@@ -3,15 +3,16 @@ from gi.repository import Gdk
 
 
 class SearchResultsView(Gtk.Box):
-    '''
+    """
     This widget shows the results of a search result
-    '''
+    """
+
     def __init__(self, zettels=None, id2titel=None) -> None:
-        '''
+        """
         initialisation.
         zettels is a list of zettels where the results fits.
         id2titel is a dict which links the number to the titel of the zettel.
-        '''
+        """
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.id2titel = id2titel
@@ -29,7 +30,6 @@ class SearchResultsView(Gtk.Box):
 
         if zettels:
             for zettel in zettels:
-
                 ztcv = ZettelContentView(zettel, id2titel=self.id2titel)
 
                 fnv = FileNameView(zettel.file_name)
@@ -45,26 +45,27 @@ class SearchResultsView(Gtk.Box):
         self.intern_grid.show()
 
     def add_view(self, view):
-        '''
+        """
         add a new view to search result.
         view is added view.
-        '''
+        """
         self.pack_start(view, True, False, 0)
 
     def add_text(self, text):
-        '''
+        """
         adds a text to search on the top of the search result.
         text is shown text.
-        '''
+        """
 
         self.intern_text.set_text(text)
         self.intern_text.show()
 
 
 class ZettelContentView(Gtk.Box):
-    '''
+    """
     ZettelContentView is a view to show the content of zettel.
-    '''
+    """
+
     def __init__(
         self, zettel, letters_per_line=80, show_additional_info=False, id2titel=None
     ):
@@ -158,6 +159,7 @@ class FileNameView(Gtk.Box):
     """
     view how to show the file name of the zettel
     """
+
     def __init__(self, filename):
         """
         initialisation function.
@@ -170,7 +172,9 @@ class FileNameView(Gtk.Box):
         self.name_label.set_text(filename)
         self.copy_clipboard_button.set_tooltip_text("Kopiere aktuellen Dateinamen")
 
-        self.copy_clipboard_button.connect("clicked", self.clicked_copy_clipboard_button)
+        self.copy_clipboard_button.connect(
+            "clicked", self.clicked_copy_clipboard_button
+        )
         self.name_label.show()
         self.copy_clipboard_button.show()
 
@@ -203,6 +207,7 @@ class ZettelMoreInfomationView(Gtk.Box):
     """
     view for showing information of a zettel from the database.
     """
+
     def __init__(self, zettel, letters_per_line=80, id2titel=None):
         """
         initialisation function.
@@ -247,7 +252,6 @@ class ZettelMoreInfomationView(Gtk.Box):
             self.box_outgoing_zettel.show()
 
         if len(self.zettel.linked_from) > 0:
-
             self.header_ingoing_zettel = Gtk.Label()
             self.header_ingoing_zettel.set_halign(Gtk.Align.START)
             self.header_ingoing_zettel.set_text(
@@ -281,9 +285,9 @@ class ZettelMoreInfomationView(Gtk.Box):
         self.source_label.show()
 
     def create_layout(self):
-        '''
-        function creates the layout. 
-        '''
+        """
+        function creates the layout.
+        """
 
         self.source_label = Gtk.Label()
         self.source_label.set_max_width_chars(self.letters_per_line)
