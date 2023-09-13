@@ -72,7 +72,7 @@ class ZettelkastenConfig:
             ensure_ascii=False,
             indent=4,
         )
-        #git Integration
+        # git Integration
 
     def is_tag_in_config(self, tag):
         """

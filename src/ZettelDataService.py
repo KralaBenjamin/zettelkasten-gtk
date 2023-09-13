@@ -88,20 +88,17 @@ class ZettelDataService:
             self.repo = Repo(uri_zettelkasten)
 
         list_all_added_files = [
-            file for file in os.listdir(uri_zettelkasten) 
-            if file.endswith(".md") or file == 'config.json'
+            file
+            for file in os.listdir(uri_zettelkasten)
+            if file.endswith(".md") or file == "config.json"
         ]
 
         now = datetime.now()
 
         dt_string = now.strftime("%Y.%m.%d.%H:%M")
 
-        self.commit_git(
-            list_all_added_files,
-            f'current status on {dt_string}'
-        )
+        self.commit_git(list_all_added_files, f"current status on {dt_string}")
 
-        
     def reload(self):
         """
         Reloads all data with given uri_zettelkasten.
@@ -166,8 +163,6 @@ class ZettelDataService:
         self.repo.index.add(list_files)
         self.repo.index.commit(commit_message)
 
-
-
     def add_zettel_on_uri(self, text: str):
         """
         adds a zettel with the given text.
@@ -194,6 +189,5 @@ class ZettelDataService:
 
         self.commit_git(
             [new_file_name],
-            f'added zettel {new_file_name} on {dt_string}',
+            f"added zettel {new_file_name} on {dt_string}",
         )
-

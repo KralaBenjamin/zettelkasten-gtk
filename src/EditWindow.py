@@ -1,23 +1,35 @@
 import gi
+
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk, GObject, GtkSource, Pango
 from pathlib import Path
 
 
 class EditWindow(Gtk.Window):
-    ## Todo: Event erstellen, dass ein neuer Zettel erstellt worden ist
+    """
+    Basic class for editing text in a window
+    """
 
     def __init__(
-        self, 
-        title:str = "Füge Zettel hinzu",
+        self,
+        title: str = "Füge Zettel hinzu",
         button_text: str = "Speichern",
         button_tooltip_text: str = "Speichert den aktuellen Text als Zettel.",
-        text_template: str = ""
-        ) -> None:
+        text_template: str = "",
+        use_md_highlight: bool = True,
+    ) -> None:
+        """
+        title: title of the window
+        button_text: text of the save button
+        button_tooltip_text: tooltip of the save button
+        text_template: text template shown from the beginning
+        use_md_highlight: if markdown should be used
+        """
         super().__init__(title=title)
         self.title = title
         self.button_text = button_text
         self.button_tooltip_text = button_tooltip_text
+        self.use_md_highlight = use_md_highlight
 
         self.create_layout()
 
@@ -28,7 +40,30 @@ class EditWindow(Gtk.Window):
         self.connect("destroy", self.on_clicked_closed_button)
 
     def create_layout(self):
-        self.text_view = Gtk.TextView()
+        """
+        layout creation
+        """
+        self.text_view = GtkSource.View()
+
+        # Create a GtkSourceBuffer for the SourceView
+        source_buffer = GtkSource.Buffer()
+        self.text_view.set_buffer(source_buffer)
+
+        # Set markdown highlighting for Python
+        lang_manager = GtkSource.LanguageManager.get_default()
+        language = lang_manager.get_language("markdown")
+        source_buffer.set_language(language)
+        source_buffer.set_highlight_syntax(self.use_md_highlight)
+
+        # get solarized style
+        style_scheme_manager = GtkSource.StyleSchemeManager.get_default()
+        style_scheme = style_scheme_manager.get_scheme("solarized-light")
+        if style_scheme:
+            source_buffer.set_style_scheme(style_scheme)
+
+        font_desc = Pango.FontDescription("25")
+        self.text_view.modify_font(font_desc)
+
         self.text_view.get_style_context().add_class("text-editor")
 
         self.header_bar = Gtk.HeaderBar()
@@ -55,6 +90,9 @@ class EditWindow(Gtk.Window):
         pass
 
     def on_clicked_save_button(self, _):
+        """
+        signal if text button was clicked
+        """
         textbox_text = self.text_view.get_buffer().props.text
 
         self.emit("save_button_clicked", textbox_text)
@@ -63,35 +101,52 @@ class EditWindow(Gtk.Window):
     def on_clicked_closed_button(self, _):
         pass
 
+
 class ZettelWindow(EditWindow):
+    """
+    Class for Zettel Creation
+    """
 
     def __init__(self):
         super().__init__(
             title="Füge Zettel hinzu",
             button_text="Speichern",
             button_tooltip_text="Speichert den aktuellen Text als Zettel.",
-            text_template=get_template()
+            text_template=get_template(),
         )
 
+
 class TagWindow(EditWindow):
+    """
+    Window for Tag editing
+    """
+
     def __init__(self, tag, old_description):
         super().__init__(
             title=f"Ändere Beschreibung des Schlagwortes {tag}",
             button_text="Speichern",
             button_tooltip_text=f"Speichert den aktuellen Text als Beschreibung für das Schlagwort {tag}.",
-            text_template=old_description
+            text_template=old_description,
+            use_md_highlight=False,
         )
 
+
 class DescriptionWindow(EditWindow):
+    """
+    Window for Description Edtiing
+    """
+
     def __init__(self, old_description):
         super().__init__(
             title=f"Ändere Beschreibung der Beschreibung des Zettelkastens",
             button_text="Speichern",
             button_tooltip_text=f"Speichert den aktuellen Text als Beschreibung für den Zettelkasten.",
-            text_template=old_description
+            text_template=old_description,
+            use_md_highlight=False,
         )
 
-## in Klasse packen
+
+## Todo: in Klasse packen
 def get_template():
     path_location = Path(__file__)
     template_file_location = path_location.parent.parent.joinpath("template.md")
@@ -100,11 +155,14 @@ def get_template():
 
     return text_template
 
+
 if __name__ == "__main__":
     zettel_window = ZettelWindow()
+
     def print_test(obj, text):
         print(type(obj))
         print("Signal funktioniert!", len(text))
+
     zettel_window.connect("save_button_clicked", print_test)
     zettel_window.show_all()
     Gtk.main()

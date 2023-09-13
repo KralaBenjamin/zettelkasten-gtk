@@ -17,29 +17,29 @@ class StatisticContainer(Gtk.Box):
         )
 
         self.description_box.connect(
-            "description_edited",
-            self.on_zk_description_edited
+            "description_edited", self.on_zk_description_edited
         )
 
-        self.tag_box_dict = dict() # dict for direct access to the tag boxes
+        self.tag_box_dict = dict()  # dict for direct access to the tag boxes
         # here we create the tag boxes based on the tags of zdata
         for tag, n_tag in sorted_tags:
             # reaction when tag was edited
             def tag_edited(_, tag, new_tag_description):
                 # change tag description to new description in zettelkasten config
                 self.zdata.zettelkasten_config.set_tag_description(
-                    tag, new_tag_description)
+                    tag, new_tag_description
+                )
                 self.zdata.zettelkasten_config.save_current_config_into_file()
                 # commit to git
-                zettelkasten_config_path = self.zdata.zettelkasten_config.get_config_file_path()
+                zettelkasten_config_path = (
+                    self.zdata.zettelkasten_config.get_config_file_path()
+                )
                 self.zdata.commit_git(
-                    [zettelkasten_config_path],
-                    f"Changed tag description for {tag}"
+                    [zettelkasten_config_path], f"Changed tag description for {tag}"
                 )
                 # change tag box description to new description in tag box
                 description = self.zdata.zettelkasten_config.get_tag_description(tag)
                 self.tag_box_dict[tag].set_tag_description(description)
-
 
             description = self.zdata.zettelkasten_config.get_tag_description(tag[1:])
 
@@ -49,7 +49,7 @@ class StatisticContainer(Gtk.Box):
             self.tag_flow_box.add(tag_tag_box)
             self.tag_box_dict[tag[1:]] = tag_tag_box
 
-        #creates the layout for the sources
+        # creates the layout for the sources
         sorted_sources = sorted(
             self.zdata.source_counter.items(), key=lambda items: items[1], reverse=True
         )
@@ -62,9 +62,7 @@ class StatisticContainer(Gtk.Box):
     def create_layout(self):
         # creates the general layout
         self.sw = Gtk.ScrolledWindow()
-        self.content = Gtk.Box(
-            orientation=Gtk.Orientation.VERTICAL, 
-            spacing=6)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.sw.add_with_viewport(self.content)
         self.pack_start(self.sw, True, True, 0)
@@ -111,8 +109,7 @@ class StatisticContainer(Gtk.Box):
         # commit to git
         zettelkasten_config_path = self.zdata.zettelkasten_config.get_config_file_path()
         self.zdata.commit_git(
-            [zettelkasten_config_path],
-            f"Changed zettelkasten description"
+            [zettelkasten_config_path], f"Changed zettelkasten description"
         )
         self.description_box.set_description(new_description)
 
@@ -127,20 +124,15 @@ class Tag_Box(Gtk.Box):
         self.tag_description = tag_description
         self.create_layout()
 
-        self.edit_button.connect(
-            "clicked", 
-            self.__on_edit_button_clicked__
-        )
-    
+        self.edit_button.connect("clicked", self.__on_edit_button_clicked__)
+
     def create_layout(self):
         # Creates the layout
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.edit_button = Gtk.Button.new_from_icon_name(
             "document-edit", Gtk.IconSize.BUTTON
         )
-        self.edit_button.set_tooltip_text(
-            "Ändere Beschreibung des Schlagwortes"
-        )
+        self.edit_button.set_tooltip_text("Ändere Beschreibung des Schlagwortes")
         tag_name_label = Gtk.Label(self.tag_name)
         n_tag_label = Gtk.Label(self.n_tag)
 
@@ -172,18 +164,15 @@ class Tag_Box(Gtk.Box):
     def __on_edit_button_clicked__(self, _):
         # reaction for edit button clicked
         # opens tag window
-        tag_description_window = TagWindow(
-            self.tag_name[1:], self.tag_description)
-
+        tag_description_window = TagWindow(self.tag_name[1:], self.tag_description)
 
         def save_tag_description(_, tag_description):
             self.emit("tag_edited", self.tag_name[1:], tag_description)
 
-        tag_description_window.connect(
-            "save_button_clicked", save_tag_description
-        )
+        tag_description_window.connect("save_button_clicked", save_tag_description)
 
         tag_description_window.show_all()
+
 
 class ZettelKastenDescription(Gtk.Box):
     """
@@ -194,18 +183,12 @@ class ZettelKastenDescription(Gtk.Box):
         """
         init function
         """
-        Gtk.Box.__init__(self, 
-            orientation=Gtk.Orientation.VERTICAL,
-            spacing=6)
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.description = description
 
         self.create_layout()
 
-        self.edit_button.connect(
-            "clicked", 
-            self.__on_edit_button_clicked__
-        )
-
+        self.edit_button.connect("clicked", self.__on_edit_button_clicked__)
 
     def create_layout(self):
         """
@@ -215,9 +198,7 @@ class ZettelKastenDescription(Gtk.Box):
         self.set_margin_top(10)
         self.set_halign(Gtk.Align.CENTER)
 
-        header_box = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL
-        )
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.edit_button = Gtk.Button.new_from_icon_name(
             "document-edit", Gtk.IconSize.BUTTON
         )
@@ -233,9 +214,7 @@ class ZettelKastenDescription(Gtk.Box):
         header_description.set_text("Beschreibung des Zettelkasten")
         header_description.get_style_context().add_class("stat-heading")
         self.textlabel_description.set_text(self.description)
-        self.edit_button.set_tooltip_text(
-            "Ändere Beschreibung des Zettelkastens"
-        )
+        self.edit_button.set_tooltip_text("Ändere Beschreibung des Zettelkastens")
 
     def set_description(self, new_description: str):
         """
@@ -251,7 +230,7 @@ class ZettelKastenDescription(Gtk.Box):
         return: str
         """
         return self.description
-    
+
     @GObject.Signal
     def description_edited(self, new_description: str):
         pass
@@ -259,15 +238,11 @@ class ZettelKastenDescription(Gtk.Box):
     def __on_edit_button_clicked__(self, button):
         # reaction for edit button clicked
         # opens description window
-        zk_description_window = DescriptionWindow(
-            self.description)
-
+        zk_description_window = DescriptionWindow(self.description)
 
         def on_window_saved(_, new_description):
             self.emit("description_edited", new_description)
 
-        zk_description_window.connect(
-            "save_button_clicked", on_window_saved
-        )
+        zk_description_window.connect("save_button_clicked", on_window_saved)
 
         zk_description_window.show_all()

@@ -15,15 +15,6 @@ label.stat-heading {
 	padding: 5px;
 }
 
-textview.text-editor {
-	font-size: 30px;
-	font-family: roboto;
-}
-
-textview.text-editor text {
-	background-color:  #eee8d5;
-	color: #586e75;
-}
 
 box.zk-search-bar {
 	margin: 0.3em;
@@ -36,12 +27,3 @@ combobox.zk-search-bar {
 box.zettel-filenameview {
 	margin: 1em;
 }
-
-/*
-
-flowbox.statistic-container {
-	column_spacing: 20;
-	row_spacing: 20;
-}
-*/
-

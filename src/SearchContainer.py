@@ -7,6 +7,7 @@ class SearchContainer(Gtk.Box):
     """
     contains all widget for searching..
     """
+
     def __init__(self, zdata) -> None:
         """
         initilisiation function.
@@ -102,8 +103,7 @@ class SearchContainer(Gtk.Box):
         if len(results) == 0:
             search_label = f"{search_term} hat keine Suchtreffer ergeben"
         else:
-            search_label = \
-                f"Suche: '{search_term}' ergab {len(results)} Suchergebnisse"
+            search_label = f"Suche: '{search_term}' ergab {len(results)} Suchergebnisse"
 
         self.remove(self.search_view)
 
@@ -111,10 +111,10 @@ class SearchContainer(Gtk.Box):
         self.search_view.add_text(search_label)
 
     def on_search_button_split_words(self, _):
-        '''
+        """
         function what happens if split words search button is clicked
         or search entry is used by enter.
-        '''
+        """
 
         self.last_search = "split_words"
         self.had_one_search = True
