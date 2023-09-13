@@ -1,11 +1,17 @@
 from gi.repository import Gtk, GObject
 from EditWindow import TagWindow, DescriptionWindow
+from ZettelDataService import ZettelDataService
 
 
 class StatisticContainer(Gtk.Box):
-    # showing the statistics of the zettelkasten
-    def __init__(self, zdata) -> None:
-        # initializing the container based on zdata
+    """
+    showing the statistics of the zettelkasten
+    """
+
+    def __init__(self, zdata: ZettelDataService):
+        """
+        initializing the container based on zdata
+        """
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.zdata = zdata
@@ -98,7 +104,7 @@ class StatisticContainer(Gtk.Box):
         header_source.set_text("Quellen und ihre Häufigkeit")
         header_source.get_style_context().add_class("stat-heading")
 
-    def on_zk_description_edited(self, _, new_description):
+    def on_zk_description_edited(self, _, new_description: str):
         """
         handels the signal, when description was edited
         new_description: str
@@ -116,7 +122,17 @@ class StatisticContainer(Gtk.Box):
 
 class Tag_Box(Gtk.Box):
     # widget for showing the tag properties
-    def __init__(self, tag_name, n_tag, tag_description):
+    def __init__(self, tag_name: str, n_tag: int, tag_description: str):
+        """
+        Initializes an instance of the class.
+
+        Parameters:
+        - tag_name: The name of the tag.
+        - n_tag: How many times have we found the tag
+        - tag_description: A brief description of what the tag represents or is used for.
+
+        """
+
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
 
         self.tag_name = tag_name
@@ -151,7 +167,7 @@ class Tag_Box(Gtk.Box):
 
         self.pack_start(self.tag_description_label, True, True, 5)
 
-    def set_tag_description(self, new_tag_description):
+    def set_tag_description(self, new_tag_description: str):
         # set the tag description
         self.tag_description = new_tag_description
         self.tag_description_label.set_text(self.tag_description)
@@ -179,7 +195,7 @@ class ZettelKastenDescription(Gtk.Box):
     Widget for showing zettel kasten description
     """
 
-    def __init__(self, description=""):
+    def __init__(self, description: str = ""):
         """
         init function
         """
