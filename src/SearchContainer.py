@@ -61,10 +61,19 @@ class SearchContainer(Gtk.Box):
         self.search_entry.get_style_context().add_class("zk-search-bar")
         self.search_entry.set_placeholder_text("Suche Zettel")
 
+        """
         glued_search_elements.pack_start(self.search_entry, True, True, 0)
         glued_search_elements.pack_start(self.split_word_search_button, False, False, 0)
         glued_search_elements.pack_start(self.search_button, False, False, 0)
-        glued_search_elements.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
+        """
+
+
+        glued_search_elements.append(self.search_entry)
+        glued_search_elements.append(self.split_word_search_button)
+        glued_search_elements.append(self.search_button)
+
+
+        glued_search_elements.get_style_context().add_class("linked")
 
         self.search_order_combo_box = Gtk.ComboBoxText()
         self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
@@ -74,13 +83,21 @@ class SearchContainer(Gtk.Box):
 
         self.split_word_search_button.get_style_context().add_class("zk-search-bar")
 
+        """
         search_box.pack_start(glued_search_elements, True, True, 50)
         search_box.pack_start(self.search_order_combo_box, False, False, 5)
 
         self.pack_start(search_box, False, False, 0)
         self.pack_start(self.sw, True, True, 0)
+        """
+        search_box.append(glued_search_elements)
+        search_box.append(self.search_order_combo_box)
 
-        self.sw.add_with_viewport(self.search_view)
+        self.append(search_box)
+        self.append(self.sw)
+
+        #self.sw.add_with_viewport(self.search_view)
+        self.sw.set_child(self.search_view)
 
     def create_new_search_view(self, zettels=None):
         """
@@ -91,7 +108,8 @@ class SearchContainer(Gtk.Box):
         self.search_view = SearchResultsView(
             zettels=zettels, id2titel=self.zdata.id_to_name
         )
-        self.sw.add_with_viewport(self.search_view)
+        #self.sw.add_with_viewport(self.search_view)
+        self.sw.set_child(self.search_view)
         self.show_all()
 
     def show_result(self, results, search_term):

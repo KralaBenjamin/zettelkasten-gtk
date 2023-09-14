@@ -43,13 +43,13 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.main_stack = Gtk.Stack()
         self.header_bar.set_title_widget(self.main_stack)
-        #self.search_container = SearchContainer(self.zdata)
+        self.search_container = SearchContainer(self.zdata)
         #self.statistic_container = StatisticContainer(self.zdata)
 
-        #self.main_stack.add_titled(self.search_container, "search", "Suche")
+        self.main_stack.add_titled(self.search_container, "search", "Suche")
         #self.main_stack.add_titled(self.statistic_container, "statistic", "Statistiken")
         #self.add(self.main_stack)
-        #self.stack_switcher.set_stack(self.main_stack)
+        self.stack_switcher.set_stack(self.main_stack)
 
     def on_clicked_create_new_zettel_button(self, _):
         """
