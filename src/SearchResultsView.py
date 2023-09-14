@@ -246,9 +246,8 @@ class FileNameView(Gtk.Box):
         function for the clicked "copy paste" button.
         Copies the name into clipboard..
         """
-        cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-        cb.set_text(self.filename, -1)
-
+        cb = Gdk.Display.get_default().get_clipboard()
+        cb.set(self.filename)
 
 class ZettelMoreInfomationView(Gtk.Box):
     """
