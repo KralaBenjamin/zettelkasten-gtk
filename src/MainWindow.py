@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gtk, Adw
 
 from SearchContainer import SearchContainer
 #from EditWindow import ZettelWindow
@@ -27,7 +27,6 @@ class MainWindow(Gtk.ApplicationWindow):
         """
         self.header_bar = Gtk.HeaderBar()
         self.header_bar.set_show_title_buttons(True)
-        self.stack_switcher = Gtk.StackSwitcher()
         title_label = Gtk.Label(label="Mein Fenstertitel", halign=Gtk.Align.CENTER)
 
         # Setze das Label-Widget als Titel der HeaderBar
@@ -42,14 +41,33 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_default_size(1000, 600)
 
         self.main_stack = Gtk.Stack()
-        self.header_bar.set_title_widget(self.main_stack)
         self.search_container = SearchContainer(self.zdata)
         #self.statistic_container = StatisticContainer(self.zdata)
 
-        self.main_stack.add_titled(self.search_container, "search", "Suche")
         #self.main_stack.add_titled(self.statistic_container, "statistic", "Statistiken")
         #self.add(self.main_stack)
-        self.stack_switcher.set_stack(self.main_stack)
+
+        testBox = Gtk.Box()
+        testBox.append(title_label)
+
+        stack = Adw.ViewStack()
+
+        page = stack.add_titled(child=self.search_container, name="search", title="Suche")
+        page.set_icon_name("system-search")
+
+        page = stack.add_titled(child=testBox, name="statistics", title="Statistiken")
+        page.set_icon_name("view-list-bullet")
+
+        switcher_bar = Adw.ViewSwitcher(stack=stack)
+        self.set_child(stack)
+        self.header_bar.set_title_widget(switcher_bar)
+        """
+        self.main_stack = Gtk.Stack()
+        self.stack_switcher = Gtk.StackSwitcher(stack=self.main_stack)
+        self.header_bar.set_title_widget(self.stack_switcher)
+        self.main_stack.add_titled(self.search_container, "search", "Suche")
+        self.main_stack.add_titled(testBox, "test", "Test")
+        """
 
     def on_clicked_create_new_zettel_button(self, _):
         """
