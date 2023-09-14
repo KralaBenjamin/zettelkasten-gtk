@@ -38,6 +38,8 @@ class SearchContainer(Gtk.Box):
         creates the layout.
         """
         self.sw = Gtk.ScrolledWindow()
+        self.sw.set_vexpand(True)
+
         self.search_view = SearchResultsView(id2titel=self.zdata.id_to_name)
 
         search_box = Gtk.Box(spacing=6)
@@ -94,6 +96,7 @@ class SearchContainer(Gtk.Box):
         search_box.append(self.search_order_combo_box)
 
         self.append(search_box)
+        
         self.append(self.sw)
 
         #self.sw.add_with_viewport(self.search_view)

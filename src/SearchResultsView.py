@@ -20,6 +20,7 @@ class SearchResultsView(Gtk.Box):
         self.intern_text = Gtk.Label(label="")
         self.intern_text.set_halign(Gtk.Align.CENTER)
 
+
         self.intern_grid = Gtk.Grid()
         self.intern_grid.set_halign(Gtk.Align.CENTER)
 
@@ -129,6 +130,7 @@ class ZettelContentView(Gtk.Box):
         self.tag_label.set_halign(Gtk.Align.CENTER)
 
         self.text_label = Gtk.Label()
+        self.text_label.set_wrap(True)
         #self.text_label.set_line_wrap(True)
         self.text_label.set_justify(Gtk.Justification.FILL)
         self.text_label.set_max_width_chars(self.letters_per_line)
