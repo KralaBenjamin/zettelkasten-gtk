@@ -2,7 +2,7 @@ from gi.repository import Gtk, Adw
 
 from SearchContainer import SearchContainer
 #from EditWindow import ZettelWindow
-#from StatisticContainer import StatisticContainer
+from StatisticContainer import StatisticContainer
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -31,18 +31,16 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # Setze das Label-Widget als Titel der HeaderBar
         
-        #self.header_bar.set_title("Zettelkasten") 
         self.create_new_zettel_button = Gtk.Button.new_with_label("Neuer Zettel")
         self.create_new_zettel_button.set_tooltip_text("Einen neuen Zettel erstellen")
 
         self.set_titlebar(self.header_bar)
         self.header_bar.pack_start(self.create_new_zettel_button)
-        #self.header_bar.set_custom_title(self.stack_switcher)
         self.set_default_size(1000, 600)
 
         self.main_stack = Gtk.Stack()
         self.search_container = SearchContainer(self.zdata)
-        #self.statistic_container = StatisticContainer(self.zdata)
+        self.statistic_container = StatisticContainer(self.zdata)
 
         #self.main_stack.add_titled(self.statistic_container, "statistic", "Statistiken")
         #self.add(self.main_stack)
@@ -55,7 +53,7 @@ class MainWindow(Gtk.ApplicationWindow):
         page = stack.add_titled(child=self.search_container, name="search", title="Suche")
         page.set_icon_name("system-search")
 
-        page = stack.add_titled(child=testBox, name="statistics", title="Statistiken")
+        page = stack.add_titled(child=self.statistic_container, name="statistics", title="Statistiken")
         page.set_icon_name("view-list-bullet")
 
         switcher_bar = Adw.ViewSwitcher(stack=stack)

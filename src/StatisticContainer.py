@@ -1,5 +1,5 @@
 from gi.repository import Gtk, GObject
-from EditWindow import TagWindow, DescriptionWindow
+#from EditWindow import TagWindow, DescriptionWindow
 from ZettelDataService import ZettelDataService
 
 
@@ -52,7 +52,7 @@ class StatisticContainer(Gtk.Box):
             tag_tag_box = Tag_Box(tag, n_tag, description)
             tag_tag_box.connect("tag_edited", tag_edited)
 
-            self.tag_flow_box.add(tag_tag_box)
+            self.tag_flow_box.append(tag_tag_box)
             self.tag_box_dict[tag[1:]] = tag_tag_box
 
         # creates the layout for the sources
@@ -70,8 +70,9 @@ class StatisticContainer(Gtk.Box):
         self.sw = Gtk.ScrolledWindow()
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
-        self.sw.add_with_viewport(self.content)
-        self.pack_start(self.sw, True, True, 0)
+        self.sw.set_child(self.content)
+        #self.pack_start(self.sw, True, True, 0)
+        self.append(self.sw)
 
         self.description_box = ZettelKastenDescription()
         self.description_box.set_description(
@@ -90,13 +91,34 @@ class StatisticContainer(Gtk.Box):
         self.tag_flow_box.props.row_spacing = 20
 
         self.textlabel_source.set_selectable(True)
-
+        """
         self.content.pack_start(self.description_box, True, True, 0)
         self.content.pack_start(header_tags, True, True, 0)
         self.content.pack_start(self.tag_flow_box, True, True, 0)
 
         self.content.pack_start(header_source, True, True, 0)
         self.content.pack_start(self.textlabel_source, False, False, 0)
+        """
+        #self.description_box.set_hexpand(True)
+        #self.description_box.set_vexpand(True)
+        self.content.append(self.description_box)
+
+        #header_tags.set_hexpand(True)
+        #header_tags.set_vexpand(True)
+        self.content.append(header_tags)
+
+        #self.tag_flow_box.set_hexpand(True)
+        #self.tag_flow_box.set_vexpand(True)
+        self.content.append(self.tag_flow_box)
+
+        #header_source.set_hexpand(True)
+        #header_source.set_vexpand(True)
+        self.content.append(header_source)
+
+        #self.textlabel_source.set_hexpand(False)
+        #self.textlabel_source.set_vexpand(False)
+        self.content.append(self.textlabel_source)
+
 
         header_tags.set_text("Schlagwörter und ihre Häufigkeit")
         header_tags.get_style_context().add_class("stat-heading")
@@ -145,27 +167,43 @@ class Tag_Box(Gtk.Box):
     def create_layout(self):
         # Creates the layout
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        '''
         self.edit_button = Gtk.Button.new_from_icon_name(
             "document-edit", Gtk.IconSize.BUTTON
         )
-        self.edit_button.set_tooltip_text("Ändere Beschreibung des Schlagwortes")
-        tag_name_label = Gtk.Label(self.tag_name)
-        n_tag_label = Gtk.Label(self.n_tag)
+        '''
+        image = Gtk.Image.new_from_icon_name("document-edit")
+        self.edit_button = Gtk.Button.new()
+        # image.set_pixel_size(16)  # Legt die Größe des Icons auf 16x16 Pixel fest.
 
-        self.tag_description_label = Gtk.Label(self.tag_description)
-        self.tag_description_label.set_line_wrap(True)
+        self.edit_button.set_child(image)
+
+        self.edit_button.set_tooltip_text("Ändere Beschreibung des Schlagwortes")
+        tag_name_label = Gtk.Label.new(self.tag_name)
+        n_tag_label = Gtk.Label.new(str(self.n_tag))
+
+        self.tag_description_label = Gtk.Label.new(self.tag_description)
+        self.tag_description_label.set_wrap(True)
         self.tag_description_label.set_max_width_chars(20)
         self.tag_description_label.set_selectable(True)
 
         tag_name_label.get_style_context().add_class("tag-text")
         tag_name_label.set_selectable(True)
-
+        """
         self.pack_start(first_row, False, False, 0)
         first_row.pack_start(tag_name_label, True, True, 0)
         first_row.pack_end(self.edit_button, False, False, 0)
         first_row.pack_end(n_tag_label, True, True, 0)
 
         self.pack_start(self.tag_description_label, True, True, 5)
+        """
+        self.append(first_row)
+        first_row.append(tag_name_label)
+        first_row.prepend(self.edit_button)
+        first_row.prepend(n_tag_label)
+
+        self.append(self.tag_description_label)
+
 
     def set_tag_description(self, new_tag_description: str):
         # set the tag description
@@ -215,20 +253,40 @@ class ZettelKastenDescription(Gtk.Box):
         self.set_halign(Gtk.Align.CENTER)
 
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        '''
         self.edit_button = Gtk.Button.new_from_icon_name(
             "document-edit", Gtk.IconSize.BUTTON
         )
+        '''
+        image = Gtk.Image.new_from_icon_name("document-edit")
+        # image.set_pixel_size(16)
+        self.edit_button = Gtk.Button.new()
+        self.edit_button.set_child(image)
+
         header_description = Gtk.Label()
         self.textlabel_description = Gtk.Label()
-
+        """
         header_box.pack_start(header_description, False, False, 0)
         header_box.pack_start(self.edit_button, False, False, 0)
 
         self.pack_start(header_box, False, False, 0)
         self.pack_start(self.textlabel_description, True, True, 0)
+        """
 
-        header_description.set_text("Beschreibung des Zettelkasten")
-        header_description.get_style_context().add_class("stat-heading")
+        #header_description.set_hexpand(False)
+        header_box.append(header_description)
+
+        #self.edit_button.set_hexpand(False)
+        header_box.append(self.edit_button)
+
+        #header_box.set_hexpand(False)
+        self.append(header_box)
+
+        #self.textlabel_description.set_hexpand(True)
+        #self.textlabel_description.set_vexpand(True)
+        self.append(self.textlabel_description)
+        #header_description.set_text("Beschreibung des Zettelkasten")
+        #header_description.get_style_context().add_class("stat-heading")
         self.textlabel_description.set_text(self.description)
         self.edit_button.set_tooltip_text("Ändere Beschreibung des Zettelkastens")
 
