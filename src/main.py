@@ -1,18 +1,17 @@
 import gi
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, Gio, Gdk, GObject
 from ZettelDataService import ZettelDataService
 from MainWindow import MainWindow
 from Theme import get_css_file
 from Settings import Settings, get_zettelkasten_location_dialog
-import os
 
 
 class ZettelkastenApplication(Gtk.Application):
     def __init__(self):
         super().__init__(
-            application_id="com.github.snowparrot.zettelkasten",
+            application_id="com.github.kralabenjamin.zettelkasten",
             flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
         )
         self.current_settings = Settings()
@@ -26,22 +25,23 @@ class ZettelkastenApplication(Gtk.Application):
         self.zData = ZettelDataService(zuri)
 
         # load global css Settings
-        screen = Gdk.Screen.get_default()
         provider = Gtk.CssProvider()
 
-        style_context = Gtk.StyleContext()
-        style_context.add_provider_for_screen(
-            screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
         css_file = get_css_file()
         provider.load_from_file(css_file)
+
+        display = Gdk.Display.get_default()
+        if display:
+            Gtk.StyleContext.add_provider_for_display(
+                display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            )
 
         self.connect("activate", self.on_activate)
 
     def on_activate(self, app):
         window = MainWindow(app, self.zData)
 
-        window.show_all()
+        window.show()
 
 
 app = ZettelkastenApplication()
