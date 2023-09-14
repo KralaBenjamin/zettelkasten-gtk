@@ -36,8 +36,8 @@ class SearchResultsView(Gtk.Box):
                 fnv.get_style_context().add_class("zettel-filenameview")
                 self.intern_grid.attach(ztcv, 0, current_row, 1, 1)
                 self.intern_grid.attach(fnv, 1, current_row, 1, 1)
-                ztcv.show_all()
-                fnv.show_all()
+                ztcv.show()
+                fnv.show()
 
                 current_row += 1
 
@@ -129,7 +129,7 @@ class ZettelContentView(Gtk.Box):
         self.tag_label.set_halign(Gtk.Align.CENTER)
 
         self.text_label = Gtk.Label()
-        self.text_label.set_line_wrap(True)
+        #self.text_label.set_line_wrap(True)
         self.text_label.set_justify(Gtk.Justification.FILL)
         self.text_label.set_max_width_chars(self.letters_per_line)
         self.text_label.set_halign(Gtk.Align.START)
@@ -215,9 +215,20 @@ class FileNameView(Gtk.Box):
         self.name_label = Gtk.Label()
         self.name_label.set_valign(Gtk.Align.CENTER)
 
-        self.copy_clipboard_button = Gtk.Button.new_from_icon_name(
+        """self.copy_clipboard_button = Gtk.Button.new_from_icon_name(
             "edit-copy", Gtk.IconSize.BUTTON
-        )
+        )"""
+
+        image = Gtk.Image.new_from_icon_name("edit-copy")
+        self.copy_clipboard_button = Gtk.Button.new()
+        self.copy_clipboard_button.set_child(image)
+        """
+        Beachte auch, dass in GTK4 das Konzept der Gtk.IconSize entfernt wurde. 
+        Das bedeutet, dass das Symbol in seiner natürlichen Größe angezeigt wird, 
+        es sei denn, du setzt eine explizite Pixelgröße für das Bild oder 
+        passt es über CSS an.
+        """
+
         self.copy_clipboard_button.set_valign(Gtk.Align.CENTER)
         self.name_label.set_selectable(True)
         """

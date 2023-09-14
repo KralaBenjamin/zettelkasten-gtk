@@ -104,13 +104,13 @@ class SearchContainer(Gtk.Box):
         creates new search view.
         zettels is a list shown by the new search view.
         """
-        self.sw.remove(self.sw.get_child())
+        #self.sw.remove(self.sw.get_child())
         self.search_view = SearchResultsView(
             zettels=zettels, id2titel=self.zdata.id_to_name
         )
         #self.sw.add_with_viewport(self.search_view)
         self.sw.set_child(self.search_view)
-        self.show_all()
+        self.show()
 
     def show_result(self, results, search_term):
         """
@@ -123,7 +123,7 @@ class SearchContainer(Gtk.Box):
         else:
             search_label = f"Suche: '{search_term}' ergab {len(results)} Suchergebnisse"
 
-        self.remove(self.search_view)
+        #self.remove(self.search_view)
 
         self.create_new_search_view(zettels=results)
         self.search_view.add_text(search_label)
