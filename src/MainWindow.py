@@ -5,13 +5,13 @@ from EditWindow import ZettelWindow
 from StatisticContainer import StatisticContainer
 
 
-class MainWindow(Gtk.Window):
+class MainWindow(Gtk.ApplicationWindow):
     """
     MainWindow is the main window.
     """
 
-    def __init__(self, zdata) -> None:
-        super().__init__()
+    def __init__(self, app, zdata) -> None:
+        super().__init__(title="Zettelkasten", application=app)
         self.zdata = zdata
 
         self.create_layout()
