@@ -169,14 +169,8 @@ class Tag_Box(Gtk.Box):
     def create_layout(self):
         # Creates the layout
         first_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        '''
-        self.edit_button = Gtk.Button.new_from_icon_name(
-            "document-edit", Gtk.IconSize.BUTTON
-        )
-        '''
         image = Gtk.Image.new_from_icon_name("document-edit")
         self.edit_button = Gtk.Button.new()
-        # image.set_pixel_size(16)  # Legt die Größe des Icons auf 16x16 Pixel fest.
 
         self.edit_button.set_child(image)
 
@@ -191,17 +185,10 @@ class Tag_Box(Gtk.Box):
 
         tag_name_label.get_style_context().add_class("tag-text")
         tag_name_label.set_selectable(True)
-        """
-        self.pack_start(first_row, False, False, 0)
-        first_row.pack_start(tag_name_label, True, True, 0)
-        first_row.pack_end(self.edit_button, False, False, 0)
-        first_row.pack_end(n_tag_label, True, True, 0)
 
-        self.pack_start(self.tag_description_label, True, True, 5)
-        """
         self.append(first_row)
         first_row.append(tag_name_label)
-        first_row.prepend(self.edit_button)
+        first_row.append(self.edit_button)
         first_row.prepend(n_tag_label)
 
         self.append(self.tag_description_label)
@@ -255,25 +242,13 @@ class ZettelKastenDescription(Gtk.Box):
         self.set_halign(Gtk.Align.CENTER)
 
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        '''
-        self.edit_button = Gtk.Button.new_from_icon_name(
-            "document-edit", Gtk.IconSize.BUTTON
-        )
-        '''
         image = Gtk.Image.new_from_icon_name("document-edit")
-        # image.set_pixel_size(16)
         self.edit_button = Gtk.Button.new()
         self.edit_button.set_child(image)
 
         header_description = Gtk.Label()
         self.textlabel_description = Gtk.Label()
-        """
-        header_box.pack_start(header_description, False, False, 0)
-        header_box.pack_start(self.edit_button, False, False, 0)
 
-        self.pack_start(header_box, False, False, 0)
-        self.pack_start(self.textlabel_description, True, True, 0)
-        """
 
         #header_description.set_hexpand(False)
         header_box.append(header_description)

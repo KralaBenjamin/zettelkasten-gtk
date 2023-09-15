@@ -25,14 +25,14 @@ class MainWindow(Gtk.ApplicationWindow):
         """
         creates the layout.
         """
-        self.header_bar = Gtk.HeaderBar()
-        self.header_bar.set_show_title_buttons(True)
-        title_label = Gtk.Label(label="Mein Fenstertitel", halign=Gtk.Align.CENTER)
+        self.header_bar = Adw.HeaderBar()
+        self.header_bar.set_show_end_title_buttons(True)
 
         # Setze das Label-Widget als Titel der HeaderBar
         
         self.create_new_zettel_button = Gtk.Button.new_with_label("Neuer Zettel")
         self.create_new_zettel_button.set_tooltip_text("Einen neuen Zettel erstellen")
+        self.create_new_zettel_button.set_vexpand(False)
 
         self.set_titlebar(self.header_bar)
         self.header_bar.pack_start(self.create_new_zettel_button)
@@ -41,12 +41,6 @@ class MainWindow(Gtk.ApplicationWindow):
         self.main_stack = Gtk.Stack()
         self.search_container = SearchContainer(self.zdata)
         self.statistic_container = StatisticContainer(self.zdata)
-
-        #self.main_stack.add_titled(self.statistic_container, "statistic", "Statistiken")
-        #self.add(self.main_stack)
-
-        testBox = Gtk.Box()
-        testBox.append(title_label)
 
         stack = Adw.ViewStack()
 
@@ -59,13 +53,6 @@ class MainWindow(Gtk.ApplicationWindow):
         switcher_bar = Adw.ViewSwitcher(stack=stack)
         self.set_child(stack)
         self.header_bar.set_title_widget(switcher_bar)
-        """
-        self.main_stack = Gtk.Stack()
-        self.stack_switcher = Gtk.StackSwitcher(stack=self.main_stack)
-        self.header_bar.set_title_widget(self.stack_switcher)
-        self.main_stack.add_titled(self.search_container, "search", "Suche")
-        self.main_stack.add_titled(testBox, "test", "Test")
-        """
 
     def on_clicked_create_new_zettel_button(self, _):
         """
