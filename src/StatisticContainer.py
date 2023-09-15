@@ -1,5 +1,5 @@
 from gi.repository import Gtk, GObject
-#from EditWindow import TagWindow, DescriptionWindow
+from EditWindow import TagWindow, DescriptionWindow
 from ZettelDataService import ZettelDataService
 
 
@@ -227,7 +227,7 @@ class Tag_Box(Gtk.Box):
 
         tag_description_window.connect("save_button_clicked", save_tag_description)
 
-        tag_description_window.show_all()
+        tag_description_window.show()
 
 
 class ZettelKastenDescription(Gtk.Box):
@@ -323,4 +323,4 @@ class ZettelKastenDescription(Gtk.Box):
 
         zk_description_window.connect("save_button_clicked", on_window_saved)
 
-        zk_description_window.show_all()
+        zk_description_window.show()

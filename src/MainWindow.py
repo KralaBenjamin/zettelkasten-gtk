@@ -1,7 +1,7 @@
 from gi.repository import Gtk, Adw
 
 from SearchContainer import SearchContainer
-#from EditWindow import ZettelWindow
+from EditWindow import ZettelWindow
 from StatisticContainer import StatisticContainer
 
 
@@ -73,11 +73,11 @@ class MainWindow(Gtk.ApplicationWindow):
         """
         ## Todo: Prüfen, ob es md syntaktisch korrekt sind
 
-        #zettel_window = ZettelWindow()
+        zettel_window = ZettelWindow()
 
         def save_new_zettel(_, zettel_text):
             self.zdata.add_zettel_on_uri(zettel_text)
             self.zdata.reload()
 
-        #zettel_window.connect("save_button_clicked", save_new_zettel)
-        #zettel_window.show_all()
+        zettel_window.connect("save_button_clicked", save_new_zettel)
+        zettel_window.show()
