@@ -71,6 +71,8 @@ class StatisticContainer(Gtk.Box):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         self.sw.set_child(self.content)
+        self.sw.set_vexpand(True)
+
         #self.pack_start(self.sw, True, True, 0)
         self.append(self.sw)
 
@@ -121,7 +123,7 @@ class StatisticContainer(Gtk.Box):
 
 
         header_tags.set_text("Schlagwörter und ihre Häufigkeit")
-        header_tags.get_style_context().add_class("stat-heading")
+        #header_tags.get_style_context().add_class("stat-heading")
 
         header_source.set_text("Quellen und ihre Häufigkeit")
         header_source.get_style_context().add_class("stat-heading")
@@ -285,9 +287,11 @@ class ZettelKastenDescription(Gtk.Box):
         #self.textlabel_description.set_hexpand(True)
         #self.textlabel_description.set_vexpand(True)
         self.append(self.textlabel_description)
-        #header_description.set_text("Beschreibung des Zettelkasten")
-        #header_description.get_style_context().add_class("stat-heading")
+
+        header_description.set_text("Beschreibung des Zettelkasten")
+        header_description.get_style_context().add_class("stat-heading")
         self.textlabel_description.set_text(self.description)
+        #self.textlabel_description.show()
         self.edit_button.set_tooltip_text("Ändere Beschreibung des Zettelkastens")
 
     def set_description(self, new_description: str):
