@@ -1,3 +1,4 @@
+import gi
 from gi.repository import Gtk
 from ZettelSortingMethods import list_all_sorting_methods, dict_id_to_sorting_method
 from SearchResultsView import SearchResultsView
@@ -61,7 +62,8 @@ class SearchContainer(Gtk.Box):
 
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
-        self.search_entry.set_placeholder_text("Suche Zettel")
+        # avalaible in 4.10
+        #self.search_entry.set_placeholder_text("Suche Zettel")
 
         glued_search_elements.append(self.search_entry)
         glued_search_elements.append(self.split_word_search_button)

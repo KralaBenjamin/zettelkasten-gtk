@@ -13,7 +13,6 @@ class ZettelkastenApplication(Gtk.Application):
     def __init__(self):
         super().__init__(
             application_id="com.github.kralabenjamin.zettelkasten",
-            flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
         )
         self.current_settings = Settings()
         # check if settings are in location
