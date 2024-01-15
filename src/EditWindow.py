@@ -1,7 +1,10 @@
 import gi
 
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GObject, GtkSource, Pango
+gi.require_version("GtkSource", "5")
+
+from gi.repository import Gtk, GObject 
+from gi.repository import GtkSource
+from gi.repository import Pango
 from pathlib import Path
 
 
@@ -61,9 +64,10 @@ class EditWindow(Gtk.Window):
         if style_scheme:
             source_buffer.set_style_scheme(style_scheme)
 
+        """
         font_desc = Pango.FontDescription("25")
         self.text_view.modify_font(font_desc)
-
+        """
         self.text_view.get_style_context().add_class("text-editor")
 
         self.header_bar = Gtk.HeaderBar()
@@ -73,14 +77,14 @@ class EditWindow(Gtk.Window):
 
         self.sw = Gtk.ScrolledWindow()
 
-        self.header_bar.set_show_close_button(True)
-        self.header_bar.props.title = self.title
+        self.header_bar.set_show_title_buttons(True)
+        #self.header_bar.props.title = self.title
         self.set_titlebar(self.header_bar)
 
         self.header_bar.pack_start(self.save_button)
 
-        self.sw.add(self.text_view)
-        self.add(self.sw)
+        self.sw.set_child(self.text_view)
+        self.set_child(self.sw)
 
         self.set_default_size(600, 600)
 

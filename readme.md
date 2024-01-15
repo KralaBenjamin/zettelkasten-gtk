@@ -9,7 +9,8 @@ The app is based on Python and gtk. It has been tested on Ubuntu 18.04, 20.04 an
 
 
 * Python over 3.1
-* GTK+3
+* GTK+4
+* GTK Source 5
 * gobject-introspection
 
 
@@ -18,7 +19,7 @@ The app is based on Python and gtk. It has been tested on Ubuntu 18.04, 20.04 an
 To create the local enviroment, use install.sh.
 
 Simply run the file
-com.github.snowparrot.zettelkasten
+com.github.kralabenjamin.zettelkasten
 
 ## Screenshot
 

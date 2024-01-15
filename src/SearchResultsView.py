@@ -20,6 +20,7 @@ class SearchResultsView(Gtk.Box):
         self.intern_text = Gtk.Label(label="")
         self.intern_text.set_halign(Gtk.Align.CENTER)
 
+
         self.intern_grid = Gtk.Grid()
         self.intern_grid.set_halign(Gtk.Align.CENTER)
 
@@ -36,8 +37,8 @@ class SearchResultsView(Gtk.Box):
                 fnv.get_style_context().add_class("zettel-filenameview")
                 self.intern_grid.attach(ztcv, 0, current_row, 1, 1)
                 self.intern_grid.attach(fnv, 1, current_row, 1, 1)
-                ztcv.show_all()
-                fnv.show_all()
+                ztcv.show()
+                fnv.show()
 
                 current_row += 1
 
@@ -49,7 +50,22 @@ class SearchResultsView(Gtk.Box):
         add a new view to search result.
         view is added view.
         """
-        self.pack_start(view, True, False, 0)
+        self.append(view)
+
+        '''
+        # Nachdem du das Widget zum Box-Container hinzugefügt hast:
+        layout_child = self.get_layout_child(view)
+
+        # Um das Expandierverhalten einzustellen:
+        layout_child.set_expand(True)
+
+        # Um den Abstand zu anderen Widgets einzustellen:
+        layout_child.set_property('margin-start', 0)
+        layout_child.set_property('margin-end', 0)
+        layout_child.set_property('margin-top', 0)
+        layout_child.set_property('margin-bottom', 0)
+
+        '''
 
     def add_text(self, text):
         """
@@ -114,7 +130,8 @@ class ZettelContentView(Gtk.Box):
         self.tag_label.set_halign(Gtk.Align.CENTER)
 
         self.text_label = Gtk.Label()
-        self.text_label.set_line_wrap(True)
+        self.text_label.set_wrap(True)
+        #self.text_label.set_line_wrap(True)
         self.text_label.set_justify(Gtk.Justification.FILL)
         self.text_label.set_max_width_chars(self.letters_per_line)
         self.text_label.set_halign(Gtk.Align.START)
@@ -129,7 +146,7 @@ class ZettelContentView(Gtk.Box):
         self.more_info_button.set_tooltip_text(
             "Quellen und Verknüpfungen dieses Zettels anzeigen"
         )
-
+        """
         self.pack_start(self.title_label, True, True, 0)
         self.pack_start(self.tag_label, True, True, 0)
         self.pack_start(self.text_label, True, True, 0)
@@ -141,6 +158,20 @@ class ZettelContentView(Gtk.Box):
                 id2titel=self.id2titel,
             )
             self.pack_start(self.more_info_viewer, True, True, 0)
+        
+        
+        """
+        self.append(self.title_label)
+        self.append(self.tag_label)
+        self.append(self.text_label)
+        self.append(self.more_info_button)
+        if self.show_additional_info:
+            self.more_info_viewer = ZettelMoreInfomationView(
+                self.zettel,
+                letters_per_line=self.letters_per_line,
+                id2titel=self.id2titel,
+            )
+            self.append(self.more_info_viewer)
 
     def show_more_info(self, _):
         """
@@ -150,7 +181,8 @@ class ZettelContentView(Gtk.Box):
         self.more_info_viewer = ZettelMoreInfomationView(
             self.zettel, letters_per_line=self.letters_per_line, id2titel=self.id2titel
         )
-        self.pack_start(self.more_info_viewer, True, True, 0)
+        #self.pack_start(self.more_info_viewer, True, True, 0)
+        self.append(self.more_info_viewer)
         self.more_info_viewer.show()
         self.more_info_button.set_sensitive(False)
 
@@ -185,23 +217,37 @@ class FileNameView(Gtk.Box):
         self.name_label = Gtk.Label()
         self.name_label.set_valign(Gtk.Align.CENTER)
 
-        self.copy_clipboard_button = Gtk.Button.new_from_icon_name(
+        """self.copy_clipboard_button = Gtk.Button.new_from_icon_name(
             "edit-copy", Gtk.IconSize.BUTTON
-        )
+        )"""
+
+        image = Gtk.Image.new_from_icon_name("edit-copy")
+        self.copy_clipboard_button = Gtk.Button.new()
+        self.copy_clipboard_button.set_child(image)
+        """
+        Beachte auch, dass in GTK4 das Konzept der Gtk.IconSize entfernt wurde. 
+        Das bedeutet, dass das Symbol in seiner natürlichen Größe angezeigt wird, 
+        es sei denn, du setzt eine explizite Pixelgröße für das Bild oder 
+        passt es über CSS an.
+        """
+
         self.copy_clipboard_button.set_valign(Gtk.Align.CENTER)
         self.name_label.set_selectable(True)
-
+        """
         self.pack_start(self.name_label, True, True, 0)
         self.pack_start(self.copy_clipboard_button, True, False, 1)
+
+        """
+        self.append(self.name_label)
+        self.append(self.copy_clipboard_button)
 
     def clicked_copy_clipboard_button(self, _):
         """
         function for the clicked "copy paste" button.
         Copies the name into clipboard..
         """
-        cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-        cb.set_text(self.filename, -1)
-
+        cb = Gdk.Display.get_default().get_clipboard()
+        cb.set(self.filename)
 
 class ZettelMoreInfomationView(Gtk.Box):
     """
@@ -242,11 +288,15 @@ class ZettelMoreInfomationView(Gtk.Box):
                     )
                 link_label.set_selectable(True)
 
-                self.box_outgoing_zettel.pack_start(link_label, True, True, 0)
+                #self.box_outgoing_zettel.pack_start(link_label, True, True, 0)
+                self.box_outgoing_zettel.append(link_label)
                 link_label.show()
-
+            """
             self.pack_start(self.header_outgoing_zettel, True, True, 0)
             self.pack_start(self.box_outgoing_zettel, True, True, 0)
+            """
+            self.append(self.header_outgoing_zettel)
+            self.append(self.box_outgoing_zettel)
 
             self.header_outgoing_zettel.show()
             self.box_outgoing_zettel.show()
@@ -260,8 +310,12 @@ class ZettelMoreInfomationView(Gtk.Box):
 
             self.box_ingoing_zettel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
+            """
             self.pack_start(self.header_ingoing_zettel, True, True, 0)
             self.pack_start(self.box_ingoing_zettel, True, True, 0)
+            """
+            self.append(self.header_ingoing_zettel)
+            self.append(self.box_ingoing_zettel)
             for incoming_links in zettel.linked_from:
                 link_label = Gtk.Label()
                 if not self.id2titel:
@@ -272,7 +326,8 @@ class ZettelMoreInfomationView(Gtk.Box):
                     )
 
                 link_label.set_selectable(True)
-                self.box_ingoing_zettel.pack_start(link_label, True, True, 0)
+                #self.box_ingoing_zettel.pack_start(link_label, True, True, 0)
+                self.box_ingoing_zettel.append(link_label)
                 link_label.show()
 
             self.header_ingoing_zettel.show()
@@ -280,7 +335,8 @@ class ZettelMoreInfomationView(Gtk.Box):
 
         source_text = "Quelle:" + zettel.source
         self.source_label.set_text(source_text[:letters_per_line])
-        self.pack_start(self.source_label, True, True, 0)
+        #self.pack_start(self.source_label, True, True, 0)
+        self.append(self.source_label)
 
         self.source_label.show()
 

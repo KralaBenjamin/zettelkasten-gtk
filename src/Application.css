@@ -15,6 +15,10 @@ label.stat-heading {
 	padding: 5px;
 }
 
+.text-editor {
+    font-size: 25pt;
+}
+
 
 box.zk-search-bar {
 	margin: 0.3em;

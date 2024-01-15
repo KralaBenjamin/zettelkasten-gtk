@@ -1,3 +1,4 @@
+import gi
 from gi.repository import Gtk
 from ZettelSortingMethods import list_all_sorting_methods, dict_id_to_sorting_method
 from SearchResultsView import SearchResultsView
@@ -38,6 +39,8 @@ class SearchContainer(Gtk.Box):
         creates the layout.
         """
         self.sw = Gtk.ScrolledWindow()
+        self.sw.set_vexpand(True)
+
         self.search_view = SearchResultsView(id2titel=self.zdata.id_to_name)
 
         search_box = Gtk.Box(spacing=6)
@@ -59,12 +62,15 @@ class SearchContainer(Gtk.Box):
 
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
-        self.search_entry.set_placeholder_text("Suche Zettel")
+        # avalaible in 4.10
+        #self.search_entry.set_placeholder_text("Suche Zettel")
 
-        glued_search_elements.pack_start(self.search_entry, True, True, 0)
-        glued_search_elements.pack_start(self.split_word_search_button, False, False, 0)
-        glued_search_elements.pack_start(self.search_button, False, False, 0)
-        glued_search_elements.get_style_context().add_class(Gtk.STYLE_CLASS_LINKED)
+        glued_search_elements.append(self.search_entry)
+        glued_search_elements.append(self.split_word_search_button)
+        glued_search_elements.append(self.search_button)
+
+
+        glued_search_elements.get_style_context().add_class("linked")
 
         self.search_order_combo_box = Gtk.ComboBoxText()
         self.search_order_combo_box.get_style_context().add_class("zk-search-bar")
@@ -74,25 +80,25 @@ class SearchContainer(Gtk.Box):
 
         self.split_word_search_button.get_style_context().add_class("zk-search-bar")
 
-        search_box.pack_start(glued_search_elements, True, True, 50)
-        search_box.pack_start(self.search_order_combo_box, False, False, 5)
+        search_box.append(glued_search_elements)
+        search_box.append(self.search_order_combo_box)
 
-        self.pack_start(search_box, False, False, 0)
-        self.pack_start(self.sw, True, True, 0)
+        self.append(search_box)
+        
+        self.append(self.sw)
 
-        self.sw.add_with_viewport(self.search_view)
+        self.sw.set_child(self.search_view)
 
     def create_new_search_view(self, zettels=None):
         """
         creates new search view.
         zettels is a list shown by the new search view.
         """
-        self.sw.remove(self.sw.get_child())
         self.search_view = SearchResultsView(
             zettels=zettels, id2titel=self.zdata.id_to_name
         )
-        self.sw.add_with_viewport(self.search_view)
-        self.show_all()
+        self.sw.set_child(self.search_view)
+        self.show()
 
     def show_result(self, results, search_term):
         """
@@ -104,8 +110,6 @@ class SearchContainer(Gtk.Box):
             search_label = f"{search_term} hat keine Suchtreffer ergeben"
         else:
             search_label = f"Suche: '{search_term}' ergab {len(results)} Suchergebnisse"
-
-        self.remove(self.search_view)
 
         self.create_new_search_view(zettels=results)
         self.search_view.add_text(search_label)
