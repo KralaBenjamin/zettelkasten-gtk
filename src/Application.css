@@ -1,0 +1,33 @@
+label.zettel-heading {
+    color: #5e5c64;
+    font-weight: bold;
+	padding-bottom: 5px;
+}
+
+label.tag-text {
+    color: #1c71d8;
+    font-weight: bold;
+}
+
+label.stat-heading {
+    color: #5e5c64;
+    font-weight: bold;
+	padding: 5px;
+}
+
+.text-editor {
+    font-size: 25pt;
+}
+
+
+box.zk-search-bar {
+	margin: 0.3em;
+}
+
+combobox.zk-search-bar {
+	margin: 0.3em;
+}
+
+box.zettel-filenameview {
+	margin: 1em;
+}
