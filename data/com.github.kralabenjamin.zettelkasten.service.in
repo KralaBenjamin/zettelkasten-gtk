@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.github.kralabenjamin.zettelkasten
+Exec=@bindir@/zettelkasten-flatpak --gapplication-service

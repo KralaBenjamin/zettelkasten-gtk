@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/com.github.kralabenjamin.zettelkasten.desktop.in
+data/com.github.kralabenjamin.zettelkasten.metainfo.xml.in
+data/com.github.kralabenjamin.zettelkasten.gschema.xml
+src/main.py
+src/window.py
+src/window.ui

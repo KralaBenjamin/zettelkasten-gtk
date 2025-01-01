@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="zettelkasten-flatpak">
+	<schema id="com.github.kralabenjamin.zettelkasten" path="/com/github/kralabenjamin/zettelkasten/">
+	</schema>
+</schemalist>

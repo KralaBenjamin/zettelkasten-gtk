@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=zettelkasten-flatpak
+Exec=zettelkasten-flatpak
+Icon=com.github.kralabenjamin.zettelkasten
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true
