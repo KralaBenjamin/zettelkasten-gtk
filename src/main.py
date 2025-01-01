@@ -25,6 +25,7 @@ gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Gio, Adw
 from .window import ZettelkastenFlatpakWindow
+from .MainWindow import MainWindow
 
 from .ZettelDataService import ZettelDataService
 
@@ -39,6 +40,9 @@ class ZettelkastenFlatpakApplication(Adw.Application):
         self.create_action('about', self.on_about_action)
         self.create_action('preferences', self.on_preferences_action)
 
+        location_zettelkasten = "/home/snowparrot/Nextcloud/Zettelkasten"
+        self.zdata = ZettelDataService(location_zettelkasten)
+
     def do_activate(self):
         """Called when the application is activated.
 
@@ -47,7 +51,7 @@ class ZettelkastenFlatpakApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = ZettelkastenFlatpakWindow(application=self)
+            win = MainWindow(application=self, zdata=self.zdata)
         win.present()
 
     def on_about_action(self, *args):
@@ -84,9 +88,6 @@ class ZettelkastenFlatpakApplication(Adw.Application):
 
 def main(version):
     """The application's entry point."""
-    location_zettelkasten = "/home/snowparrot/Nextcloud/Zettelkasten"
-    zData = ZettelDataService(location_zettelkasten)
-    breakpoint()
 
     app = ZettelkastenFlatpakApplication()
     return app.run(sys.argv)

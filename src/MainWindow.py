@@ -1,8 +1,8 @@
 from gi.repository import Gtk, Adw
 
 from .SearchContainer import SearchContainer
-#from EditWindow import ZettelWindow
-#from StatisticContainer import StatisticContainer
+from .EditWindow import ZettelWindow
+from .StatisticContainer import StatisticContainer
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -38,7 +38,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.header_bar.pack_start(self.create_new_zettel_button)
         self.set_default_size(1000, 600)
 
-        """
+
         self.main_stack = Gtk.Stack()
         self.search_container = SearchContainer(self.zdata)
         self.statistic_container = StatisticContainer(self.zdata)
@@ -54,7 +54,7 @@ class MainWindow(Gtk.ApplicationWindow):
         switcher_bar = Adw.ViewSwitcher(stack=stack)
         self.set_child(stack)
         self.header_bar.set_title_widget(switcher_bar)
-        """
+
     def on_clicked_create_new_zettel_button(self, _):
         """
         what happens if the new window button is clicked.

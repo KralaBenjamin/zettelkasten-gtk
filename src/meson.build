@@ -30,10 +30,16 @@ zettelkasten_flatpak_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'MainWindow.py',
+  'SearchContainer.py',
+  'SearchResultsView.py',
+  'StatisticContainer.py',
+  'EditWindow.py',
   'Zettel.py',
   'ZettelDataService.py',
   'ZettelSortingMethods.py',
   'ZettelkastenConfig.py',
+  'template.md',
 ]
 
 install_data(zettelkasten_flatpak_sources, install_dir: moduledir)
