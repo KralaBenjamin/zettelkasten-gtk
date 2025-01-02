@@ -9,7 +9,8 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland"
+        "--socket=wayland",
+        "--filesystem=host"
     ],
     "cleanup" : [
         "/include",
@@ -23,7 +24,8 @@
         "*.a"
     ],
     "modules" : [
-    	"src/python3-GitPython.json",
+    	"build-aux/git.json",
+    	"build-aux/python3-GitPython.json",
         {
             "name" : "zettelkasten-flatpak",
             "builddir" : true,
