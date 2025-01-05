@@ -28,7 +28,7 @@ from .window import ZettelkastenFlatpakWindow
 from .MainWindow import MainWindow
 
 from .ZettelDataService import ZettelDataService
-
+from .Settings import Settings
 
 class ZettelkastenFlatpakApplication(Adw.Application):
     """The main application singleton class."""
@@ -51,7 +51,7 @@ class ZettelkastenFlatpakApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = MainWindow(application=self, zdata=self.zdata)
+            win = MainWindow(application=self)
         win.present()
 
     def on_about_action(self, *args):

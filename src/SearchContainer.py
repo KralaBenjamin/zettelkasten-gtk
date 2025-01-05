@@ -41,7 +41,10 @@ class SearchContainer(Gtk.Box):
         self.sw = Gtk.ScrolledWindow()
         self.sw.set_vexpand(True)
 
-        self.search_view = SearchResultsView(id2titel=self.zdata.id_to_name)
+        if self.zdata != None:
+            self.search_view = SearchResultsView(id2titel=self.zdata.id_to_name)
+        else:
+            self.search_view = SearchResultsView()
 
         search_box = Gtk.Box(spacing=6)
         search_box.get_style_context().add_class("zk-search-bar")
@@ -63,7 +66,7 @@ class SearchContainer(Gtk.Box):
         self.search_entry = Gtk.SearchEntry()
         self.search_entry.get_style_context().add_class("zk-search-bar")
         # avalaible in 4.10
-        #self.search_entry.set_placeholder_text("Suche Zettel")
+        # self.search_entry.set_placeholder_text("Suche Zettel")
 
         glued_search_elements.append(self.search_entry)
         glued_search_elements.append(self.split_word_search_button)

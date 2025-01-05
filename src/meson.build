@@ -39,6 +39,7 @@ zettelkasten_flatpak_sources = [
   'ZettelDataService.py',
   'ZettelSortingMethods.py',
   'ZettelkastenConfig.py',
+  'Settings.py',
   'template.md',
 ]
 

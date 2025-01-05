@@ -31,6 +31,7 @@ class ZettelDataService:
         file_list = [
             file for file in os.listdir(uri_zettelkasten) if file.endswith(".md")
         ]
+
         # collects all links, a zettel provides from
         self.__zettel_links_from__ = defaultdict(list)
         self.id_to_name = defaultdict(lambda x: "MissingNo")
@@ -98,6 +99,10 @@ class ZettelDataService:
         dt_string = now.strftime("%Y.%m.%d.%H:%M")
 
         self.commit_git(list_all_added_files, f"current status on {dt_string}")
+
+    def __len__():
+        return len(self.zettel_list)
+
 
     def reload(self):
         """
